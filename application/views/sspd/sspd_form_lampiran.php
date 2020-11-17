@@ -1,5 +1,31 @@
 
-    
+    <!--Modal: Name-->
+    <div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+          <div class="modal-body mb-0 p-0">
+
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+              <img id="img_show" src="">            </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+          </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
 <div class="panel panel-flat">
     <div class="panel-heading">
         <h5 class="panel-title"><?php echo ucfirst($this->uri->segment(1)) ?></h5>
@@ -23,19 +49,21 @@
                 <?php foreach ($lampiran as $key => $value): ?>
                     
                     <div class="form-group">
-                        <label class="control-label col-lg-5"><?= $value->nama ?></label>
+                        <label class="control-label col-lg-5"><?= $value->nama ?><?php if ($value->required == 1 ) { echo ' *';} ?></label>
                         <div class="col-lg-4">
                             <?php foreach ($files as $kf => $vf) {
                                     if ($vf->id_lampiran == $value->id) { ?>
-                                        <button class="btn-xl btn-primary" style="margin-top: 10px;border-radius: 10%">Lihat</button>
+                                        <button class="btn-xl  btn-primary" onclick="show_image('<?= base_url().$vf->lokasi ?>')" data-toggle="modal" data-target="#modal4" style="margin-top: 10px;border-radius: 10%">Lihat</button>
                                     <?php }
                                 } ?>
+                                 <a></a>
+
                         </div>
                         <div class="col-lg-3">
                             <!-- <input type="text" class="form-control" id="kode" name="kode" value="<?php  ?>"> -->
                             <div class="form-group">
                                 
-                                <input type="file" class="file-input lbl-basic-2" data-show-caption="false" data-show-upload="false" data-browse-class="btn btn-primary btn-xs" data-remove-class="btn btn-default btn-xs">
+                                <input name="<?=$value->id ?>" onchange="img_upload()" type="file" class="file-input lbl-basic-2" data-show-caption="false" data-show-upload="false" data-browse-class="btn btn-primary btn-xs" data-remove-class="btn btn-default btn-xs">
                             </div>
                         </div>
                     </div>
@@ -48,106 +76,74 @@
     
         
         <div align="center">
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $button ?></button>
+            <?php if ($hasil_cek_files == 0): ?>
+                
+        <button type="button" onclick="save()" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $button ?></button>
+            <?php endif ?>
         <!-- <a href="<?php echo site_url('sspd') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a> -->
         </div>
 	    <input type="hidden" name="nopen" value="<?php echo $nopen; ?>" /> 
+        <input type="hidden" id="submited" onclick="save()" name="submit" value="0" /> 
 	</form>
     </div>
     </div>
     </div>
     <script >
+
+        function show_image(v) {
+            event.preventDefault(); //prevent default action 
+            console.log(v)
+            $("#img_show").attr("src",v);
+
+        }
+function img_upload(argument) {
+    $('#postForm').submit()
+}function save(argument) {
+
+    $('#submited').val(1)
+
+    $('#postForm').submit()
+}
 $(document).ready(function() {
-   // $('.summernote').summernote({
-   //              height: "700px",
-                
-   //          });
-$('#isi').summernote({
-            height: 700,
-            callbacks: {
-                   onImageUpload: function(image) {
-                               uploadImage(image[0]);
-                           }
-               }
 
-            
-        });
-
-function uploadImage(image) {
-        var data = new FormData();
-        data.append("image", image);
-        $.ajax({
-            url:'<?php echo site_url('jenis_perolehan/upload_summernote');?>', //URL submit
-                     type:"post", //method Submit
-                     data:data, //penggunaan FormData
-                     processData:false,
-                     contentType:false,
-                     cache:false,
-                     async:false,
-            success: function(url) {
-                console.log('url', url)
-                var image = $('<img>').attr('src', url);
-                $('#isi').summernote("insertNode", image[0]);
-            },
-            error: function(data) {
-                console.log('data', data)
-            }
-        });
-    }
 
 
    $("#postForm").submit(function(event){
-        $(".btn").css('display','none');
-        event.preventDefault(); //prevent default action 
-        var post_url = '<?php echo $action ?>'; //get form action url
-        var request_method = $(this).attr("method"); //get form GET/POST method
-        var form_data = new FormData(this); //Encode form elements for submission
-        
-        if ($('#desc').summernote('codeview.isActivated')) {
-            $('#desc').summernote('codeview.deactivate'); 
-        }
-        
-        $.ajax({
-            url : post_url,
-            type: 'POST',
-            data : form_data,
-            processData:false,
-                     contentType:false,
-                     cache:false,
-                     async:false,
-        }).done(function(response){
-            if (response == 1){
+            event.preventDefault(); //prevent default action 
+            $.LoadingOverlay("text", "Yep, still loading...");
 
-            // alert('Data Tersimpan');
+            $.LoadingOverlay("show");
 
-            // $.notify("Data tersimpan", "success");
-            $.growl.notice({ message: "Simpan Sukses!" });
-              // $.growl.error({ message: "The kitten is attacking!" });
-              // $.growl.notice({ message: "The kitten is cute!" });
-              // $.growl.warning({ message: "The kitten is ugly!" });
-             
-            setTimeout(function () {
-                    window.location.replace('<?php echo site_url('jenis_perolehan') ?>')
-                       
-                    }, 2000);
-                //    $.ajax({
-                //              url:'<?php echo site_url('jenis_perolehan/do_upload');?>', //URL submit
-                //              type:"post", //method Submit
-                //              data:new FormData(this), //penggunaan FormData
-                //              processData:false,
-                //              contentType:false,
-                //              cache:false,
-                //              async:false,
-                //               success: function(data){
-                //                   alert("Upload Image Berhasil."); //alert jika upload berhasil
-                //            }
-                //          });
-            }else{
-                $.growl.warning({ message: "Simpan gagal!" });
-                $(".btn").css('display','inline');
+            var form = $('form')[0];
+            var formData = new FormData(form);
+            formData.append('image', $('input[type=file]')[0].files[0]); 
 
-            }
-        });
+                   $.ajax({
+                             url:'<?php echo site_url('sspd/do_upload');?>', //URL submit
+                             type:"post", //method Submit
+                             data:new FormData(this), //penggunaan FormData
+                             processData:false,
+                             contentType:false,
+                             cache:false,
+                             async:false,
+                              success: function(data){
+                                data = JSON.parse(data);
+                                if (data.jns == 'img') {
+                                    $.LoadingOverlay("hide");
+                                    $.growl.notice({ message: "Upload Sukses!" });
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 2000);
+                                }else if(data.jns == 'data'){
+                                    $.LoadingOverlay("hide");
+                                    $.growl.notice({ message: "Berkas Tersimpan!" });
+                                    setTimeout(function () {
+                                        window.location.replace('<?php echo site_url('sspd') ?>')
+                                    }, 2000);
+                                }
+                           }
+                         });
+            
 
         
     });

@@ -28,24 +28,24 @@ class Sspd extends CI_Controller
     {   
 
         $cari =[
-        		'id_ppat'=>@$_POST['id_ppat_search_name'],
+        		'nama'=>@$_POST['nama_search_name'],
 				'nik'=>@$_POST['nik_search_name'],
 				'nop'=>@$_POST['nop_search_name'],
-				'alamat_op'=> @$_POST['alamat_op_search_name']
 
                 ];
             $dataq = $this->Sspd_model->get_all($cari);
-        $judul=[];
+
+         $judul=[];
         $data['isi']=[];
         foreach ($dataq as $key => $v) {
             foreach ($v as $k => $val) {
                   array_push($judul, $k);
             }            
-            $a= [$key+1,$v->id_ppat,$v->nik,
-                 '<a href="'. site_url("sspd/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
-                 <a href="'. site_url("sspd/update/").$v->id.'" class="btn-xs btn-info"> Ubah</a>
+            $a= [$key+1,$v->no_pendaftaran,$v->nama,'<span class="badge badge-'.$v->class.'">'.$v->text.'</span>',
+                 '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn-xl btn-primary" style="border-radius:5px;;padding: 2% 6%;"> Lihat</a>
+                 <a href="'. site_url("sspd/update/").$v->no_pendaftaran.'" class="btn-xl btn-info" style="border-radius:5px;;padding: 2% 6%;"> Ubah</a>
 
-                  <a href="#" class="btn-xs btn-danger" onclick="hapus('.$v->id.',event)"> Hapus</a>
+                  <a href="#" class="btn-xl btn-danger"  style="border-radius:5px;padding: 2% 6%;" onclick="hapus('.$v->id.',event)"> Hapus </a>
                  '];
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
@@ -77,40 +77,64 @@ class Sspd extends CI_Controller
         }
     }
         public function do_upload(){
-            $nopen = $_POST['nopen'];
-            $folder = 'assets/files/sspd/'.$nopen;
 
-            if (!is_dir($folder)) {
+                $nopen = $_POST['nopen'];
+            if ($_POST['submit'] == 0) {
+              
+                $folder = 'assets/files/sspd/'.$nopen;
 
-                $oldmask = umask(0);
-                mkdir($new_folder, 0777, true);
-                umask($oldmask);
-            }
-    
-        $path = $_FILES['file']['name'];
-        $ext = pathinfo($path, PATHINFO_EXTENSION);
-        $nama = str_replace(' ', '', $this->input->post('judul')).'.'.$ext;
-    
-            $config['upload_path']          = './image/';
-            $config['allowed_types']        = 'gif|jpg|png';
-            $config['file_name']            = $nama;
-            // echo $config['file_name'];exit();
-            // $config['file_name']            = 'anu';
-            // $config['max_size']             = 1000000;
-            // $config['max_width']            = 1024;
-            // $config['max_height']           = 768;
-  
-            $this->load->library('upload', $config);
-            if ( ! $this->upload->do_upload('file'))
-            {
-                    $error = array('error' => $this->upload->display_errors());
-                    echo json_encode($error);
-                    // $this->skin->dashboard('upload_form', $error);
-            }
-            else
-            {
-                    $data = array('upload_data' => $this->upload->data());
-                    echo base_url().'image/'.$data['upload_data']['file_name'];
+                if (!is_dir($folder)) {
+
+                    $oldmask = umask(0);
+                    mkdir($folder, 0777, true);
+                    umask($oldmask);
+                }
+
+             
+
+                foreach ($_FILES as $key => $value) {
+                    if ($value['name'] != '') {
+                       
+                        $_FILES[0] = $value;
+                        $_FILES[0]['key'] = $key;
+                    
+                    }
+                }
+
+
+                $path = $_FILES[0]['name'];
+                $ext = pathinfo($path, PATHINFO_EXTENSION);
+                $nama = $_FILES[0]['key'].'_'.date('ymdHis').'.'.$ext;
+        
+                $config['upload_path']          = $folder;
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['file_name']            = $nama;
+       
+      
+                $this->load->library('upload', $config);
+                if ( ! $this->upload->do_upload($_FILES[0]['key']))
+                {
+                        $error = array('error' => $this->upload->display_errors());
+                        echo json_encode($error);
+                        // $this->skin->dashboard('upload_form', $error);
+                }
+                else
+                {
+                        $data = array('upload_data' => $this->upload->data());
+                        $data = array(
+                                        'lokasi' => $folder.'/'.$nama,
+                                        'nopen' =>$nopen,
+                                        'id_lampiran' => $_FILES[0]['key']
+                                    );
+                        $ins = $this->db->insert('files', $data);
+                        echo json_encode(array('msg' => $ins,'jns' => 'img'));
+
+                }
+            }else{
+                $data= array('status' => 'PM001');
+                $this->db->where('no_pendaftaran', $nopen);
+                $acc = $this->db->update('sspd', $data);
+                echo json_encode(array('msg' => $acc,'jns' => 'data'));
             }
         }
 
@@ -143,40 +167,22 @@ class Sspd extends CI_Controller
 
     
 
-    public function read($id) 
+    public function read($nopen) 
     {
-        $row = $this->Sspd_model->get_by_id($id);
-
+        $propinsi = $this->Sspd_model->get_propinsi();
+        $jns_perolehan = $this->Sspd_model->get_jns_perolehan();
+        $row = $this->Sspd_model->get_all_by_nopen($nopen);
         if ($row) {
-            $data = array(
-        'id' => $row->id,
-        'id_ppat' => $row->id_ppat,
-        'nik' => $row->nik,
-        'nop' => $row->nop,
-        'alamat_op' => $row->alamat_op,
-        'propinsi_op' => $row->propinsi_op,
-        'kabupaten_op' => $row->kabupaten_op,
-        'kecamatan_op' => $row->kecamatan_op,
-        'kelurahan_op' => $row->kelurahan_op,
-        'luas_tanah' => $row->luas_tanah,
-        'luas_bangunan' => $row->luas_bangunan,
-        'njop_tanah' => $row->njop_tanah,
-        'njop_bangunan' => $row->njop_bangunan,
-        'njop_total' => $row->njop_total,
-        'harga_transaksi' => $row->harga_transaksi,
-        'jenis_perolehan' => $row->jenis_perolehan,
-        'nomor_sertifikat' => $row->nomor_sertifikat,
-        'npop' => $row->npop,
-        'npoptkp' => $row->npoptkp,
-        'bphtb' => $row->bphtb,
-        'total_bayar' => $row->total_bayar,
-        'status_bayar' => $row->status_bayar,
-        'tgl_bayar' => $row->tgl_bayar,
-        'validasi_bank' => $row->validasi_bank,
-        'tgl_validasi_berkas' => $row->tgl_validasi_berkas,
-        'status' => $row->status,
-        'rtrw' => $row->rtrw,
+
+        $data = array(
+            'tipe' => 'update',
+            'button' => 'Simpan',
+            'action' => site_url('sspd/update_action'),
+            'sspd' => $row,
+            'propinsi' => $propinsi,
+            'jns_perolehan' => $jns_perolehan,
         );
+            
             $this->skin->dashboard('sspd/sspd_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -192,15 +198,27 @@ class Sspd extends CI_Controller
         $row = $this->Sspd_model->get_by_nopen($nopen);
         $files = $this->Sspd_model->get_files($nopen);
         $perolehan = $this->Sspd_model->get_jenis_perolehan($row->jenis_perolehan);
+        $cek_files = array();
+
+        if (!empty($files)) {
+            foreach ($files as $key => $value) {
+                array_push($cek_files, $value->id_lampiran);
+            }
+        }
+        
         $lam = array();
         if (!empty($perolehan->lampiran)) {
             $lam=explode(',',$perolehan->lampiran);
         }
         $lampiran = $this->Sspd_model->get_lampiran($lam);
         
-        // echo "<pre>";
-        // print_r ($lampiran);
-        // echo "</pre>";exit();
+        $cek_lampiran = $lam;
+        rsort($cek_lampiran);
+        unset($cek_lampiran[0]);
+        $hasil_cek_file = array_diff($cek_lampiran, $cek_files);
+        $hasil_cek_file = empty($hasil_cek_file) ? 0:1;
+        
+
         if ($row) {
             $data = array(
         'button' => 'Simpan',
@@ -208,6 +226,7 @@ class Sspd extends CI_Controller
         'lampiran' => $lampiran,
         'nopen' => $nopen,
 		'files' => $files,
+        'hasil_cek_files' => $hasil_cek_file,
 	    );
             $this->skin->dashboard('sspd/sspd_form_lampiran', $data);
         } else {
@@ -222,40 +241,31 @@ class Sspd extends CI_Controller
         $jns_perolehan = $this->Sspd_model->get_jns_perolehan();
 
         $data = array(
+            'tipe' => 'add',
             'button' => 'Simpan',
             'action' => site_url('sspd/create_action'),
-	    'id' => set_value('id'),
-	    'id_ppat' => set_value('id_ppat'),
-	    'nik' => set_value('nik'),
-	    'nop' => set_value('nop'),
-	    'alamat_op' => set_value('alamat_op'),
-	    'propinsi_op' => set_value('propinsi_op'),
-	    'kabupaten_op' => set_value('kabupaten_op'),
-	    'kecamatan_op' => set_value('kecamatan_op'),
-	    'kelurahan_op' => set_value('kelurahan_op'),
-	    'luas_tanah' => set_value('luas_tanah'),
-	    'luas_bangunan' => set_value('luas_bangunan'),
-	    'njop_tanah' => set_value('njop_tanah'),
-	    'njop_bangunan' => set_value('njop_bangunan'),
-	    'njop_total' => set_value('njop_total'),
-	    'harga_transaksi' => set_value('harga_transaksi'),
-	    'jenis_perolehan' => set_value('jenis_perolehan'),
-	    'nomor_sertifikat' => set_value('nomor_sertifikat'),
-	    'npop' => set_value('npop'),
-        'npoptkp' => set_value('npoptkp'),
-	    'npopkp' => set_value('npopkp'),
-	    'bphtb' => set_value('bphtb'),
-	    'total_bayar' => set_value('total_bayar'),
-	    'status_bayar' => set_value('status_bayar'),
-	    'tgl_bayar' => set_value('tgl_bayar'),
-	    'validasi_bank' => set_value('validasi_bank'),
-	    'tgl_validasi_berkas' => set_value('tgl_validasi_berkas'),
-	    'status' => set_value('status'),
-	    'rtrw' => set_value('rtrw'),
         'propinsi' => $propinsi,
 		'jns_perolehan' => $jns_perolehan,
 
 	);
+        $this->skin->dashboard('sspd/sspd_form', $data);
+    }
+    public function update($nopen) 
+    {
+        $propinsi = $this->Sspd_model->get_propinsi();
+        $jns_perolehan = $this->Sspd_model->get_jns_perolehan();
+        $row = $this->Sspd_model->get_all_by_nopen($nopen);
+
+        $data = array(
+            'tipe' => 'update',
+            'button' => 'Simpan',
+            'action' => site_url('sspd/update_action'),
+        'sspd' => $row,
+        
+        'propinsi' => $propinsi,
+        'jns_perolehan' => $jns_perolehan,
+
+    );
         $this->skin->dashboard('sspd/sspd_form', $data);
     }
     
@@ -281,18 +291,23 @@ class Sspd extends CI_Controller
         $cek_nik = $this->Sspd_model->cek_nik($data['nik'])->jml;
         if ($cek_nik ==0) {
             $ins_nik = $this->Sspd_model->insert_nik($data_nik);
+            $exp = explode('.', $ins);
+            $ins_nik = $exp[0];
+            $id_nik = $exp[1];
         }else{
-            $ins_nik = $this->Sspd_model->update_nik($data['id_nik'], $data_nik);
+            $up_nik = $this->Sspd_model->update_nik($data['id_nik'], $data_nik);
+            $id_nik = $data['id_nik'];
         
         }
 
-        if ($ins_nik == 1) {
+
+        if (@$ins_nik == 1 || @$up_nik == 1) {
             
             $nopen = 'PD'.date('ymdHis');
             $data['id_ppat'] = '1';
             $data_sspd = array(
               'id_ppat' => $data['id_ppat'],
-              'nik' => $data['nik'],
+              'id_nik' => $id_nik,
               'nop' => $data['nop'],
               'alamat_op' => $data['alamat_op'],
               'kabupaten_op' => $data['kabupaten_op'],
@@ -311,7 +326,7 @@ class Sspd extends CI_Controller
               'npoptkp' => $data['npoptkp'],
               'npopkp' => $data['npopkp'],
               'bphtb' => $data['bphtb'],
-              'status' => 'PM001',
+              'status' => 'DR001',
               'no_pendaftaran' => $nopen,
             );
             $ins_sspd = $this->Sspd_model->insert($data_sspd);

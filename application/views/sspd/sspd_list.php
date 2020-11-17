@@ -1,72 +1,65 @@
 
+
+
 <div class="panel panel-flat">
-  <div class="col">
-    <div class="col-md-4" style="margin-bottom: 10px">
-        
-    </div>
-    <div class="card card-small mb-4">
-      <div class="card-header border-bottom text-center">
-            <h4><?php echo ucfirst($this->uri->segment(1)) ?></h4>
-      </div>
+<h3 align="center"><?php echo strtoupper(ucfirst($this->uri->segment(1))) ?></h3>
+<div class="heading-elements">
+<ul class="icons-list">
+<!-- <li><a data-action="collapse"></a></li>
+<li><a data-action="reload"></a></li>
+<li><a data-action="close"></a></li> -->
+</ul>
+</div>
 
 
-
-      <div class="row" style="margin-bottom: 10px">
-        <div class="col-md-12" style="margin: 10px">
-            <a href="<?php echo site_url().$this->uri->segment(1) ?>/create" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah</a></div>
-
-    </div>
-
+<div class="" style="margin-left: 20px">
+<a href="<?php echo site_url().$this->uri->segment(1) ?>/create" class="btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
+</div>
+<div class="panel-body">
         <form action="#" id="postForm" enctype="multipart/form-data" method="post">
-        <div class=" row">
-            <div class="col-md-11 text-right">
-                <div class="row" style=" margin:5px">
 
-                <div class="col-md-3 " style=" padding:5px">
-                <input type="text" class="form-control" name="id_ppat_search_name" id="id_ppat_search_id" placeholder="Id Ppat"  />
+        
+         <div class="row">
+            <div class="col-md-11 text-right">
+
+                <div class="col-md-3 " style=" padding:5px;float: right">
+                <input type="text" class="form-control" name="nama_search_name" id="nama_search_id" placeholder="Nama"  />
                 </div>
 
-                <div class="col-md-3 " style=" padding:5px">
+                <div class="col-md-3 " style=" padding:5px;float: right">
                 <input type="text" class="form-control" name="nik_search_name" id="nik_search_id" placeholder="Nik"  />
                 </div>
 
-                <div class="col-md-3 " style=" padding:5px">
+                <div class="col-md-3 " style=" padding:5px;float: right">
                 <input type="text" class="form-control" name="nop_search_name" id="nop_search_id" placeholder="Nop"  />
                 </div>
 
-                <div class="col-md-3 " style=" padding:5px">
-                <input type="text" class="form-control" name="alamat_op_search_name" id="alamat_op_search_id" placeholder="Alamat Op"  />
-                </div>
-                
-                </div>
-            </div>
-        <div class="col-md-1">
-            <div class="row" style=" margin:5px">
-                <div class="col-md-12" style=" padding:5px">
-                    <button type="submit" class=" btn btn-primary"><i class="fas fa-search"></i> </button>
-                </div>
-
-            </div>
-        </div>
-        </form>
-        
-    <div class="card-body p-0 pb-3 text-center" style="padding: 30px;margin-top:20px">
             
-        <table id="dtables" class="table table-bordered table-striped"></table>
+                
+            </div>
+            <div class="col-md-1">
+                <div class="row" style=" margin:5px">
+                    <div class="col-md-12" style=" padding:5px">
+                        <button type="submit" class=" btn btn-primary"><i class="fas fa-search"></i> </button>
+                    </div>
 
+                </div>
+            </div>
     </div>
 </div>
+
+<div class="panel-body">
+
+<table id="dtables" class="table datatable-responsive table-bordered table-striped"></table>
 </div>
-</div>
+</form>
 
 </div>
-
 <script>
     function hapus(v,event){
         event.preventDefault(); //prevent default action 
         var r = confirm("Yakin Hapus Data Ini?");
         if (r == true) {
-            return true;
         } else {
             return false;
         }
@@ -120,8 +113,9 @@
             lengthChange: false, // Will Disabled Record number per page
             columns: [
             { title: "No" ,"width" : "5%" },
-            { title: datae.judul[1] },
-            { title: datae.judul[2] },
+            { title: "No Pendaftaran" },
+            { title: "Nama WP" },
+            { title: "Status" },
             { title: "Aksi" ,"width" : "27%" }
             ],
             order:[[0,'asc']]
@@ -147,11 +141,16 @@
             // console.log(dataSet);
             fixedColumns: true,
             data: datae.isi,
+            searching: false,   // Search Box will Be Disabled
+            ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+            info: true,         // Will show "1 to n of n entries" Text at bottom
+            lengthChange: false, // Will Disabled Record number per page
             columns: [
-            { title: "No","width" : "5%"  },
-            { title: datae.judul[1] },
-            { title: datae.judul[2] },
-            { title: "Aksi","width" : "27%"  }
+            { title: "No" ,"width" : "5%" },
+            { title: "No Pendaftaran" },
+            { title: "Nama WP" },
+            { title: "Status" },
+            { title: "Aksi" ,"width" : "27%" }
             ],
             order:[[0,'asc']]
             });
@@ -176,12 +175,18 @@
             $('#dtables').DataTable( {
             // console.log(dataSet);
 
+            fixedColumns: true,
             data: datae.isi,
+            searching: false,   // Search Box will Be Disabled
+            ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+            info: true,         // Will show "1 to n of n entries" Text at bottom
+            lengthChange: false, // Will Disabled Record number per page
             columns: [
-            { title: "No","width" : "5%"  },
-            { title: datae.judul[1] },
-            { title: datae.judul[2] },
-            { title: "Aksi","width" : "25%"  }
+            { title: "No" ,"width" : "5%" },
+            { title: "No Pendaftaran" },
+            { title: "Nama WP" },
+            { title: "Status" },
+            { title: "Aksi" ,"width" : "27%" }
             ],
             order:[[0,'asc']]
             });

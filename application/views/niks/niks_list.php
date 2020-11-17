@@ -21,23 +21,19 @@
         
          <div class="row">
             <div class="col-md-11">
+                <div class="col-md-3 " style=" padding:5px;float: right;">
+                    <input type="text" class="form-control input" name="nik_search_name" id="nik_search_id" placeholder="Nik"  />
+                </div>
 
+                <div class="col-md-3 " style=" padding:5px;float: right">
+                    <input type="text" class="form-control input" name="nama_search_name" id="nama_search_id" placeholder="Nama"  />
+                </div>
 
-        <div class="col-md-3 " style=" padding:5px;float: right;">
-        <input type="text" class="form-control input" name="nik_search_name" id="nik_search_id" placeholder="Nik"  />
-        </div>
-
-        <div class="col-md-3 " style=" padding:5px;float: right">
-        <input type="text" class="form-control input" name="nama_search_name" id="nama_search_id" placeholder="Nama"  />
-        </div>
-
-
-
-        </div>
-        <div class="col-md-1">
-            <div class="" style=" padding:5px;float: right;">
-                <button type="submit" class=" btn btn-primary" style="float: right;"><i class="fas fa-search"></i> </button>
             </div>
+            <div class="col-md-1">
+                <div class="" style=" padding:5px;float: right;">
+                    <button type="submit" class=" btn btn-primary" style="float: right;"><i class="fas fa-search"></i> </button>
+                </div>
         </div>
     </div>
 </div>

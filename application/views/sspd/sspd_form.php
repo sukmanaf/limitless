@@ -27,8 +27,8 @@
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">NIK</label>
                     <div class="col-lg-4">
-                        <input type="text" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control "  id="nik" name="nik" value="<?php echo $nik; ?>123">
-                        <input type="hidden" required class="form-control "  id="id_nik" name="id_nik" value="<?php echo $id; ?>">
+                        <input type="text" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control "  id="nik" name="nik" value="<?php echo @$sspd->nik; ?>123">
+                        <input type="hidden" required class="form-control "  id="id_nik" name="id_nik" value="<?php echo @$sspd->id; ?>">
                     </div>
                     <div class="col-lg-6">
                         <button type="button" required class="btn btn-primary" onclick="get_nik($('#nik').val(),event)" >Cari NIK</button>
@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">NAMA</label>
                     <div class="col-lg-10">
-                        <input type="text" required  class="form-control"  id="nama" name="nama" value="<?php echo @$nama; ?>">
+                        <input type="text" required  class="form-control"  id="nama" name="nama" value="<?php echo @$sspd->nama; ?>">
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">ALAMAT</label>
                     <div class="col-lg-10">
-                        <input type="text"  required class="form-control"  id="alamat" name="alamat" value="<?php echo @$alamat; ?>">
+                        <input type="text"  required class="form-control"  id="alamat" name="alamat" value="<?php echo @$sspd->alamat; ?>">
 
                     </div>
                 </div>
@@ -70,13 +70,13 @@
                             <select class="select" required id="select_propinsi"  name="kd_propinsi" onchange="get_kabupaten($(this).val())">
                                 <option value="">Pilih Propinsi</option>
                                 <?php foreach ($propinsi  as $key => $value): ?>
-                                    <?php $sel=''; if(intVal($kd_propinsi) == $value->id){$sel='selected';} ?>
+                                    <?php $sel=''; if(intVal($sspd->kd_propinsi) == $value->id){$sel='selected';} ?>
 
                                     <option <?=$sel ?>  value="<?=$value->id ?> "><?= $value->nama?></option>
                                 <?php endforeach ?>
 
                             </select>
-                            <input type="hidden" class="form-control" id="nm_propinsi" name="nm_propinsi" value="<?php echo @$nm_propinsi; ?>">
+                            <input type="hidden" class="form-control" id="nm_propinsi" name="nm_propinsi" value="<?php echo @$sspd->nm_propinsi; ?>">
 
                         </div>
                     </div>
@@ -95,13 +95,13 @@
                                 <option value="">Pilih Kota/Kabupaten</option>
                                 <?php if ($button == 'Update' ): ?>
                                     <?php foreach ($kabupaten  as $key => $value): ?>
-                                        <?php $sel=''; if(intVal($kd_kabupaten) == $value->id){$sel='selected';} ?>
+                                        <?php $sel=''; if(intVal($sspd->kd_kabupaten) == $value->id){$sel='selected';} ?>
 
                                         <option <?=$sel ?>  value="<?=$value->id ?> "><?= $value->nama?></option>
                                     <?php endforeach ?>
                                 <?php endif ?>
                             </select>
-                            <input type="hidden" class="form-control" id="nm_kabupaten" name="nm_kabupaten" value="<?php echo @$nm_kabupaten; ?>">
+                            <input type="hidden" class="form-control" id="nm_kabupaten" name="nm_kabupaten" value="<?php echo @$sspd->nm_kabupaten; ?>">
 
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                                 <?php endif ?>
 
                             </select>
-                            <input type="hidden" class="form-control" id="nm_kecamatan" name="nm_kecamatan" value="<?php echo @$nm_kecamatan; ?>">
+                            <input type="hidden" class="form-control" id="nm_kecamatan" name="nm_kecamatan" value="<?php echo @$sspd->nm_kecamatan; ?>">
 
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                             <?php endif ?>
 
                         </select>
-                        <input type="hidden" required class="form-control" id="nm_kelurahan" name="nm_kelurahan" value="<?php echo @$nm_kelurahan; ?>">
+                        <input type="hidden" required class="form-control" id="nm_kelurahan" name="nm_kelurahan" value="<?php echo @$sspd->nm_kelurahan; ?>">
 
                     </div>
                 </div>
@@ -163,7 +163,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">RT/RW</label>
                 <div class="col-lg-10">
-                    <input type="text" required class="form-control" id="rtrw" name="rtrw" value="<?php echo @$rtrw; ?>">
+                    <input type="text" required class="form-control" id="rtrw" name="rtrw" value="<?php echo @$sspd->rtrw; ?>">
                 </div>
             </div>
         </div>
@@ -197,7 +197,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">NOP</label>
                 <div class="col-lg-4">
-                    <input type="text"  required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="nop" name="nop" value="<?php echo $nop; ?>137202000500803350">
+                    <input type="text"  required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="nop" name="nop" value="<?php echo @$sspd->nop; ?>137202000500803350">
                 </div>
                 <div class="col-lg-6">
                     <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button>
@@ -209,7 +209,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Letak Tanah</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control" id="alamat_op" name="alamat_op" value="<?php echo @$alamat_op; ?>">
+                    <input type="text" required  class="form-control" id="alamat_op" name="alamat_op" value="<?php echo @$sspd->alamat_op; ?>">
                 </div>
 
             </div>
@@ -219,11 +219,11 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Kelurahan</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control" id="kelurahan_op" name="kelurahan_op" value="<?php echo @$kelurahan_op; ?>">
+                    <input type="text" required  class="form-control" id="kelurahan_op" name="kelurahan_op" value="<?php echo @$sspd->kelurahan_op; ?>">
                 </div>
                 <label class="control-label lbl-basic col-lg-2">RT/RW</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control" id="rtrw_op" name="rtrw_op" value="<?php echo @$rtrw_op; ?>">
+                    <input type="text" required  class="form-control" id="rtrw_op" name="rtrw_op" value="<?php echo @$sspd->rtrw_op; ?>">
                 </div>
             </div>
         </div>
@@ -232,11 +232,11 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Kecamatan</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control" id="kecamatan_op" name="kecamatan_op" value="<?php echo @$kecamatan_op; ?>">
+                    <input type="text" required  class="form-control" id="kecamatan_op" name="kecamatan_op" value="<?php echo @$sspd->kecamatan_op; ?>">
                 </div>
                 <label class="control-label lbl-basic col-lg-2">Kabupeten/Kota</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control" id="kabupaten_op" name="kabupaten_op" value="<?php echo @$kabupaten_op; ?>">
+                    <input type="text" required  class="form-control" id="kabupaten_op" name="kabupaten_op" value="<?php echo @$sspd->kabupaten_op; ?>">
                 </div>
             </div>
         </div>
@@ -245,11 +245,11 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Luas Tanah</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="luas_tanah" name="luas_tanah" value="<?php echo @$luas_tanah; ?>">
+                    <input type="text" required  class="form-control mask" id="luas_tanah" name="luas_tanah" value="<?php echo @$sspd->luas_tanah; ?>">
                 </div>
                 <label class="control-label lbl-basic col-lg-2">NJOP Tanah</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="njop_tanah" name="njop_tanah" value="<?php echo @$njop_tanah; ?>">
+                    <input type="text" required  class="form-control mask" id="njop_tanah" name="njop_tanah" value="<?php echo @$sspd->njop_tanah; ?>">
                 </div>
             </div>
         </div>
@@ -257,11 +257,11 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Luas Bangunan</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="luas_bangunan" name="luas_bangunan" value="<?php echo @$luas_bangunan; ?>">
+                    <input type="text" required  class="form-control mask" id="luas_bangunan" name="luas_bangunan" value="<?php echo @$sspd->luas_bangunan; ?>">
                 </div>
                 <label class="control-label lbl-basic col-lg-2">NJOP Bangunan</label>
                 <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="njop_bangunan" name="njop_bangunan" value="<?php echo @$njop_bangunan; ?>">
+                    <input type="text" required  class="form-control mask" id="njop_bangunan" name="njop_bangunan" value="<?php echo @$sspd->njop_bangunan; ?>">
                 </div>
             </div>
         </div>
@@ -307,7 +307,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">NJOP</label>
                 <div class="col-lg-4">
-                    <input type="text"  required readonly  class="form-control" id="njop_total" name="njop_total" value="<?php echo $njop_total; ?>">
+                    <input type="text"  required readonly  class="form-control" id="njop_total" name="njop_total" value="<?php echo @$sspd->njop_total; ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -318,7 +318,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Harga Transaksi</label>
                 <div class="col-lg-4">
-                    <input type="text"  required onkeyup="hitung()" class="form-control mask" id="harga_transaksi" name="harga_transaksi" value="<?php echo $harga_transaksi; ?>">
+                    <input type="text"  required onkeyup="hitung()" class="form-control mask" id="harga_transaksi" name="harga_transaksi" value="<?php echo @$sspd->harga_transaksi; ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -329,7 +329,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Nomor Sertifikat</label>
                 <div class="col-lg-4">
-                    <input type="text"  required  class="form-control" id="nomor_sertifikat" name="nomor_sertifikat" value="<?php echo $nomor_sertifikat; ?>">
+                    <input type="text"  required  class="form-control" id="nomor_sertifikat" name="nomor_sertifikat" value="<?php echo @$sspd->nomor_sertifikat; ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -345,7 +345,7 @@
                         <select class="select" required id="jenis_perolehan"  name="jenis_perolehan" onchange="hitung($(this).val())">
                             <option value="">Pilih Jenis Perolehan</option>
                             <?php foreach ($jns_perolehan  as $key => $value): ?>
-                                <?php $sel=''; if($jenis_perolehan == $value->id){$sel='selected';} ?>
+                                <?php $sel=''; if($sspd->jenis_perolehan == $value->kode){$sel='selected';} ?>
 
                                 <option <?=$sel ?>  value="<?=$value->kode ?> " data="<?=$value->npoptkp ?>"><?= $value->nama?></option>
                             <?php endforeach ?>
@@ -362,7 +362,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">NPOP</label>
                 <div class="col-lg-4">
-                    <input type="text"  required readonly class="form-control" id="npop" name="npop" value="<?php echo $npop; ?>">
+                    <input type="text"  required readonly class="form-control" id="npop" name="npop" value="<?php echo @$sspd->npop; ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -375,7 +375,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">npoptkp</label>
                 <div class="col-lg-4">
-                    <input type="text"  required readonly class="form-control" id="npoptkp" name="npoptkp" value="<?php echo $npoptkp; ?>">
+                    <input type="text"  required readonly class="form-control" id="npoptkp" name="npoptkp" value="<?php echo @$sspd->npoptkp; ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -387,7 +387,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">npopkp</label>
                 <div class="col-lg-4">
-                    <input type="text"  required  class="form-control" id="npopkp" name="npopkp" value="<?php echo $npopkp; ?>">
+                    <input type="text"  required  class="form-control" id="npopkp" name="npopkp" value="<?php echo @$sspd->npopkp; ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -398,7 +398,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">bphtb</label>
                 <div class="col-lg-4">
-                    <input type="text"  required  class="form-control" id="bphtb" name="bphtb" value="<?php echo $bphtb; ?>">
+                    <input type="text"  required  class="form-control" id="bphtb" name="bphtb" value="<?php echo @$sspd->bphtb; ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -535,7 +535,13 @@
     var object = {};
     var save =0;
     $(document).ready(function() {
-
+           var tipe = "<?= $tipe ?>";
+    if ( tipe == 'update') {
+        // get_propinsi_selected(dataq.kd_propinsi);
+        get_kabupaten_selected('<?= $sspd->kd_kabupaten ?>');
+        get_kecamatan_selected('<?= $sspd->kd_kecamatan ?>');
+        get_kelurahan_selected('<?= $sspd->kd_kelurahan ?>');
+    }
 
 
 

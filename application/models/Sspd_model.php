@@ -35,13 +35,25 @@ class Sspd_model extends CI_Model
     function get_all($param='')
     {
         if(!empty($param)){
-         foreach ($param as $key => $value) {
-        
-        $this->db->where($key.' like "%'.$value.'%"');
+            foreach ($param as $key => $value) {
+                if($key == 'nik'){
+
+                $this->db->where('nik.nik like "%'.$value.'%"');
+                }if($key == 'nama'){
+
+                $this->db->where('nik.nama like "%'.$value.'%"');
+                }else{
+
+                $this->db->where($key.' like "%'.$value.'%"');
+                }
             
+            }
         }
-    }
-       		$this->db->order_by($this->id, $this->order);
+            $this->db->select('sspd.*,nik.nama,ppat.nama as nama_ppat,ppat.alamat as alamat_ppat,status.text,status.status,status.class');
+            $this->db->join('status', 'status.status = sspd.status', 'left');
+            $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
+            $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
+       		$this->db->order_by($this->table.'.'.$this->id, $this->order);
         return $this->db->get($this->table)->result();
     }
 
@@ -129,7 +141,8 @@ class Sspd_model extends CI_Model
     }  function insert_nik($data)
     {
        $acc = $this->db->insert('nik', $data);
-       return $acc;
+       $insertId = $this->db->insert_id();
+       return $acc.'.'.$insert_id;
 
     }
 
@@ -229,6 +242,13 @@ class Sspd_model extends CI_Model
     function get_by_nopen($nopen)
     {
         $this->db->where('no_pendaftaran', $nopen);
+        return $this->db->get($this->table)->row();
+    }     // get data by id
+    function get_all_by_nopen($nopen)
+    {
+        $this->db->where('no_pendaftaran', $nopen);
+                    $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
+            $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
         return $this->db->get($this->table)->row();
     }   // get data by id
     function get_files($nopen)
