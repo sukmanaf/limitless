@@ -77,6 +77,15 @@ class Sspd extends CI_Controller
         }
     }
         public function do_upload(){
+            $nopen = $_POST['nopen'];
+            $folder = 'assets/files/sspd/'.$nopen;
+
+            if (!is_dir($folder)) {
+
+                $oldmask = umask(0);
+                mkdir($new_folder, 0777, true);
+                umask($oldmask);
+            }
     
         $path = $_FILES['file']['name'];
         $ext = pathinfo($path, PATHINFO_EXTENSION);
@@ -140,35 +149,67 @@ class Sspd extends CI_Controller
 
         if ($row) {
             $data = array(
-		'id' => $row->id,
-		'id_ppat' => $row->id_ppat,
-		'nik' => $row->nik,
-		'nop' => $row->nop,
-		'alamat_op' => $row->alamat_op,
-		'propinsi_op' => $row->propinsi_op,
-		'kabupaten_op' => $row->kabupaten_op,
-		'kecamatan_op' => $row->kecamatan_op,
-		'kelurahan_op' => $row->kelurahan_op,
-		'luas_tanah' => $row->luas_tanah,
-		'luas_bangunan' => $row->luas_bangunan,
-		'njop_tanah' => $row->njop_tanah,
-		'njop_bangunan' => $row->njop_bangunan,
-		'njop_total' => $row->njop_total,
-		'harga_transaksi' => $row->harga_transaksi,
-		'jenis_perolehan' => $row->jenis_perolehan,
-		'nomor_sertifikat' => $row->nomor_sertifikat,
-		'npop' => $row->npop,
-		'npoptkp' => $row->npoptkp,
-		'bphtb' => $row->bphtb,
-		'total_bayar' => $row->total_bayar,
-		'status_bayar' => $row->status_bayar,
-		'tgl_bayar' => $row->tgl_bayar,
-		'validasi_bank' => $row->validasi_bank,
-		'tgl_validasi_berkas' => $row->tgl_validasi_berkas,
-		'status' => $row->status,
-		'rtrw' => $row->rtrw,
-	    );
+        'id' => $row->id,
+        'id_ppat' => $row->id_ppat,
+        'nik' => $row->nik,
+        'nop' => $row->nop,
+        'alamat_op' => $row->alamat_op,
+        'propinsi_op' => $row->propinsi_op,
+        'kabupaten_op' => $row->kabupaten_op,
+        'kecamatan_op' => $row->kecamatan_op,
+        'kelurahan_op' => $row->kelurahan_op,
+        'luas_tanah' => $row->luas_tanah,
+        'luas_bangunan' => $row->luas_bangunan,
+        'njop_tanah' => $row->njop_tanah,
+        'njop_bangunan' => $row->njop_bangunan,
+        'njop_total' => $row->njop_total,
+        'harga_transaksi' => $row->harga_transaksi,
+        'jenis_perolehan' => $row->jenis_perolehan,
+        'nomor_sertifikat' => $row->nomor_sertifikat,
+        'npop' => $row->npop,
+        'npoptkp' => $row->npoptkp,
+        'bphtb' => $row->bphtb,
+        'total_bayar' => $row->total_bayar,
+        'status_bayar' => $row->status_bayar,
+        'tgl_bayar' => $row->tgl_bayar,
+        'validasi_bank' => $row->validasi_bank,
+        'tgl_validasi_berkas' => $row->tgl_validasi_berkas,
+        'status' => $row->status,
+        'rtrw' => $row->rtrw,
+        );
             $this->skin->dashboard('sspd/sspd_read', $data);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('sspd'));
+        }
+    }
+    
+
+    public function upload_lampiran($nopen) 
+    {
+
+
+        $row = $this->Sspd_model->get_by_nopen($nopen);
+        $files = $this->Sspd_model->get_files($nopen);
+        $perolehan = $this->Sspd_model->get_jenis_perolehan($row->jenis_perolehan);
+        $lam = array();
+        if (!empty($perolehan->lampiran)) {
+            $lam=explode(',',$perolehan->lampiran);
+        }
+        $lampiran = $this->Sspd_model->get_lampiran($lam);
+        
+        // echo "<pre>";
+        // print_r ($lampiran);
+        // echo "</pre>";exit();
+        if ($row) {
+            $data = array(
+        'button' => 'Simpan',
+		'jenis_perolehan' => $row->jenis_perolehan,
+        'lampiran' => $lampiran,
+        'nopen' => $nopen,
+		'files' => $files,
+	    );
+            $this->skin->dashboard('sspd/sspd_form_lampiran', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('sspd'));

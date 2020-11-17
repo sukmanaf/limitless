@@ -51,6 +51,7 @@ class Sspd_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+   
     
     // get total rows
     function total_rows($q = NULL) {
@@ -222,6 +223,31 @@ class Sspd_model extends CI_Model
        $acc = $this->db->update('nik', $data);
        return $acc;
 
+    }
+
+     // get data by id
+    function get_by_nopen($nopen)
+    {
+        $this->db->where('no_pendaftaran', $nopen);
+        return $this->db->get($this->table)->row();
+    }   // get data by id
+    function get_files($nopen)
+    {
+        $this->db->where('nopen', $nopen);
+        return $this->db->get('files')->result();
+    }
+     // get data by id
+    function get_jenis_perolehan($kode)
+    {
+        $this->db->where('kode', $kode);
+        return $this->db->get('jenis_perolehan')->row();
+    }
+     // get data by id
+    function get_lampiran($lam)
+    {
+        $this->db->where_in('id', $lam);
+
+        return $this->db->get('lampiran')->result();
     }
 
 }

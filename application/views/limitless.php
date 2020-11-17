@@ -40,6 +40,8 @@
 	<!-- /core JS files -->
 
 	<!-- Theme JS files -->
+	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/plugins/uploaders/fileinput.min.js"></script>
+
 
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/plugins/forms/selects/select2.min.js"></script>
 
@@ -82,6 +84,9 @@
 	
 	.lbl-basic{
 		margin-top: 1%;
+	}
+	.lbl-basic-2{
+		margin-top: 3%;
 	}
 </style>
 </head>

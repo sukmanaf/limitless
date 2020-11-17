@@ -347,7 +347,7 @@
                             <?php foreach ($jns_perolehan  as $key => $value): ?>
                                 <?php $sel=''; if($jenis_perolehan == $value->id){$sel='selected';} ?>
 
-                                <option <?=$sel ?>  value="<?=$value->id ?> " data="<?=$value->npoptkp ?>"><?= $value->nama?></option>
+                                <option <?=$sel ?>  value="<?=$value->kode ?> " data="<?=$value->npoptkp ?>"><?= $value->nama?></option>
                             <?php endforeach ?>
 
                         </select>

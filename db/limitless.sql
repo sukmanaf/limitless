@@ -16,6 +16,22 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`limitless` /*!40100 DEFAULT CHARACTER S
 
 USE `limitless`;
 
+/*Table structure for table `alur` */
+
+DROP TABLE IF EXISTS `alur`;
+
+CREATE TABLE `alur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dari` varchar(20) DEFAULT NULL,
+  `ke` varchar(20) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+/*Data for the table `alur` */
+
+insert  into `alur`(`id`,`dari`,`ke`,`status`) values (1,'1','2','Proses selesai edit rejek dari pelayanan'),(2,'2','3','Proses Approve Pelayanan'),(3,'3','4','Proses Approve Kasubid'),(4,'4','5','Proses Aprove Kabid'),(5,'4','6','Proses Aprove Kabid'),(6,'5','6','Proses pembayaran bphtb'),(7,'7','3','Proses selesai edit rejek dari'),(8,'8','4','Proses selesai edit rejek dari Kabid');
+
 /*Table structure for table `barang` */
 
 DROP TABLE IF EXISTS `barang`;
@@ -52,19 +68,21 @@ CREATE TABLE `data` (
 
 insert  into `data`(`data_id`,`judul`,`detail`,`date`,`kategori_id`) values (5,'Document Ready','<pre style=\"white-space: pre-wrap; overflow-wrap: break-word; font-size: 15px; background-color: rgb(238, 238, 238); color: rgb(51, 51, 51); box-sizing: content-box !important; margin-bottom: 0px !important; line-height: 1.1em !important; font-family: source-code-pro, Consolas, monospace !important; border-radius: 0px !important; background-image: none !important; background-position: initial !important; background-size: initial !important; background-repeat: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; bottom: auto !important; height: auto !important; left: auto !important; outline: 0px !important; overflow: visible !important; padding: 0px !important; position: static !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; min-height: auto !important;\"><div class=\"container\" style=\"box-sizing: content-box !important; border-radius: 0px !important; background: none !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; line-height: 1.1em !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; padding: 0px !important; position: relative !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; font-size: 1em !important; min-height: auto !important;\"><div class=\"line\" style=\"box-sizing: content-box !important; border-radius: 0px !important; background: none !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; line-height: 1.1em !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; padding: 0px 0.5em !important; position: static !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; font-size: 1em !important; min-height: auto !important; white-space: pre !important;\"><code style=\"overflow-wrap: normal; display: block; color: rgb(51, 51, 51); box-sizing: content-box !important; font-size: 1em !important; line-height: 1.1em !important; padding: 0px !important; background: none !important; border-radius: 0px !important; font-family: source-code-pro, Consolas, monospace !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; position: static !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; min-height: auto !important;\">$( document ).ready(<span class=\"keyword\" style=\"font-weight: bold;\">function</span>() {</code></div></div><div class=\"container\" style=\"box-sizing: content-box !important; border-radius: 0px !important; background: none !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; line-height: 1.1em !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; padding: 0px !important; position: relative !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; font-size: 1em !important; min-height: auto !important;\"><div class=\"line\" style=\"box-sizing: content-box !important; border-radius: 0px !important; background: none !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; line-height: 1.1em !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; padding: 0px 0.5em !important; position: static !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; font-size: 1em !important; min-height: auto !important; white-space: pre !important;\"><code style=\"overflow-wrap: normal; display: block; color: rgb(51, 51, 51); box-sizing: content-box !important; font-size: 1em !important; line-height: 1.1em !important; padding: 0px !important; background: none !important; border-radius: 0px !important; font-family: source-code-pro, Consolas, monospace !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; position: static !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; min-height: auto !important;\">    console.log( <span class=\"string\" style=\"color: rgb(221, 17, 68);\">\"ready!\"</span> );</code></div></div><div class=\"container\" style=\"box-sizing: content-box !important; border-radius: 0px !important; background: none !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; line-height: 1.1em !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; padding: 0px !important; position: relative !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; font-size: 1em !important; min-height: auto !important;\"><div class=\"line\" style=\"box-sizing: content-box !important; border-radius: 0px !important; background: none !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; line-height: 1.1em !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; padding: 0px 0.5em !important; position: static !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; font-size: 1em !important; min-height: auto !important; white-space: pre !important;\"><code style=\"overflow-wrap: normal; display: block; color: rgb(51, 51, 51); box-sizing: content-box !important; font-size: 1em !important; line-height: 1.1em !important; padding: 0px !important; background: none !important; border-radius: 0px !important; font-family: source-code-pro, Consolas, monospace !important; bottom: auto !important; float: none !important; height: auto !important; left: auto !important; margin: 0px !important; outline: 0px !important; overflow: visible !important; position: static !important; right: auto !important; top: auto !important; vertical-align: baseline !important; width: auto !important; min-height: auto !important;\">});</code></div></div></pre>','2020-02-08 23:15:13',2),(6,'enter press','<pre class=\"lang-js prettyprint prettyprinted\" style=\"margin-bottom: 1em; padding: 12px 8px; border: 0px; font-variant-numeric: inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-height: inherit; font-family: Consolas, Menlo, Monaco, &quot;Lucida Console&quot;, &quot;Liberation Mono&quot;, &quot;DejaVu Sans Mono&quot;, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, monospace, sans-serif; font-size: 13px; vertical-align: baseline; box-sizing: inherit; width: auto; max-height: 600px; background-color: rgb(239, 240, 241); border-radius: 3px; color: rgb(57, 51, 24); overflow-wrap: normal;\"><code style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: Consolas, Menlo, Monaco, &quot;Lucida Console&quot;, &quot;Liberation Mono&quot;, &quot;DejaVu Sans Mono&quot;, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, monospace, sans-serif; font-size: 13px; vertical-align: baseline; box-sizing: inherit; white-space: inherit;\"><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">$</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">(</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">document</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">).</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">on</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">(</span><span class=\"str\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(125, 39, 39);\">\'keypress\'</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">,</span><span class=\"kwd\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(16, 16, 148);\">function</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">(</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">e</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">)</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\"> </span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">{</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">\r\n    </span><span class=\"kwd\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(16, 16, 148);\">if</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">(</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">e</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">.</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">which </span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">==</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\"> </span><span class=\"lit\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(125, 39, 39);\">13</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">)</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\"> </span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">{</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">\r\n        alert</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">(</span><span class=\"str\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(125, 39, 39);\">\'You pressed enter!\'</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">);</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">\r\n    </span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">}</span><span class=\"pln\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">\r\n</span><span class=\"pun\" style=\"margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; vertical-align: baseline; box-sizing: inherit; color: rgb(48, 51, 54);\">});</span></code></pre>','2020-02-09 01:17:56',2),(7,'backup database mysql','<h3 style=\"line-height: 1;\"><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>public function db()<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; {<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;$this-&gt;load-&gt;dbutil();<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp;<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;$prefs = array(<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp; &nbsp;\'format\' =&gt; \'zip\',<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp; &nbsp;\'filename\' =&gt; \'tutorial.sql\'<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;);<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp;<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;$backup =&amp; $this-&gt;dbutil-&gt;backup($prefs);<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp;<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;$db_name = \'backup-on-\' . date(\"Y-m-d-H-i-s\") . \'.zip\'; // file name<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;$save&nbsp; = \'backup/db/\' . $db_name; // dir name backup output destination<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp;<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;$this-&gt;load-&gt;helper(\'file\');<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;write_file($save, $backup);<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp;<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;$this-&gt;load-&gt;helper(\'download\');<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; &nbsp; &nbsp;force_download($db_name, $backup);<br></b></span><span style=\"font-family: &quot;Times New Roman&quot;;\"><b>&nbsp; }</b></span></h3>','2020-02-09 18:31:30',5),(8,'form submit/postform','<p style=\"line-height: 1;\">$(\"#postForm\").submit(function(event){</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; event.preventDefault(); //prevent default action&nbsp;</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; var post_url = \'&lt;?php echo $action ?&gt;\'; //get form action url</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; var request_method = $(this).attr(\"method\"); //get form GET/POST method</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; var form_data = new FormData(this); //Encode form elements for submission</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; if ($(\'#desc\').summernote(\'codeview.isActivated\')) {</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $(\'#desc\').summernote(\'codeview.deactivate\');&nbsp;</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; }</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; $.ajax({</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; url : post_url,</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; type: \'POST\',</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; data : form_data,</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; processData:false,</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;contentType:false,</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;cache:false,</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;async:false,</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; }).done(function(response){</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(\'Data Tersimpan\');<span style=\"font-size: 1rem;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; window.location.replace(\'&lt;?php echo site_url(\'kategori\') ?&gt;\')</p><p style=\"line-height: 1;\">&nbsp; &nbsp; &nbsp; &nbsp; });<span style=\"font-size: 1rem;\">&nbsp; &nbsp; &nbsp;</span></p><p style=\"line-height: 1;\">&nbsp; &nbsp; });</p>','2020-02-09 18:31:11',2),(9,'EDC (Electronic Data Capture)','<p>asssas</p>','2020-07-03 21:18:01',1),(10,'EDC (Electronic Data Capture)','<p>qwe</p>','2020-07-03 21:18:19',1),(11,'JETs (Jatim Elektronik Transfer Sistem)','','2020-07-03 21:18:30',1),(12,'JETs (Jatim Elektronik Transfer Sistem)','','2020-07-03 21:18:38',1),(16,'','','2020-07-03 21:21:28',1);
 
-/*Table structure for table `file` */
+/*Table structure for table `files` */
 
-DROP TABLE IF EXISTS `file`;
+DROP TABLE IF EXISTS `files`;
 
-CREATE TABLE `file` (
+CREATE TABLE `files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_sspd` int(11) DEFAULT NULL,
+  `nopen` varchar(30) DEFAULT NULL,
   `id_lampiran` int(11) DEFAULT NULL,
   `lokasi` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
-/*Data for the table `file` */
+/*Data for the table `files` */
+
+insert  into `files`(`id`,`nopen`,`id_lampiran`,`lokasi`) values (1,'PD20201115124545',1,NULL),(2,'PD20201115124545',1,NULL),(3,'PD20201115124545',1,NULL),(4,'PD20201115124545',1,NULL),(5,'PD20201115124545',1,NULL),(6,'PD20201115124545',1,NULL);
 
 /*Table structure for table `jenis_perolehan` */
 
@@ -74,12 +92,15 @@ CREATE TABLE `jenis_perolehan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `kode` varchar(2) DEFAULT NULL,
   `npoptkp` varchar(10) DEFAULT NULL,
-  `lampiran` varchar(100) DEFAULT NULL,
+  `nama` varchar(100) DEFAULT NULL,
   `active` int(11) DEFAULT NULL COMMENT '0 aktif 1 tidak',
+  `lampiran` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 /*Data for the table `jenis_perolehan` */
+
+insert  into `jenis_perolehan`(`id`,`kode`,`npoptkp`,`nama`,`active`,`lampiran`) values (1,'01','60000000','Jual - beli',1,'1,2'),(2,'02','60000000','Tukar Menukar',1,'1,3'),(3,'03','60000000','Hibah',1,'1,2'),(4,'04','300000000','Hibah Wasiat',1,'1,2'),(9,'08','60000000','Lelang',1,'1,2');
 
 /*Table structure for table `kabupaten` */
 
@@ -157,10 +178,13 @@ DROP TABLE IF EXISTS `lampiran`;
 CREATE TABLE `lampiran` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(50) DEFAULT NULL,
+  `active` int(11) DEFAULT '1' COMMENT '1 yes 0 no',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `lampiran` */
+
+insert  into `lampiran`(`id`,`nama`,`active`) values (1,'KTP',1),(2,'Bukti Kepemilikan',1),(3,'KK',1);
 
 /*Table structure for table `menu` */
 
@@ -173,17 +197,42 @@ CREATE TABLE `menu` (
   `parent` int(11) DEFAULT '0',
   `active` int(11) DEFAULT '1' COMMENT '0 no 1 yes',
   PRIMARY KEY (`id_menu`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 /*Data for the table `menu` */
 
-insert  into `menu`(`id_menu`,`menu`,`controller`,`parent`,`active`) values (1,'Barang','barang',0,1),(2,'Data','data',0,0),(3,'Kategori','kategori',0,0),(4,'Suplier','suplier',0,0),(5,'Backup','backup',0,0),(6,'SSPD','sspd',0,0),(7,'User','user',8,0),(8,'Master','#',0,0),(9,'NIK','nik',8,0),(10,'Tanda Tangan','ttd',8,0),(11,'Laporan','laporan',0,0);
+insert  into `menu`(`id_menu`,`menu`,`controller`,`parent`,`active`) values (1,'Barang','barang',0,0),(2,'Data','data',0,0),(3,'Kategori','kategori',0,0),(4,'Suplier','suplier',0,0),(5,'Backup','backup',0,0),(6,'SSPD','sspd',0,1),(7,'User','user',8,0),(8,'Master','#',0,1),(9,'NIK','nik',8,1),(10,'Tanda Tangan','ttd',8,0),(11,'Laporan','laporan',0,0),(12,'Alur','alur',8,1),(13,'Status Berkas','status',8,1);
 
 /*Table structure for table `nik` */
 
 DROP TABLE IF EXISTS `nik`;
 
 CREATE TABLE `nik` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nik` varchar(25) NOT NULL,
+  `nama` varchar(100) DEFAULT NULL,
+  `alamat` varchar(100) DEFAULT NULL,
+  `kd_propinsi` varchar(20) DEFAULT NULL,
+  `kd_kabupaten` varchar(20) DEFAULT NULL,
+  `kd_kecamatan` varchar(20) DEFAULT NULL,
+  `kd_kelurahan` varchar(20) DEFAULT NULL,
+  `rtrw` varchar(10) DEFAULT NULL,
+  `nm_propinsi` varchar(30) DEFAULT NULL,
+  `nm_kabupaten` varchar(30) DEFAULT NULL,
+  `nm_kecamatan` varchar(30) DEFAULT NULL,
+  `nm_kelurahan` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+/*Data for the table `nik` */
+
+insert  into `nik`(`id`,`nik`,`nama`,`alamat`,`kd_propinsi`,`kd_kabupaten`,`kd_kecamatan`,`kd_kelurahan`,`rtrw`,`nm_propinsi`,`nm_kabupaten`,`nm_kecamatan`,`nm_kelurahan`) values (1,'12122','MASRAGA','MALANG','11 ','1102','1102021','1102021003','0/1','ACEH','KABUPATEN ACEH SINGKIL','SINGKIL UTARA','GOSONG TELAGA TIMUR'),(2,'123','Farid','Malang','35','3520','3520041','3520041004','005/005','JAWA TIMUR','KABUPATEN MAGETAN','NGUNTORONADI','PETUNGREJO'),(3,'1233','CALYA','MALANG','11 ','1105','1105081','1105081002','1/1','ACEH','KABUPATEN ACEH TIMUR','SIMPANG JERNIH','TAMPUR BOOR'),(4,'321','SISWANTO','JALAN SIKU','35 ','3507','3507160','3507160003','05/55','JAWA TIMUR','KABUPATEN MALANG','KEPANJEN','KEMIRI'),(5,'324344','423EQWE','DAS','19 ','1901','1901070','1901070002','1/1','KEPULAUAN BANGKA BELITUNG','KABUPATEN BANGKA','MENDO BARAT','PENAGAN'),(6,'4445','QWE5','ASD','11 ','1102 ','1102022 ','1102022003 ','1/1','ACEH','KABUPATEN ACEH SINGKIL','KUALA BARU','KUALA BARU LAUT');
+
+/*Table structure for table `niks` */
+
+DROP TABLE IF EXISTS `niks`;
+
+CREATE TABLE `niks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nik` varchar(25) DEFAULT NULL,
   `nama` varchar(100) DEFAULT NULL,
@@ -198,11 +247,9 @@ CREATE TABLE `nik` (
   `nm_kecamatan` varchar(30) DEFAULT NULL,
   `nm_kelurahan` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `nik` */
-
-insert  into `nik`(`id`,`nik`,`nama`,`alamat`,`kd_propinsi`,`kd_kabupaten`,`kd_kecamatan`,`kd_kelurahan`,`rtrw`,`nm_propinsi`,`nm_kabupaten`,`nm_kecamatan`,`nm_kelurahan`) values (1,'123','Farid','Malang','35 ','3520 ','3520041','3520041004','005/005','JAWA TIMUR','KABUPATEN MAGETAN','NGUNTORONADI','PETUNGREJO'),(2,'321','SISWANTO','JALAN SIKU','35 ','3507','3507160','3507160003','05/55','JAWA TIMUR','KABUPATEN MALANG','KEPANJEN','KEMIRI'),(3,'12122','MASRAGA','MALANG','11 ','1102','1102021','1102021003','0/1','ACEH','KABUPATEN ACEH SINGKIL','SINGKIL UTARA','GOSONG TELAGA TIMUR'),(4,'1233','CALYA','MALANG','11 ','1105','1105081','1105081002','1/1','ACEH','KABUPATEN ACEH TIMUR','SIMPANG JERNIH','TAMPUR BOOR'),(5,'1233','CALYA','MALANG','11 ','1105','1105081','1105081002','1/1','ACEH','KABUPATEN ACEH TIMUR','SIMPANG JERNIH','TAMPUR BOOR'),(6,'1233','CALYA','MALANG','11 ','1105','1105081','1105081002','1/1','ACEH','KABUPATEN ACEH TIMUR','SIMPANG JERNIH','TAMPUR BOOR'),(7,'324344','423EQWE','DAS','19 ','1901','1901070','1901070002','1/1','KEPULAUAN BANGKA BELITUNG','KABUPATEN BANGKA','MENDO BARAT','PENAGAN');
+/*Data for the table `niks` */
 
 /*Table structure for table `pemda` */
 
@@ -225,10 +272,14 @@ DROP TABLE IF EXISTS `ppat`;
 CREATE TABLE `ppat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(50) DEFAULT NULL,
+  `alamat` varchar(100) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ppat` */
+
+insert  into `ppat`(`id`,`nama`,`alamat`,`id_user`) values (1,'Abdul Aziz','Lebak',NULL);
 
 /*Table structure for table `propinsi` */
 
@@ -270,6 +321,7 @@ DROP TABLE IF EXISTS `sspd`;
 
 CREATE TABLE `sspd` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `no_pendaftaran` varchar(20) DEFAULT NULL,
   `id_ppat` varchar(20) DEFAULT NULL,
   `nik` varchar(20) DEFAULT NULL,
   `nop` varchar(25) DEFAULT NULL,
@@ -284,10 +336,11 @@ CREATE TABLE `sspd` (
   `njop_bangunan` varchar(10) DEFAULT NULL,
   `njop_total` varchar(10) DEFAULT NULL,
   `harga_transaksi` varchar(10) DEFAULT NULL,
-  `jenis_perolehan` int(11) DEFAULT NULL,
+  `jenis_perolehan` varchar(2) DEFAULT NULL,
   `nomor_sertifikat` varchar(50) DEFAULT NULL,
   `npop` varchar(20) DEFAULT NULL,
   `npoptkp` varchar(20) DEFAULT NULL,
+  `npopkp` varchar(20) DEFAULT NULL,
   `bphtb` varchar(20) DEFAULT NULL,
   `total_bayar` varchar(20) DEFAULT NULL,
   `status_bayar` int(11) DEFAULT '0' COMMENT '0 belum, 1 lunas',
@@ -295,17 +348,33 @@ CREATE TABLE `sspd` (
   `validasi_bank` varchar(100) DEFAULT NULL,
   `tgl_validasi_berkas` datetime DEFAULT NULL,
   `status` varchar(10) DEFAULT NULL,
-  `rtrw` varchar(10) DEFAULT NULL,
-  `no_pendaftaran` varchar(20) DEFAULT NULL,
+  `rtrw_op` varchar(10) DEFAULT NULL,
   `no_sspd` varchar(30) DEFAULT NULL,
   `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_billing` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `sspd` */
 
-insert  into `sspd`(`id`,`id_ppat`,`nik`,`nop`,`alamat_op`,`propinsi_op`,`kabupaten_op`,`kecamatan_op`,`kelurahan_op`,`luas_tanah`,`luas_bangunan`,`njop_tanah`,`njop_bangunan`,`njop_total`,`harga_transaksi`,`jenis_perolehan`,`nomor_sertifikat`,`npop`,`npoptkp`,`bphtb`,`total_bayar`,`status_bayar`,`tgl_bayar`,`validasi_bank`,`tgl_validasi_berkas`,`status`,`rtrw`,`no_pendaftaran`,`no_sspd`,`created`,`update`) values (1,'12345678987654321','12122','12121','21212','12121','rwer','dsasd','asda','asd','asd','asd','asd','jgh','hjk',1,'kjh','khk','hj','jkhkj','kjh',1,'0000-00-00 00:00:00','khkjh','0000-00-00 00:00:00','jh','kjh',NULL,NULL,'2020-11-10 23:57:00','2020-11-10 23:57:00'),(2,'1233','1233',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-11-11 00:09:51','2020-11-11 00:09:51'),(3,'1233','1233',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-11-11 00:10:22','2020-11-11 00:10:22'),(4,'1233','1233',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-11-11 00:10:31','2020-11-11 00:10:31'),(5,'324344','324344',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-11-11 00:10:55','2020-11-11 00:10:55');
+insert  into `sspd`(`id`,`no_pendaftaran`,`id_ppat`,`nik`,`nop`,`alamat_op`,`propinsi_op`,`kabupaten_op`,`kecamatan_op`,`kelurahan_op`,`luas_tanah`,`luas_bangunan`,`njop_tanah`,`njop_bangunan`,`njop_total`,`harga_transaksi`,`jenis_perolehan`,`nomor_sertifikat`,`npop`,`npoptkp`,`npopkp`,`bphtb`,`total_bayar`,`status_bayar`,`tgl_bayar`,`validasi_bank`,`tgl_validasi_berkas`,`status`,`rtrw_op`,`no_sspd`,`created`,`update`,`id_billing`) values (1,NULL,'12345678987654321','12122','12121','21212','12121','rwer','dsasd','asda','asd','asd','asd','asd','jgh','hjk','01','kjh','khk','hj',NULL,'jkhkj','kjh',1,'0000-00-00 00:00:00','khkjh','0000-00-00 00:00:00','jh','kjh',NULL,'2020-11-10 23:57:00','2020-11-10 23:57:00',NULL),(6,'PD20201115123345','1','123','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','100.000.00','01','smh0921','100.000.000','60.000.000','40.000.000','2.000.000',NULL,0,NULL,NULL,NULL,'PM001','001/006',NULL,'2020-11-15 18:33:45','2020-11-15 18:33:45',NULL),(7,'PD20201115124316','1','123','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','1.000.000','01','shm 012','9.664.000','60.000.000','0','0',NULL,0,NULL,NULL,NULL,'PM001','001/006',NULL,'2020-11-15 18:43:16','2020-11-15 18:43:16',NULL),(8,'PD20201115124501','1','123','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','111.111.11','01','sasa','111.111.111.111','60.000.000','111.051.111.111','5.552.555.555.55',NULL,0,NULL,NULL,NULL,'PM001','001/006',NULL,'2020-11-15 18:45:01','2020-11-15 18:45:01',NULL),(9,'PD20201115124545','1','123','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','11.111','03','111111','9.664.000','60.000.000','0','0',NULL,0,NULL,NULL,NULL,'PM001','001/006',NULL,'2020-11-15 18:45:45','2020-11-15 18:45:45',NULL),(10,'PD20201115124628','1','123','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','10.000.000','01','1212','10.000.000.000','60.000.000','9.940.000.000','497.000.000',NULL,0,NULL,NULL,NULL,'PM001','001/006',NULL,'2020-11-15 18:46:28','2020-11-15 18:46:28',NULL),(11,'PD20201115124651','1','123','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','1.221','03','kjh','9.664.000','60.000.000','0','0',NULL,0,NULL,NULL,NULL,'PM001','001/006',NULL,'2020-11-15 18:46:51','2020-11-15 18:46:51',NULL);
+
+/*Table structure for table `status` */
+
+DROP TABLE IF EXISTS `status`;
+
+CREATE TABLE `status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` varchar(20) DEFAULT NULL,
+  `text` varchar(50) DEFAULT NULL,
+  `class` varchar(20) DEFAULT NULL COMMENT 'warna status',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+/*Data for the table `status` */
+
+insert  into `status`(`id`,`status`,`text`,`class`) values (1,'PP001','Dikembalikan OLeh Pelayanan','warning'),(2,'PM001','Proses Verifikasi Pelayanan','primary'),(3,'PM002','Proses Verifikasi Kasubid','primary'),(4,'PM003','Proses Verifikasi Kabid','primary'),(5,'MP001','Menunggu Pembayaran','info'),(6,'LN001','Berkas Selesai','success'),(7,'PP002','Dikembalikan OLeh Kasubid','warning'),(8,'PP003','Dikembalikan OLeh Kabid','warning');
 
 /*Table structure for table `suplier` */
 
@@ -349,11 +418,11 @@ CREATE TABLE `user` (
   `jenis` varchar(100) DEFAULT NULL,
   `blokir` int(11) DEFAULT '0' COMMENT '0 no 1 yes',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`username`,`password`,`jenis`,`blokir`) values (1,'admin','123123','admin',1);
+insert  into `user`(`id`,`username`,`password`,`jenis`,`blokir`) values (1,'admin','123123','admin',0),(2,'ppat','123123','PP',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
