@@ -15,7 +15,16 @@ class Niks extends CI_Controller
 
     public function index()
     {
-        $this->skin->dashboard('niks/niks_list',null);
+        $propinsi = $this->Niks_model->get_propinsi();
+        
+        $data = array(
+            'button' => 'Simpan',
+            'action' => site_url('niks/create_action'),
+        'propinsi' => $propinsi,
+           );
+
+        $dataa['modal']=$this->load->view('niks/niks_form',$data, TRUE);
+        $this->skin->dashboard('niks/niks_list',$dataa);
     } 
     
     public function json() {

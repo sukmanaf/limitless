@@ -14,13 +14,13 @@
     <div class="panel-body">
         
 
-        <form action="#" id="postForm" class="form-basic" enctype="multipart/form-data" method="post">
+        <form action="#" id="postForms" class="form-basic" enctype="multipart/form-data" method="post">
             <fieldset class="content-group">
 
                 <div class="form-group ">
                     <label class="control-label lbl-basic col-lg-2" >NIK</label>
                     <div class="col-lg-10">
-                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="nik" name="nik" value="<?php echo $nik; ?>">
+                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="nik" name="nik" value="<?php echo @$nik; ?>">
                     </div>
                 </div>
                 
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">NAMA</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $nama; ?>">
+                        <input type="text" class="form-control" id="nama" name="nama" value="<?php echo @$nama; ?>">
                     </div>
                 </div>
                 
@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">ALAMAT</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="alamat" name="alamat" value="<?php echo $alamat; ?>">
+                        <input type="text" class="form-control" id="alamat" name="alamat" value="<?php echo @$alamat; ?>">
                     </div>
                 </div>
                 
@@ -60,7 +60,7 @@
                                     <?php endforeach ?>
                                     
                             </select>
-                        <input type="hidden" class="form-control" id="nm_propinsi" name="nm_propinsi" value="<?php echo $nm_propinsi; ?>">
+                        <input type="hidden" class="form-control" id="nm_propinsi" name="nm_propinsi" value="<?php echo @$nm_propinsi; ?>">
 
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                                     <?php endforeach ?>
                                     <?php endif ?>
                             </select>
-                        <input type="hidden" class="form-control" id="nm_kabupaten" name="nm_kabupaten" value="<?php echo $nm_kabupaten; ?>">
+                        <input type="hidden" class="form-control" id="nm_kabupaten" name="nm_kabupaten" value="<?php echo @$nm_kabupaten; ?>">
 
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                     <?php endif ?>
                                     
                             </select>
-                        <input type="hidden" class="form-control" id="nm_kecamatan" name="nm_kecamatan" value="<?php echo $nm_kecamatan; ?>">
+                        <input type="hidden" class="form-control" id="nm_kecamatan" name="nm_kecamatan" value="<?php echo @$nm_kecamatan; ?>">
 
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                                     <?php endif ?>
                                     
                             </select>
-                        <input type="hidden" class="form-control" id="nm_kelurahan" name="nm_kelurahan" value="<?php echo $nm_kelurahan; ?>">
+                        <input type="hidden" class="form-control" id="nm_kelurahan" name="nm_kelurahan" value="<?php echo @$nm_kelurahan; ?>">
 
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">RT/RW</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="rtrw" name="rtrw" value="<?php echo $rtrw; ?>">
+                        <input type="text" class="form-control" id="rtrw" name="rtrw" value="<?php echo @$rtrw; ?>">
                     </div>
                 </div>
                 
@@ -148,11 +148,11 @@
 
                 
                 <div align="center">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $button ?></button>
-                    <a href="<?php echo site_url('niks') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo @$button ?></button>
+                    <a href="<?php echo @site_url('niks') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
 
                 </div>
-                <input type="hidden" name="id" value="<?php echo $nik; ?>" /> 
+                <input type="hidden" name="id" value="<?php echo @$nik; ?>" /> 
             </fieldset>
             </form>
         </div>
@@ -166,7 +166,7 @@
 
    
     $(".btn").removeAttr('disabled');
-$("#postForm").submit(function(event){
+    $("#postForms").submit(function(event){
     $(".btn").css('display','none');
         event.preventDefault(); //prevent default action 
         var post_url = '<?php echo $action ?>'; //get form action url

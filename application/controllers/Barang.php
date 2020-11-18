@@ -15,7 +15,19 @@ class Barang extends CI_Controller
 
     public function index()
     {
-        $this->skin->dashboard('barang/barang_list',null);
+         $dataa = array(
+            'button' => 'Simpan',
+            'action' => site_url('barang/create_action'),
+            'id' => set_value('id'),
+            'nama' => set_value('nama'),
+            'harga' => set_value('harga'),
+            'updated_at' => set_value('updated_at'),
+            'keterangan' => set_value('keterangan'),
+            'created_at' => set_value('created_at'),
+            'datetim' => set_value('datetim'),
+        );
+        $data['modal'] = $this->load->view('barang/barang_form', $dataa, TRUE);
+        $this->skin->dashboard('barang/barang_list',$data);
     } 
     
     public function json() {
@@ -34,7 +46,19 @@ class Barang extends CI_Controller
 				'keterangan'=> @$_POST['keterangan_search_name']
 
                 ];
-            $dataq = $this->Barang_model->get_all($cari);
+        $dataq = $this->Barang_model->get_all($cari);
+        $dataa = array(
+            'button' => 'Simpan',
+            'action' => site_url('barang/create_action'),
+            'id' => set_value('id'),
+            'nama' => set_value('nama'),
+            'harga' => set_value('harga'),
+            'updated_at' => set_value('updated_at'),
+            'keterangan' => set_value('keterangan'),
+            'created_at' => set_value('created_at'),
+            'datetim' => set_value('datetim'),
+        );
+        $data['modal'] = $this->load->view('barang/barang_form', $dataa, TRUE);
         $judul=[];
         $data['isi']=[];
         foreach ($dataq as $key => $v) {
@@ -47,7 +71,7 @@ class Barang extends CI_Controller
 
                   <a href="#" class="btn-xs btn-danger" onclick="hapus('.$v->id.',event)"> Hapus</a>
                  '];
-            // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
+            // <button  class="btn-sm btn-danger" data-toggle="modal" data-target="#modal" ><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
         }
         $data['judul']=$judul;

@@ -1,4 +1,27 @@
 
+    <!--Modal: Name-->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+   
+            <?php echo $modal; ?>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+          </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
 <div class="panel panel-flat">
 <div class="panel-heading">
 <h4><?php echo ucfirst($this->uri->segment(1)) ?></h4>
@@ -13,7 +36,9 @@
 
 
 <div class="panel-heading">
-<a href="<?php echo site_url().$this->uri->segment(1) ?>/create" class="btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
+<!-- <a href="<?php echo site_url().$this->uri->segment(1) ?>/create" class="btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a> -->
+<a href="#" data-toggle="modal" data-target="#modal"  class="btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
+
 </div>
 <div class="panel-body">
         <form action="#" id="postForm" enctype="multipart/form-data" method="post">
