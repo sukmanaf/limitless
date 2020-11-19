@@ -7,7 +7,7 @@ class Niks_model extends CI_Model
 {
 
     public $table = 'nik';
-    public $id = 'nik';
+    public $id = 'id';
     public $order = 'DESC';
 
     function __construct()
@@ -40,6 +40,13 @@ class Niks_model extends CI_Model
     }
 
     // get data by id
+    function cek_nik_sspd($id)
+    {
+        $this->db->where('id_nik', $id);
+        $this->db->select('count(id) as jml');
+        return $this->db->get('sspd')->row();
+    }
+      // get data by id
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);

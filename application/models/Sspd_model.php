@@ -34,6 +34,7 @@ class Sspd_model extends CI_Model
     // get all
     function get_all($param='')
     {
+     
         if(!empty($param)){
             foreach ($param as $key => $value) {
                 if($key == 'nik'){
@@ -42,7 +43,7 @@ class Sspd_model extends CI_Model
                 }if($key == 'nama'){
 
                 $this->db->where('nik.nama like "%'.$value.'%"');
-                }else{
+                }if($key == 'nop'){
 
                 $this->db->where($key.' like "%'.$value.'%"');
                 }
@@ -253,7 +254,7 @@ class Sspd_model extends CI_Model
         $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
         $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
         $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
-        $this->db->select('sspd.*,ppat.*,nik.*,jenis_perolehan.nama as jenis_perolehan_text');
+        $this->db->select('sspd.*,ppat.*,nik.*,jenis_perolehan.nama as jenis_perolehan_text,sspd.id as id_sspd');
         return $this->db->get($this->table)->row();
     }   // get data by id
     function get_files($nopen)

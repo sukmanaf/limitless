@@ -419,11 +419,11 @@
 							<ul class="navigation navigation-main navigation-accordion">
 								<?php foreach ($parent as $kp => $vp): ?>
 
-									<li><a href="<?= $vp->controller ?>"><i class="icon-home4"></i> <span><?= $vp->menu ?></span></a>
+									<li><a href="<?=base_url(). $vp->controller ?>"><i class="icon-home4"></i> <span><?= $vp->menu ?></span></a>
 										<?php foreach ($child as $kc => $vc): ?> 
 											<?php if ($vc->parent == $vp->id_menu): ?>
 												<ul>
-													<li><a href="<?= $vc->controller ?>"><?=$vc->menu ?></a></li>
+													<li><a href="<?=base_url(). $vc->controller ?>"><?=$vc->menu ?></a></li>
 												</ul>
 											<?php endif ?>
 										<?php endforeach ?>								

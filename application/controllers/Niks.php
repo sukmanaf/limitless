@@ -52,7 +52,7 @@ class Niks extends CI_Controller
                  '<a href="'. site_url("niks/read/").$v->nik.'" class="btn-xs btn-primary"> Lihat</a>
                  <a href="'. site_url("niks/update/").$v->nik.'" class="btn-xs btn-info"> Ubah</a>
 
-                  <a href="#" class="btn-xs btn-danger" onclick="hapus('.$v->nik.',event)"> Hapus</a>
+                  <a href="#" class="btn-xs btn-danger" onclick="hapus('.$v->id.',event)"> Hapus</a>
                  '];
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
@@ -274,6 +274,12 @@ class Niks extends CI_Controller
     
     public function delete($id) 
     {
+        $cek = $this->Niks_model->cek_nik_sspd($id);
+        // echo $this->db->last_query();
+        // echo "<pre>";
+        // print_r ($cek);
+        // echo "</pre>";exit();
+        if($cek->jml > 0){echo 2;exit();};
         $row = $this->Niks_model->get_by_id($id);
 
         if ($row) {

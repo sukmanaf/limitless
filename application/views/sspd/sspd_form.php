@@ -17,11 +17,14 @@
                 Data Wajib Pajak
                 <small class="display-block"></small>
             </h6>
-
             <div class="row">
 
 
-
+                <!-- hidden input -->
+                <input type="hidden" required class="form-control "  id="id_tipe" name="tipe" value="<?php echo @$tipe; ?>">
+                <input type="hidden" required class="form-control "  id="nopen" name="nopen" value="<?php echo @$sspd->no_pendaftaran; ?>">
+                <input type="hidden" required class="form-control "  id="id_sspd" name="id_sspd" value="<?php echo @$sspd->id_sspd; ?>">
+                <!-- hidden input -->
 
                <div class="col-md-12">
                 <div class="form-group">
@@ -29,6 +32,7 @@
                     <div class="col-lg-4">
                         <input type="text" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control "  id="nik" name="nik" value="<?php echo @$sspd->nik; ?>123">
                         <input type="hidden" required class="form-control "  id="id_nik" name="id_nik" value="<?php echo @$sspd->id; ?>">
+                        
                     </div>
                     <div class="col-lg-6">
                         <button type="button" required class="btn btn-primary" onclick="get_nik($('#nik').val(),event)" >Cari NIK</button>
@@ -307,7 +311,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">NJOP</label>
                 <div class="col-lg-4">
-                    <input type="text"  required readonly  class="form-control" id="njop_total" name="njop_total" value="<?php echo @$sspd->njop_total; ?>">
+                    <input type="text"  required readonly  class="form-control" id="njop_total" name="njop_total" value="<?php echo format_number(@$sspd->njop_total); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -318,7 +322,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Harga Transaksi</label>
                 <div class="col-lg-4">
-                    <input type="text"  required onkeyup="hitung()" class="form-control mask" id="harga_transaksi" name="harga_transaksi" value="<?php echo @$sspd->harga_transaksi; ?>">
+                    <input type="text"  required onkeyup="hitung()" class="form-control mask" id="harga_transaksi" name="harga_transaksi" value="<?php echo format_number(@$sspd->harga_transaksi); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -362,7 +366,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">NPOP</label>
                 <div class="col-lg-4">
-                    <input type="text"  required readonly class="form-control" id="npop" name="npop" value="<?php echo @$sspd->npop; ?>">
+                    <input type="text"  required readonly class="form-control" id="npop" name="npop" value="<?php echo format_number(@$sspd->npop); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -375,7 +379,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">npoptkp</label>
                 <div class="col-lg-4">
-                    <input type="text"  required readonly class="form-control" id="npoptkp" name="npoptkp" value="<?php echo @$sspd->npoptkp; ?>">
+                    <input type="text"  required readonly class="form-control" id="npoptkp" name="npoptkp" value="<?php echo format_number(@$sspd->npoptkp); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -387,7 +391,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">npopkp</label>
                 <div class="col-lg-4">
-                    <input type="text"  required  class="form-control" id="npopkp" name="npopkp" value="<?php echo @$sspd->npopkp; ?>">
+                    <input type="text"  required  class="form-control" id="npopkp" name="npopkp" value="<?php echo format_number(@$sspd->npopkp); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -398,7 +402,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">bphtb</label>
                 <div class="col-lg-4">
-                    <input type="text"  required  class="form-control" id="bphtb" name="bphtb" value="<?php echo @$sspd->bphtb; ?>">
+                    <input type="text"  required  class="form-control" id="bphtb" name="bphtb" value="<?php echo format_number(@$sspd->bphtb); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -535,15 +539,13 @@
     var object = {};
     var save =0;
     $(document).ready(function() {
-           var tipe = "<?= $tipe ?>";
-    if ( tipe == 'update') {
+    if ( $('#id_tipe').val() == 'update') {
         // get_propinsi_selected(dataq.kd_propinsi);
-        get_kabupaten_selected('<?= $sspd->kd_kabupaten ?>');
-        get_kecamatan_selected('<?= $sspd->kd_kecamatan ?>');
-        get_kelurahan_selected('<?= $sspd->kd_kelurahan ?>');
+        get_kabupaten_selected('<?= @$sspd->kd_kabupaten ?>');
+        get_kecamatan_selected('<?= @$sspd->kd_kecamatan ?>');
+        get_kelurahan_selected('<?= @$sspd->kd_kelurahan ?>');
+        get_history_nop('<?= @$sspd->nop ?>')
     }
-
-
 
     $("#postForm").submit(function(event){
         if (save == 0) {
@@ -553,28 +555,13 @@
             
                 // $(".btn").css('display','none');
             event.preventDefault(); //prevent default action 
-            var post_url = '<?= site_url('sspd/create_action')?>'; //get form action url
+            var post_url = '<?= $action?>'; //get form action url
             var request_method = $(this).attr("method"); //get form GET/POST method
             var form_data = new FormData(this); //Encode form elements for submission
             form_data.forEach(function(value, key){
                 object[key] = value;
             });
             var json = JSON.stringify(object);
-            // items
-            // console.log(form_data);
-            // console.log(object);
-            // json = object
-            // var testObject = json;
-            // localStorage.setItem('testObject', JSON.stringify(testObject));
-            // var retrievedObject = JSON.parse(localStorage.getItem('testObject'));
-            // console.log('retrievedObject: ', retrievedObject);
-
-            // var r = confirm("Apakah Data Yang Dimasukan Sudah Benar?");
-            // if (r == true) {
-            // } else {
-            //     return false;
-            // }
-            // return false;
             
             $.ajax({
                 url : post_url,
@@ -595,7 +582,7 @@
                 }else if(response.sts_sspd== 1){
                     $.growl.notice({ message: "Simpan Sukses!" });
                     setTimeout(function () {
-                            window.location.replace('<?php echo site_url('sspd/lampiran/') ?>'+response.nopen)
+                            window.location.replace('<?php echo site_url('sspd/upload_lampiran/') ?>'+response.nopen)
                             }, 2000);
                 }else{
                     $.growl.warning({ message: "Simpan gagal!" });

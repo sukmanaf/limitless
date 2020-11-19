@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-lg" role="document">
 
         <!--Content-->
-        <div class="modal-content">
+        <div class="modal-content" id="div_modal">
 
           <!--Body-->
    

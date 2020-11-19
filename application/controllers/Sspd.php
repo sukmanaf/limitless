@@ -413,38 +413,75 @@ class Sspd extends CI_Controller
     public function update_action() 
     {
         
-            $data = array(
-		'id_ppat' => $this->input->post('id_ppat'),
-		'nik' => $this->input->post('nik'),
-		'nop' => $this->input->post('nop'),
-		'alamat_op' => $this->input->post('alamat_op'),
-		'propinsi_op' => $this->input->post('propinsi_op'),
-		'kabupaten_op' => $this->input->post('kabupaten_op'),
-		'kecamatan_op' => $this->input->post('kecamatan_op'),
-		'kelurahan_op' => $this->input->post('kelurahan_op'),
-		'luas_tanah' => str_replace('.','',$data['luas_tanah']),
-        'luas_bangunan' => str_replace('.', '',$data['luas_bangunan']),
-        'njop_tanah' => str_replace('.', '',$data['njop_tanah']),
-        'njop_bangunan' => str_replace('.', '',$data['njop_bangunan']),
-        'njop_total' => str_replace('.', '',$data['njop_total']),
-        'harga_transaksi' => str_replace('.', '',$data['harga_transaksi']),
-        'jenis_perolehan' => $data['jenis_perolehan'],
-        'nomor_sertifikat' => $data['nomor_sertifikat'],
-        'npop' => str_replace('.', '',$data['npop']),
-        'npoptkp' => str_replace('.', '',$data['npoptkp']),
-        'npopkp' => str_replace('.', '',$data['npopkp']),
-        'bphtb' => str_replace('.', '',$data['bphtb']),
-		'total_bayar' => $this->input->post('total_bayar'),
-		'status_bayar' => $this->input->post('status_bayar'),
-		'tgl_bayar' => $this->input->post('tgl_bayar'),
-		'validasi_bank' => $this->input->post('validasi_bank'),
-		'tgl_validasi_berkas' => $this->input->post('tgl_validasi_berkas'),
-		'status' => $this->input->post('status'),
-		'rtrw' => $this->input->post('rtrw'),
-	    );
+        $data = json_decode(file_get_contents('php://input'), true);
+        $nopen = $data['nopen'];
+        $data_nik = array(
+          'nik' => $data['nik'],
+          'nama' => $data['nama'],
+          'alamat' => $data['alamat'],
+          'kd_propinsi' => $data['kd_propinsi'],
+          'kd_kabupaten' => $data['kd_kabupaten'],
+          'kd_kecamatan' => $data['kd_kecamatan'],
+          'kd_kelurahan' => $data['kd_kelurahan'],
+          'rtrw' => $data['rtrw'],
+          'nm_propinsi' => $data['nm_propinsi'],
+          'nm_kabupaten' => $data['nm_kabupaten'],
+          'nm_kecamatan' => $data['nm_kecamatan'],
+          'nm_kelurahan' => $data['nm_kelurahan'],
+        );
 
-            $acc = $this->Sspd_model->update($this->input->post('id', TRUE), $data);
-            echo $acc;
+        $cek_nik = $this->Sspd_model->cek_nik($data['nik'])->jml;
+        if ($cek_nik ==0) {
+            $ins_nik = $this->Sspd_model->insert_nik($data_nik);
+            $exp = explode('.', $ins);
+            $ins_nik = $exp[0];
+            $id_nik = $exp[1];
+        }else{
+            $up_nik = $this->Sspd_model->update_nik($data['id_nik'], $data_nik);
+            $id_nik = $data['id_nik'];
+        
+        }
+
+
+        if (@$ins_nik == 1 || @$up_nik == 1) {
+            
+            $data['id_ppat'] = '1';
+            $data_sspd = array(
+              'id_ppat' => $data['id_ppat'],
+              'id_nik' => $id_nik,
+              'nop' => $data['nop'],
+              'alamat_op' => $data['alamat_op'],
+              'kabupaten_op' => $data['kabupaten_op'],
+              'kecamatan_op' => $data['kecamatan_op'],
+              'kelurahan_op' => $data['kelurahan_op'],
+              'rtrw_op' => $data['rtrw_op'],
+              'luas_tanah' => str_replace('.','',$data['luas_tanah']),
+              'luas_bangunan' => str_replace('.', '',$data['luas_bangunan']),
+              'njop_tanah' => str_replace('.', '',$data['njop_tanah']),
+              'njop_bangunan' => str_replace('.', '',$data['njop_bangunan']),
+              'njop_total' => str_replace('.', '',$data['njop_total']),
+              'harga_transaksi' => str_replace('.', '',$data['harga_transaksi']),
+              'jenis_perolehan' => $data['jenis_perolehan'],
+              'nomor_sertifikat' => $data['nomor_sertifikat'],
+              'npop' => str_replace('.', '',$data['npop']),
+              'npoptkp' => str_replace('.', '',$data['npoptkp']),
+              'npopkp' => str_replace('.', '',$data['npopkp']),
+              'bphtb' => str_replace('.', '',$data['bphtb']),
+            );
+            $up_sspd = $this->Sspd_model->update($data['id_sspd'], $data_sspd);
+                if ($up_sspd==1) {
+                    $result = array('sts_sspd' =>1,'nopen' => $nopen);
+                }else{
+                    $result = array('sts_sspd' =>0);
+
+                }
+        }else{
+
+                $result = array('sts_nik' =>0);
+        }
+
+            echo json_encode($result);
+            
         
     }
     

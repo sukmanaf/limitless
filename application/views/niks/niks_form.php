@@ -3,12 +3,10 @@
     <div class="panel-heading">
         <h5 class="panel-title"><?php echo ucfirst($this->uri->segment(1)) ?></h5>
         <div class="heading-elements">
-            <ul class="icons-list">
-                <li><a data-action="collapse"></a></li>
-                <li><a data-action="reload"></a></li>
-                <li><a data-action="close"></a></li>
             </ul>
         </div>
+            <ul class="icons-list">
+        
     </div>
 
     <div class="panel-body">
@@ -17,39 +15,32 @@
         <form action="#" id="postForms" class="form-basic" enctype="multipart/form-data" method="post">
             <fieldset class="content-group">
 
-                <div class="form-group ">
-                    <label class="control-label lbl-basic col-lg-2" >NIK</label>
-                    <div class="col-lg-10">
+        <hr style="margin: 0px"> 
+                <div class="form-group"align="right">
+                    <label class="control-label lbl-basic col-lg-4" >NIK</label>
+                    <div class="col-lg-8">
                         <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="nik" name="nik" value="<?php echo @$nik; ?>">
                     </div>
                 </div>
-                
-                
-                
 
-                <div class="form-group">
-                    <label class="control-label lbl-basic col-lg-2">NAMA</label>
-                    <div class="col-lg-10">
+                <div class="form-group" align="right">
+                    <label class="control-label lbl-basic col-lg-4">NAMA</label>
+                    <div class="col-lg-8">
                         <input type="text" class="form-control" id="nama" name="nama" value="<?php echo @$nama; ?>">
                     </div>
                 </div>
-                
-                
-                
 
-                <div class="form-group">
-                    <label class="control-label lbl-basic col-lg-2">ALAMAT</label>
-                    <div class="col-lg-10">
+
+                <div class="form-group" align="right">
+                    <label class="control-label lbl-basic col-lg-4">ALAMAT</label>
+                    <div class="col-lg-8">
                         <input type="text" class="form-control" id="alamat" name="alamat" value="<?php echo @$alamat; ?>">
                     </div>
                 </div>
                 
-                
-            
-
-                <div class="form-group">
-                    <label class="control-label lbl-basic col-lg-2">PROPINSI</label>
-                    <div class="col-lg-10">
+             <div class="form-group" align="right">
+                    <label class="control-label lbl-basic col-lg-4">PROPINSI</label>
+                    <div class="col-lg-8">
                         <div class="form-group">
                             <select class="select-search" id="select_propinsi" name="kd_propinsi" onchange="get_kabupaten($(this).val())">
                                     <option value="0">Pilih Propinsi</option>
@@ -69,9 +60,9 @@
                 
                 
 
-                <div class="form-group">
-                    <label class="control-label lbl-basic col-lg-2">KOTA/KABUPATEN</label>
-                    <div class="col-lg-10">
+                <div class="form-group" align="right">
+                    <label class="control-label lbl-basic col-lg-4">KOTA/KABUPATEN</label>
+                    <div class="col-lg-8">
                         <div class="form-group" >
                             <select class="select-search" id="select_kabupaten" name="kd_kabupaten" onchange="get_kecamatan($(this).val())">
                                     <option value="0">Pilih Kota/Kabupaten</option>
@@ -90,9 +81,9 @@
                 </div>
                 
                 
-                <div class="form-group">
-                    <label class="control-label lbl-basic col-lg-2">KECAMATAN</label>
-                    <div class="col-lg-10">
+                <div class="form-group" align="right">
+                    <label class="control-label lbl-basic col-lg-4">KECAMATAN</label>
+                    <div class="col-lg-8">
                         <div class="form-group" >
                             <select class="select-search" id="select_kecamatan"name="kd_kecamatan"  onchange="get_kelurahan($(this).val())">
                                 <option value="0">Pilih Kecamatan</option>
@@ -112,9 +103,9 @@
                 </div>
                 
 
-                <div class="form-group">
-                    <label class="control-label lbl-basic col-lg-2">KELURAHAN</label>
-                    <div class="col-lg-10">
+                <div class="form-group" align="right">
+                    <label class="control-label lbl-basic col-lg-4">KELURAHAN</label>
+                    <div class="col-lg-8">
                        <div class="form-group" >
                             <select class="select-search" id="select_kelurahan" name="kd_kelurahan" onchange="get_nama_kelurahan($(this).val())">
                                 <option value="0">Pilih Kelurahan</option>
@@ -136,20 +127,17 @@
                 
                 
 
-                <div class="form-group">
-                    <label class="control-label lbl-basic col-lg-2">RT/RW</label>
-                    <div class="col-lg-10">
+                <div class="form-group" align="right">
+                    <label class="control-label lbl-basic col-lg-4">RT/RW</label>
+                    <div class="col-lg-8">
                         <input type="text" class="form-control" id="rtrw" name="rtrw" value="<?php echo @$rtrw; ?>">
                     </div>
-                </div>
-                
-                
-                
-
-                
-                <div align="center">
+                </div>              
+                <div align="center" style="padding-top: 20px">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo @$button ?></button>
-                    <a href="<?php echo @site_url('niks') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
+                    <!-- <a href="<?php echo @site_url('niks') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a> -->
+                    <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
+
 
                 </div>
                 <input type="hidden" name="id" value="<?php echo @$nik; ?>" /> 
@@ -190,8 +178,9 @@
             $.growl.notice({ message: "Simpan Sukses!" });
               
               setTimeout(function () {
-                window.location.replace('<?php echo site_url('niks') ?>')
-                
+                // window.location.replace('<?php echo site_url('niks') ?>')
+                update_datatable();
+                $('#close').click();
             }, 2000);
                
             }else{

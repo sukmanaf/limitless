@@ -5,6 +5,12 @@ function rupiah($angka) {
 	return $jadi;
 }
 
+function format_number($angka) {
+	$jadi = number_format($angka, 0, ',', '.');
+
+	return $jadi;
+}
+
 function tanggal_indonesia($tanggal) {
 
 	$date = date('Y-m-d', strtotime($tanggal)); // ubah sesuai format penanggalan standart

@@ -1,10 +1,10 @@
 
     <!--Modal: Name-->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-lg" style="width: 50%" role="document">
 
         <!--Content-->
-        <div class="modal-content">
+        <div class="modal-content"  >
 
           <!--Body-->
    
@@ -13,7 +13,6 @@
           <!--Footer-->
           <div class="modal-footer justify-content-center">
 
-            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
 
           </div>
 
@@ -79,10 +78,11 @@ function hapus(v,event){
     event.preventDefault(); //prevent default action 
     var r = confirm("Yakin Hapus Data Ini?");
     if (r == true) {
-        return true;
         } else {
             return false;
         }
+
+
         post_url = "<?php echo site_url('niks/delete/')?>"+v;
 
         $.ajax({
@@ -102,36 +102,71 @@ function hapus(v,event){
                     setTimeout(function () {
                         update_datatable();                       
                         }, 1000);
-                        }else{
-                            $.growl.warning({ message: "Hapus gagal!" });
-                            $(".btn").css('display','inline');
+                }else if(response == 0){
+                    $.growl.warning({ message: "Hapus gagal!" });
+                    $(".btn").css('display','inline');
 
-                        }
+                }else if(response == 2){
+                    $.growl.warning({ message: "NIK Terdaftar di SSPD!" });
+                    $(".btn").css('display','inline');
+
+                }
+            });
+        }
+
+        var datae;
+        $(document).ready(function() {
+
+            $('.input').keypress(function (e) {
+              if (e.which == 13) {
+                 $('#postForm').submit();
+                return false;  
+              }
+            });
+            $.ajax({
+                url : '<?php echo site_url('niks/get_data') ?>',
+                type: 'POST',
+                data : {},
+                dataType : 'json',
+                }).done(function(response){ //
+                // datae=JSON.parse(response);
+                // var datae=JSON.parse (response);
+                    datae=response;
+                    // console.log(datae);
+                    $('#dtables').DataTable( {
+                // console.log(dataSet);
+
+                        fixedColumns: true,
+                        data: datae.isi,
+                        searching: false,   // Search Box will Be Disabled
+                        ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+                        info: true,         // Will show "1 to n of n entries" Text at bottom
+                        lengthChange: false, // Will Disabled Record number per page
+                        columns: [
+                        { title: "No" ,"width" : "5%" },
+                        { title: datae.judul[1] },
+                        { title: datae.judul[2] },
+                        { title: "Aksi" ,"width" : "27 %" }
+                        ],
+                        order:[[0,'asc']]
+                        } );
                         });
-                    }
 
-                    var datae;
-                    $(document).ready(function() {
+                        $("#postForm").submit(function(event){
+                            event.preventDefault(); //prevent default action 
+                            var form_data = $('#postForm').serialize(); //Encode form elements for submission
 
-                        $('.input').keypress(function (e) {
-                          if (e.which == 13) {
-                             $('#postForm').submit();
-                            return false;  
-                          }
-                        });
-                        $.ajax({
-                            url : '<?php echo site_url('niks/get_data') ?>',
-                            type: 'POST',
-                            data : {},
-                            dataType : 'json',
-                            }).done(function(response){ //
-                            // datae=JSON.parse(response);
-                            // var datae=JSON.parse (response);
+                            console.log(form_data);
+
+                            $.ajax({
+                             url : '<?php echo site_url('niks/get_data') ?>',
+                             type: 'POST',
+                             data : form_data,
+                             dataType : 'json',
+                             }).done(function(response){
                                 datae=response;
-                                // console.log(datae);
+                                $('#dtables').DataTable().clear().destroy();
                                 $('#dtables').DataTable( {
-                            // console.log(dataSet);
-
                                     fixedColumns: true,
                                     data: datae.isi,
                                     searching: false,   // Search Box will Be Disabled
@@ -145,66 +180,40 @@ function hapus(v,event){
                                     { title: "Aksi" ,"width" : "27 %" }
                                     ],
                                     order:[[0,'asc']]
-                                    } );
                                     });
-
-                                    $("#postForm").submit(function(event){
-                                        event.preventDefault(); //prevent default action 
-                                        var form_data = $('#postForm').serialize(); //Encode form elements for submission
-
-                                        console.log(form_data);
-
-                                        $.ajax({
-                                         url : '<?php echo site_url('niks/get_data') ?>',
-                                         type: 'POST',
-                                         data : form_data,
-                                         dataType : 'json',
-                                         }).done(function(response){
-                                            datae=response;
-                                            $('#dtables').DataTable().clear().destroy();
-                                            $('#dtables').DataTable( {
-                                                fixedColumns: true,
-                                                data: datae.isi,
-                                                searching: false,   // Search Box will Be Disabled
-                                                ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
-                                                info: true,         // Will show "1 to n of n entries" Text at bottom
-                                                lengthChange: false, // Will Disabled Record number per page
-                                                columns: [
-                                                { title: "No" ,"width" : "5%" },
-                                                { title: datae.judul[1] },
-                                                { title: datae.judul[2] },
-                                                { title: "Aksi" ,"width" : "27 %" }
-                                                ],
-                                                order:[[0,'asc']]
-                                                });
-                                                });
-                                                });
+                            });
+                        });
 
 
 
 
-                                                } );
+            } );
 
-                                                function update_datatable(){
-                                                    $.ajax({
-                                                     url : '<?php echo site_url('niks/get_data') ?>',
-                                                     type: 'POST',
-                                                     data : {},
-                                                     dataType : 'json',
-                                                     }).done(function(response){
-                                                        datae=response;
-                                                        $('#dtables').DataTable().clear().destroy();
-                                                        $('#dtables').DataTable( {
+        function update_datatable(){
+            $.ajax({
+             url : '<?php echo site_url('niks/get_data') ?>',
+             type: 'POST',
+             data : {},
+             dataType : 'json',
+             }).done(function(response){
+                datae=response;
+                $('#dtables').DataTable().clear().destroy();
+                $('#dtables').DataTable( {
 
-                                                            data: datae.isi,
-                                                            columns: [
-                                                            { title: "No","width" : "5%"  },
-                                                            { title: datae.judul[1] },
-                                                            { title: datae.judul[2] },
-                                                            { title: "Aksi","width" : "25%"  }
-                                                            ],
-                                                            order:[[0,'asc']]
-                                                            });
-                                                            });
-                                                        }
+                    fixedColumns: true,
+                    data: datae.isi,
+                    searching: false,   // Search Box will Be Disabled
+                    ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+                    info: true,         // Will show "1 to n of n entries" Text at bottom
+                    lengthChange: false, // Will Disabled Record number per page
+                    columns: [
+                    { title: "No" ,"width" : "5%" },
+                    { title: datae.judul[1] },
+                    { title: datae.judul[2] },
+                    { title: "Aksi" ,"width" : "27 %" }
+                    ],
+                    order:[[0,'asc']]
+                });
+            });
+        }
                                                         </script>
