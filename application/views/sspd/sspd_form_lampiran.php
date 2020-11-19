@@ -56,7 +56,6 @@
                                         <button class="btn-xl  btn-primary" onclick="show_image('<?= base_url().$vf->lokasi ?>')" data-toggle="modal" data-target="#modal4" style="margin-top: 10px;border-radius: 10%">Lihat</button>
                                     <?php }
                                 } ?>
-                                 <a></a>
 
                         </div>
                         <div class="col-lg-3">

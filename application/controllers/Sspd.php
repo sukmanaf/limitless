@@ -172,8 +172,19 @@ class Sspd extends CI_Controller
         $propinsi = $this->Sspd_model->get_propinsi();
         $jns_perolehan = $this->Sspd_model->get_jns_perolehan();
         $row = $this->Sspd_model->get_all_by_nopen($nopen);
-        if ($row) {
+        $perolehan = $this->Sspd_model->get_jenis_perolehan($row->jenis_perolehan);
+        $lampiran = $this->Sspd_model->get_lampiran($nopen);
+        $files = $this->Sspd_model->get_files($nopen);
 
+        $lam = array();
+        if (!empty($perolehan->lampiran)) {
+            $lam=explode(',',$perolehan->lampiran);
+        }
+        $lampiran = $this->Sspd_model->get_lampiran($lam);
+
+        if ($row) {
+           
+        
         $data = array(
             'tipe' => 'update',
             'button' => 'Simpan',
@@ -181,6 +192,8 @@ class Sspd extends CI_Controller
             'sspd' => $row,
             'propinsi' => $propinsi,
             'jns_perolehan' => $jns_perolehan,
+            'lampiran' => $lampiran,
+            'files' => $files,
         );
             
             $this->skin->dashboard('sspd/sspd_read', $data);
@@ -314,18 +327,18 @@ class Sspd extends CI_Controller
               'kecamatan_op' => $data['kecamatan_op'],
               'kelurahan_op' => $data['kelurahan_op'],
               'rtrw_op' => $data['rtrw_op'],
-              'luas_tanah' => $data['luas_tanah'],
-              'luas_bangunan' => $data['luas_bangunan'],
-              'njop_tanah' => $data['njop_tanah'],
-              'njop_bangunan' => $data['njop_bangunan'],
-              'njop_total' => $data['njop_total'],
-              'harga_transaksi' => $data['harga_transaksi'],
+              'luas_tanah' => str_replace('.','',$data['luas_tanah']),
+              'luas_bangunan' => str_replace('.', '',$data['luas_bangunan']),
+              'njop_tanah' => str_replace('.', '',$data['njop_tanah']),
+              'njop_bangunan' => str_replace('.', '',$data['njop_bangunan']),
+              'njop_total' => str_replace('.', '',$data['njop_total']),
+              'harga_transaksi' => str_replace('.', '',$data['harga_transaksi']),
               'jenis_perolehan' => $data['jenis_perolehan'],
               'nomor_sertifikat' => $data['nomor_sertifikat'],
-              'npop' => $data['npop'],
-              'npoptkp' => $data['npoptkp'],
-              'npopkp' => $data['npopkp'],
-              'bphtb' => $data['bphtb'],
+              'npop' => str_replace('.', '',$data['npop']),
+              'npoptkp' => str_replace('.', '',$data['npoptkp']),
+              'npopkp' => str_replace('.', '',$data['npopkp']),
+              'bphtb' => str_replace('.', '',$data['bphtb']),
               'status' => 'DR001',
               'no_pendaftaran' => $nopen,
             );
@@ -409,17 +422,18 @@ class Sspd extends CI_Controller
 		'kabupaten_op' => $this->input->post('kabupaten_op'),
 		'kecamatan_op' => $this->input->post('kecamatan_op'),
 		'kelurahan_op' => $this->input->post('kelurahan_op'),
-		'luas_tanah' => $this->input->post('luas_tanah'),
-		'luas_bangunan' => $this->input->post('luas_bangunan'),
-		'njop_tanah' => $this->input->post('njop_tanah'),
-		'njop_bangunan' => $this->input->post('njop_bangunan'),
-		'njop_total' => $this->input->post('njop_total'),
-		'harga_transaksi' => $this->input->post('harga_transaksi'),
-		'jenis_perolehan' => $this->input->post('jenis_perolehan'),
-		'nomor_sertifikat' => $this->input->post('nomor_sertifikat'),
-		'npop' => $this->input->post('npop'),
-		'npoptkp' => $this->input->post('npoptkp'),
-		'bphtb' => $this->input->post('bphtb'),
+		'luas_tanah' => str_replace('.','',$data['luas_tanah']),
+        'luas_bangunan' => str_replace('.', '',$data['luas_bangunan']),
+        'njop_tanah' => str_replace('.', '',$data['njop_tanah']),
+        'njop_bangunan' => str_replace('.', '',$data['njop_bangunan']),
+        'njop_total' => str_replace('.', '',$data['njop_total']),
+        'harga_transaksi' => str_replace('.', '',$data['harga_transaksi']),
+        'jenis_perolehan' => $data['jenis_perolehan'],
+        'nomor_sertifikat' => $data['nomor_sertifikat'],
+        'npop' => str_replace('.', '',$data['npop']),
+        'npoptkp' => str_replace('.', '',$data['npoptkp']),
+        'npopkp' => str_replace('.', '',$data['npopkp']),
+        'bphtb' => str_replace('.', '',$data['bphtb']),
 		'total_bayar' => $this->input->post('total_bayar'),
 		'status_bayar' => $this->input->post('status_bayar'),
 		'tgl_bayar' => $this->input->post('tgl_bayar'),

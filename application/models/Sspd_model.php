@@ -49,8 +49,9 @@ class Sspd_model extends CI_Model
             
             }
         }
-            $this->db->select('sspd.*,nik.nama,ppat.nama as nama_ppat,ppat.alamat as alamat_ppat,status.text,status.status,status.class');
+            $this->db->select('sspd.*,nik.nama,ppat.nama as nama_ppat,ppat.alamat as alamat_ppat,status.text,status.status,status.class,jenis_perolehan.nama as jenis_perolehan_text');
             $this->db->join('status', 'status.status = sspd.status', 'left');
+            $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
             $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
             $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
        		$this->db->order_by($this->table.'.'.$this->id, $this->order);
@@ -242,13 +243,17 @@ class Sspd_model extends CI_Model
     function get_by_nopen($nopen)
     {
         $this->db->where('no_pendaftaran', $nopen);
+        $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
+
         return $this->db->get($this->table)->row();
     }     // get data by id
     function get_all_by_nopen($nopen)
     {
         $this->db->where('no_pendaftaran', $nopen);
-                    $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
-            $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
+        $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
+        $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
+        $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
+        $this->db->select('sspd.*,ppat.*,nik.*,jenis_perolehan.nama as jenis_perolehan_text');
         return $this->db->get($this->table)->row();
     }   // get data by id
     function get_files($nopen)

@@ -20,10 +20,11 @@
 	<link href="<?php echo base_url() ?>assets/css/components.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo base_url() ?>assets/css/colors.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url() ?>assets/styles/jquery.growl.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
-	<!-- <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script> -->
 
-	<!-- <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css"> -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/fc-3.3.1/fh-3.1.7/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/fc-3.3.1/fh-3.1.7/datatables.min.js"></script>
+
 
 	<link href="<?php echo base_url() ?>assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -107,7 +108,7 @@
 		<div class="navbar-collapse collapse" id="navbar-mobile">
 			<ul class="nav navbar-nav">
 				<li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
-
+<!-- 
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="icon-puzzle3"></i>
@@ -184,12 +185,12 @@
 							<a href="#" data-popup="tooltip" title="All activity"><i class="icon-menu display-block"></i></a>
 						</div>
 					</div>
-				</li>
+				</li> -->
 			</ul>
 
 			<div class="navbar-right">
-				<p class="navbar-text">Morning, Victoria!</p>
-				<p class="navbar-text"><span class="label bg-success">Online</span></p>
+				<!-- <p class="navbar-text"></p> -->
+				<!-- <p class="navbar-text"><span class="label bg-success">Online</span></p> -->
 				
 				<ul class="nav navbar-nav">				
 					<li class="dropdown">
@@ -475,8 +476,6 @@
 <script src="<?php echo base_url() ?>assets/plugins/summernote/summernote-bs4.min.js"></script>
 <script src="<?php echo base_url() ?>assets/scripts/notify.min.js"></script>
 <script src="<?php echo base_url() ?>assets/scripts/alertify.min.js"></script>
-<script src="<?php echo base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>
-<script src="<?php echo base_url() ?>assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 
 <script src="<?php echo base_url() ?>assets/scripts/jquery.growl.js"></script>
 
