@@ -50,15 +50,28 @@
       </div>
     </div>
 <div class="panel panel-radius">
-   
-    <div class="panel-body">
+  <div class="row">
+   <div class="col-md-2"></div>
+    <?php echo "<pre>";
+    print_r ($this->session->userdata('user'));
+    echo "</pre>"; ?>
+   <?php if ($session['jabatan'] == $sspd->status): ?>
+   <div class="col-md-10" style="padding-top: 20px;">
+        
+      <a href="#" onclick="action('<?= @$sspd->status ?>/approve')" class="btn-sm btn-primary"> Verifikasi</a>
+      <a href="#" onclick="action('<?= @$sspd->status ?>/reject')" class="btn-sm btn-danger"> Tolak</a>
+   </div>
+      <?php endif ?>
+  </div>
+    <div class="panel-body" >
+      <input type="hidden" name="" id="id_nopen" value="<?= @$sspd->no_pendaftaran ?>">
         
 
       <form action="#" id="postForm" class="form-horizontal" enctype="multipart/form-data" method="post">
         <fieldset class="content-group">
 
 
-          <table>
+          <table style="">
               <tr>
                 <td style="border: 1px solid #e0dfd7;padding: 10px">
                 <table width="100%" style="margin-top: 10px">
@@ -520,6 +533,43 @@ $(document).ready(function() {
         
     });
 });
+
+
+    function action(acc){
+        event.preventDefault(); //prevent default action 
+        var r = confirm("Apakah Anda Yakin?");
+        if (r == true) {
+        } else {
+            return false;
+        }
+        var nopen = $('#id_nopen').val();
+        post_url = "<?php echo site_url('sspd/approve/')?>"+acc+'/'+nopen;
+
+        $.ajax({
+            url : post_url,
+            type: 'POST',
+            data : {},
+            processData:false,
+                     contentType:false,
+                     cache:false,
+                     async:false,
+        }).done(function(response){
+            response = JSON.parse(response);
+
+            if (response.sts == 1){
+
+                $.growl.notice({ message: response.jns+" Sukses!" });
+                  // $.growl.error({ message: "The kitten is attacking!" });
+                 
+                setTimeout(function () {
+                }, 1000);
+            }else{
+                $.growl.danger({ message: response.jns+" gagal!" });
+                $(".btn").css('display','inline');
+
+            }
+        });
+    }
 
     
 

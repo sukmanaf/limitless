@@ -12,12 +12,14 @@ class Sspd_model extends CI_Model
     public $table_sw ='CPPMOD_PBB_SPPT_CURRENT';
     public $table_gw ='PBB_SPPT';
 
+
     function __construct()
         
     {
         parent::__construct();
         $this->sw_pbb = $this->load->database('sw_pbb', TRUE);
         $this->gw_pbb = $this->load->database('gw_pbb', TRUE);
+        $this->ses = $this->session->userdata('user');
 
     }
 
@@ -34,21 +36,23 @@ class Sspd_model extends CI_Model
     // get all
     function get_all($param='')
     {
-     
+        $cek = '';
         if(!empty($param)){
             foreach ($param as $key => $value) {
                 if($key == 'nik'){
-
                 $this->db->where('nik.nik like "%'.$value.'%"');
                 }if($key == 'nama'){
-
                 $this->db->where('nik.nama like "%'.$value.'%"');
-                }if($key == 'nop'){
-
-                $this->db->where($key.' like "%'.$value.'%"');
+                }if($key == 'nopen'){
+                $this->db->where('sspd.no_pendaftaran like "%'.$value.'%"');
                 }
-            
+                $cek .= $value;
             }
+        }
+       
+        $jabatan = $this->ses['jabatan'];
+        if (empty($cek)) {
+            $this->db->where('sspd.status', $jabatan);
         }
             $this->db->select('sspd.*,nik.nama,ppat.nama as nama_ppat,ppat.alamat as alamat_ppat,status.text,status.status,status.class,jenis_perolehan.nama as jenis_perolehan_text');
             $this->db->join('status', 'status.status = sspd.status', 'left');
@@ -274,6 +278,16 @@ class Sspd_model extends CI_Model
         $this->db->where_in('id', $lam);
 
         return $this->db->get('lampiran')->result();
+    }
+
+    function get_approve($status,$acc)
+    {
+            $this->db->where('alur.status', $acc);
+            $this->db->where('sd.status', $status);
+            $this->db->join('status sd', 'sd.id = alur.dari', 'left');
+            $this->db->join('status sk', 'sk.id = alur.ke', 'left');
+            $this->db->select('alur.*,sk.status as status_ke,sd.status as status_dari');
+        return $this->db->get('alur')->row();
     }
 
 }

@@ -30,7 +30,7 @@ class Sspd extends CI_Controller
         $cari =[
         		'nama'=>@$_POST['nama_search_name'],
 				'nik'=>@$_POST['nik_search_name'],
-				'nop'=>@$_POST['nop_search_name'],
+				'nopen'=>@$_POST['nopen_search_name'],
 
                 ];
             $dataq = $this->Sspd_model->get_all($cari);
@@ -745,6 +745,19 @@ class Sspd extends CI_Controller
             // redirect(site_url('sspd'));
         }
             echo json_encode($ret);
+    }
+
+    public function approve($status,$acc,$nopen)
+    {
+        $row = $this->Sspd_model->get_approve($status,$acc);
+        $data = array('status' => $row->status_ke,
+                        'update' =>date('Y-m-d H:i:s'),
+                        );
+        $this->db->where('no_pendaftaran', $nopen);
+        $app = $this->db->update('sspd', $data);
+        if ($app) {
+            echo json_encode(array('sts' => 1,'jns' => $acc));
+        }
     }
 }
 

@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-lg" style="width: 50%" role="document">
 
         <!--Content-->
-        <div class="modal-content"  >
+        <div class="modal-content" id="div_modal" >
 
           <!--Body-->
    
@@ -74,6 +74,7 @@
 </div>
 
 <script>
+
 function hapus(v,event){
     event.preventDefault(); //prevent default action 
     var r = confirm("Yakin Hapus Data Ini?");
@@ -81,38 +82,36 @@ function hapus(v,event){
         } else {
             return false;
         }
+    post_url = "<?php echo site_url('niks/delete/')?>"+v;
 
+    $.ajax({
+        url : post_url,
+        type: 'POST',
+        data : {},
+        processData:false,
+        contentType:false,
+        cache:false,
+        async:false,
+        }).done(function(response){
+            if (response == 1){
 
-        post_url = "<?php echo site_url('niks/delete/')?>"+v;
+                $.growl.notice({ message: "Hapus Sukses!" });
+              // $.growl.error({ message: "The kitten is attacking!" });
 
-        $.ajax({
-            url : post_url,
-            type: 'POST',
-            data : {},
-            processData:false,
-            contentType:false,
-            cache:false,
-            async:false,
-            }).done(function(response){
-                if (response == 1){
+                setTimeout(function () {
+                    update_datatable();                       
+                    }, 1000);
+            }else if(response == 0){
+                $.growl.danger({ message: "Hapus gagal!" });
+                $(".btn").css('display','inline');
 
-                    $.growl.notice({ message: "Hapus Sukses!" });
-                  // $.growl.error({ message: "The kitten is attacking!" });
+            }else if(response == 2){
+                $.growl.danger({ message: "NIK Terdaftar di SSPD!" });
+                $(".btn").css('display','inline');
 
-                    setTimeout(function () {
-                        update_datatable();                       
-                        }, 1000);
-                }else if(response == 0){
-                    $.growl.warning({ message: "Hapus gagal!" });
-                    $(".btn").css('display','inline');
-
-                }else if(response == 2){
-                    $.growl.warning({ message: "NIK Terdaftar di SSPD!" });
-                    $(".btn").css('display','inline');
-
-                }
-            });
-        }
+            }
+    });
+}
 
         var datae;
         $(document).ready(function() {
@@ -152,42 +151,42 @@ function hapus(v,event){
                         } );
                         });
 
-                        $("#postForm").submit(function(event){
-                            event.preventDefault(); //prevent default action 
-                            var form_data = $('#postForm').serialize(); //Encode form elements for submission
+            $("#postForm").submit(function(event){
+                event.preventDefault(); //prevent default action 
+                var form_data = $('#postForm').serialize(); //Encode form elements for submission
 
-                            console.log(form_data);
+                console.log(form_data);
 
-                            $.ajax({
-                             url : '<?php echo site_url('niks/get_data') ?>',
-                             type: 'POST',
-                             data : form_data,
-                             dataType : 'json',
-                             }).done(function(response){
-                                datae=response;
-                                $('#dtables').DataTable().clear().destroy();
-                                $('#dtables').DataTable( {
-                                    fixedColumns: true,
-                                    data: datae.isi,
-                                    searching: false,   // Search Box will Be Disabled
-                                    ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
-                                    info: true,         // Will show "1 to n of n entries" Text at bottom
-                                    lengthChange: false, // Will Disabled Record number per page
-                                    columns: [
-                                    { title: "No" ,"width" : "5%" },
-                                    { title: datae.judul[1] },
-                                    { title: datae.judul[2] },
-                                    { title: "Aksi" ,"width" : "27 %" }
-                                    ],
-                                    order:[[0,'asc']]
-                                    });
-                            });
+                $.ajax({
+                 url : '<?php echo site_url('niks/get_data') ?>',
+                 type: 'POST',
+                 data : form_data,
+                 dataType : 'json',
+                 }).done(function(response){
+                    datae=response;
+                    $('#dtables').DataTable().clear().destroy();
+                    $('#dtables').DataTable( {
+                        fixedColumns: true,
+                        data: datae.isi,
+                        searching: false,   // Search Box will Be Disabled
+                        ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+                        info: true,         // Will show "1 to n of n entries" Text at bottom
+                        lengthChange: false, // Will Disabled Record number per page
+                        columns: [
+                        { title: "No" ,"width" : "5%" },
+                        { title: datae.judul[1] },
+                        { title: datae.judul[2] },
+                        { title: "Aksi" ,"width" : "27 %" }
+                        ],
+                        order:[[0,'asc']]
                         });
+                });
+            });
 
 
 
 
-            } );
+        } );
 
         function update_datatable(){
             $.ajax({
@@ -216,4 +215,4 @@ function hapus(v,event){
                 });
             });
         }
-                                                        </script>
+</script>

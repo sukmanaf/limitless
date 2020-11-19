@@ -15,20 +15,30 @@ class Login extends CI_Controller {
 		$password = $this->input->post('pass');
 
 		$sql = $this->db->query('select count(id) as jml,user.* from user where username ="'.$username.'"')->row();
+
 		// echo $this->db->last_query();
 
 		$jml = $sql->jml;
 		if ( $jml == 1) {
 			if ($password == $sql->password) {
 				// echo 'benar';
-
 				$data = array(
 								'username' => $sql->username,
 								'id' => $sql->id,
 								'jenis' => $sql->jenis,
 							  );
 
-				 $user_data = $this->session->all_userdata();
+				if ($sql->jenis == 'PM') {
+					$row = $this->db->query('select pemda.* from pemda join user on user.id = pemda.id_user where user.id ='.$sql->id)->row();
+					// $data->
+					$data['jabatan'] = $row->jabatan;
+					$data['nip'] = $row->nip;
+					$data['nama'] = $row->nama;
+					
+				}
+				
+
+				$user_data = $this->session->all_userdata();
 			    foreach ($user_data as $key => $value) {
 			        if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {
 			            $this->session->unset_userdata($key);

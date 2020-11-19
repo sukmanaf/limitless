@@ -25,12 +25,13 @@ CREATE TABLE `alur` (
   `dari` varchar(20) DEFAULT NULL,
   `ke` varchar(20) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
+  `action` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `alur` */
 
-insert  into `alur`(`id`,`dari`,`ke`,`status`) values (1,'1','2','Proses selesai edit rejek dari pelayanan'),(2,'2','3','Proses Approve Pelayanan'),(3,'3','4','Proses Approve Kasubid'),(4,'4','5','Proses Aprove Kabid'),(5,'4','6','Proses Aprove Kabid'),(6,'5','6','Proses pembayaran bphtb'),(7,'7','3','Proses selesai edit rejek dari'),(8,'8','4','Proses selesai edit rejek dari Kabid');
+insert  into `alur`(`id`,`dari`,`ke`,`status`,`action`) values (1,'1','2','edit',NULL),(2,'2','3','approve',NULL),(3,'3','4','approve',NULL),(4,'4','5','aprove',NULL),(5,'4','6','approve',NULL),(6,'5','6','bayar',NULL),(7,'7','3','edit',NULL),(8,'8','4','edit',NULL),(9,'2','1','reject',NULL),(10,'3','7','reject',NULL),(11,'4','8','reject',NULL);
 
 /*Table structure for table `barang` */
 
@@ -275,10 +276,13 @@ CREATE TABLE `pemda` (
   `jabatan` varchar(10) DEFAULT NULL,
   `nama` varchar(50) DEFAULT NULL,
   `nip` varchar(50) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pemda` */
+
+insert  into `pemda`(`id`,`jabatan`,`nama`,`nip`,`id_user`) values (1,'PM001','Pelayanan','12121',3),(2,'PM002','Kasubid','12',4),(3,'PM003','Kabid','1212',5);
 
 /*Table structure for table `ppat` */
 
@@ -373,7 +377,7 @@ CREATE TABLE `sspd` (
 
 /*Data for the table `sspd` */
 
-insert  into `sspd`(`id`,`no_pendaftaran`,`id_ppat`,`id_nik`,`status`,`nop`,`alamat_op`,`propinsi_op`,`kabupaten_op`,`kecamatan_op`,`kelurahan_op`,`luas_tanah`,`luas_bangunan`,`njop_tanah`,`njop_bangunan`,`njop_total`,`harga_transaksi`,`jenis_perolehan`,`nomor_sertifikat`,`npop`,`npoptkp`,`npopkp`,`bphtb`,`total_bayar`,`status_bayar`,`tgl_bayar`,`validasi_bank`,`tgl_validasi_berkas`,`rtrw_op`,`no_sspd`,`created`,`update`,`id_billing`) values (6,'PD20201115123345','1','1','PP001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','100.000.00','01','smh0921','100.000.000','60.000.000','40.000.000','2.000.000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-15 18:33:45','2020-11-15 18:33:45',NULL),(13,'PD201117181357','1','1','PM001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64.000','0','9.664.000','1.000.000.','02','12asasa','1.000.000.000','60.000.000','940.000.000','47.000.000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-18 00:13:57','2020-11-18 00:13:57',NULL),(14,'PD201119045119','1','4','PM001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','90000000','01','smh0921','90000000','60000000','30000000','1500000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-19 10:51:19','2020-11-19 10:51:19',NULL);
+insert  into `sspd`(`id`,`no_pendaftaran`,`id_ppat`,`id_nik`,`status`,`nop`,`alamat_op`,`propinsi_op`,`kabupaten_op`,`kecamatan_op`,`kelurahan_op`,`luas_tanah`,`luas_bangunan`,`njop_tanah`,`njop_bangunan`,`njop_total`,`harga_transaksi`,`jenis_perolehan`,`nomor_sertifikat`,`npop`,`npoptkp`,`npopkp`,`bphtb`,`total_bayar`,`status_bayar`,`tgl_bayar`,`validasi_bank`,`tgl_validasi_berkas`,`rtrw_op`,`no_sspd`,`created`,`update`,`id_billing`) values (6,'PD20201115123345','1','1','PP001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','10000000','01','smh0921','10000000','60000000','40000000','2000000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-15 18:33:45','2020-11-15 18:33:45',NULL),(13,'PD201117181357','1','1','PM001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','1000000','02','12asasa','1000000','60000000','940000000','47000000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-18 00:13:57','2020-11-18 00:13:57',NULL),(14,'PD201119045119','1','4','PM002','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','90000000','01','smh0921','90000000','60000000','30000000','1500000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-19 10:51:19','2020-11-19 21:11:41',NULL);
 
 /*Table structure for table `status` */
 
@@ -433,11 +437,11 @@ CREATE TABLE `user` (
   `jenis` varchar(100) DEFAULT NULL,
   `blokir` int(11) DEFAULT '0' COMMENT '0 no 1 yes',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`username`,`password`,`jenis`,`blokir`) values (1,'admin','123123','admin',0),(2,'ppat','123123','PP',0);
+insert  into `user`(`id`,`username`,`password`,`jenis`,`blokir`) values (1,'admin','123123','admin',0),(2,'ppat','123123','PP',0),(3,'pelayanan','123123','PM',0),(4,'kasubid','123123','PM',0),(5,'kabid','123123','PM',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

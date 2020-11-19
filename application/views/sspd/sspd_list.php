@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="col-md-3 " style=" padding:5px;float: right">
-                <input type="text" class="form-control" name="nop_search_name" id="nop_search_id" placeholder="Nop"  />
+                <input type="text" class="form-control" name="nopen_search_name" id="nopen_search_id" placeholder="No Pendaftaran"  />
                 </div>
 
             

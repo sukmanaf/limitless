@@ -27,6 +27,8 @@ class Skin
 
 		$data['parent']= $this->ci->db->query('select * from menu where parent = 0 and active = 1')->result();
 		$data['child']= $this->ci->db->query('select * from menu where parent != 0 and active = 1')->result();
+   		$val['session']=$this->ci->session->userdata('user');
+
 		// echo "<pre>";
 		// print_r ($data);
 		// echo "</pre>";exit();
