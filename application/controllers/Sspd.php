@@ -12,11 +12,15 @@ class Sspd extends CI_Controller
         $this->load->library('form_validation');        
 	    $this->load->library('datatables');
         $this->load->library('pdf');
+
+        $this->ses = $this->session->userdata('user');
+        $this->setting = $this->session->userdata('setting');
     }
 
     public function index()
     {
         $this->skin->dashboard('sspd/sspd_list',null);
+
     } 
     
     public function json() {
@@ -41,13 +45,34 @@ class Sspd extends CI_Controller
         foreach ($dataq as $key => $v) {
             foreach ($v as $k => $val) {
                   array_push($judul, $k);
-            }            
-            $a= [$key+1,$v->no_pendaftaran,$v->nama,'<span class="badge badge-'.$v->class.'">'.$v->text.'</span>',
-                 '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn-xl btn-primary" style="border-radius:5px;;padding: 2% 6%;"> Lihat</a>
+            }     
+
+            '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn-xl btn-primary" style="border-radius:5px;;padding: 2% 6%;"> Lihat</a>
                  <a href="'. site_url("sspd/update/").$v->no_pendaftaran.'" class="btn-xl btn-info" style="border-radius:5px;;padding: 2% 6%;"> Ubah</a>
 
                   <a href="#" class="btn-xl btn-danger"  style="border-radius:5px;padding: 2% 6%;" onclick="hapus('.$v->id.',event)"> Hapus </a>
-                 '];
+                 ';
+                 $tombol ='';
+            if ($this->ses['jenis'] == 'PM') {
+                $tombol .= '';       
+            }
+            if ($this->ses['jenis'] == 'PP') {
+                $edit = substr($v->status,0,2); 
+                if($edit == 'PP'){
+
+                    $tombol .= '
+                 <a href="'. site_url("sspd/update/").$v->no_pendaftaran.'" class="btn-xl btn-info" style="border-radius:5px;;padding: 2% 6%;"> Ubah</a>';  
+                }
+                if($edit == 'MP'){
+
+                    $tombol .= '
+                 <a href="#" class="btn-xl btn-info" onclick="billing('.$v->id.')" style="position:inline-block;border-radius:5px;;padding: 2% 6%;"> Cetak Billing</a>';  
+                }
+
+            }       
+                $tombol .= '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn-xl btn-primary" style="border-radius:5px;;padding: 2% 6%;"> Lihat</a>';       
+            $a= [$key+1,$v->no_pendaftaran,$v->nama,'<span class="badge badge-'.$v->class.'">'.$v->text.'</span>',$tombol
+                 ];
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
         }
@@ -340,6 +365,7 @@ class Sspd extends CI_Controller
               'npoptkp' => str_replace('.', '',$data['npoptkp']),
               'npopkp' => str_replace('.', '',$data['npopkp']),
               'bphtb' => str_replace('.', '',$data['bphtb']),
+              'total_bayar' => str_replace('.', '',$data['bphtb']),
               'status' => 'DR001',
               'no_pendaftaran' => $nopen,
             );
@@ -468,6 +494,7 @@ class Sspd extends CI_Controller
               'npoptkp' => str_replace('.', '',$data['npoptkp']),
               'npopkp' => str_replace('.', '',$data['npopkp']),
               'bphtb' => str_replace('.', '',$data['bphtb']),
+              'total_bayar' => str_replace('.', '',$data['bphtb']),
             );
             $up_sspd = $this->Sspd_model->update($data['id_sspd'], $data_sspd);
                 if ($up_sspd==1) {
@@ -762,8 +789,9 @@ class Sspd extends CI_Controller
     }
 
 
-    function prints(){
-        
+    function print($nopen){
+
+        $row = $this->Sspd_model->get_all_by_nopen($nopen);
         $pdf = new FPDF('P','mm','A4');
         // membuat halaman baru
         $pdf->SetMargins(10, 5);
@@ -772,8 +800,10 @@ class Sspd extends CI_Controller
         $pdf->SetFont('Arial','B',11);
         // header
 
-        $image = 'assets/files/image/logo.png';
-        $pdf->Image($image,16,11,22,27,'PNG');
+        $logo = 'assets/files/image/logo.png';
+        $centang = 'assets/files/image/centang.png';
+        $pdf->Image($logo,16,11,22,27,'PNG');
+        $pdf->Image($centang,22,195,3,3,'PNG');
 
         $pdf->Cell(35,3,'','LT',0,'C');
         $pdf->Cell(120,3,'','LTR',0,'C');
@@ -811,29 +841,29 @@ class Sspd extends CI_Controller
 
         $pdf->Cell(10,5,'A.','L',0,'C');
         $pdf->Cell(37,5,'1.Nama WajibPajak','',0,'');
-        $pdf->Cell(143,5,':','R',1,'');
+        $pdf->Cell(143,5,': '.@$row->nama,'R',1,'');
         
         $pdf->Cell(10,5,'','L',0,'');
         $pdf->Cell(37,5,'2.NIK','',0,'');
-        $pdf->Cell(143,5,':','R',1,'');
+        $pdf->Cell(143,5,': '.@$row->nik,'R',1,'');
 
         $pdf->Cell(10,5,'','L',0,'');
         $pdf->Cell(37,5,'3.Alamat Wajib Pajak','',0,'');
-        $pdf->Cell(143,5,':','R',1,'');
+        $pdf->Cell(143,5,': '.@$row->alamat,'R',1,'');
 
         $pdf->Cell(10,5,'','L',0,'');
         $pdf->Cell(37,5,'Kelurahan / Desa','',0,'');
-        $pdf->Cell(43,5,':','',0,'');
+        $pdf->Cell(48,5,': '.@$row->nm_kelurahan,'',0,'');
         $pdf->Cell(15,5,'RT/RW','',0,'');
-        $pdf->Cell(20,5,': 001/001','',0,'');
+        $pdf->Cell(15,5,': '.@$row->rtrw,'',0,'');
         $pdf->Cell(20,5,'Kecamatan','',0,'');
-        $pdf->Cell(45,5,':','R',1,'');
+        $pdf->Cell(45,5,': '.@$row->nm_kecamatan,'R',1,'');
 
         $pdf->Cell(10,5,'','L',0,'');
         $pdf->Cell(37,5,'Kabupaten / Kota','',0,'');
-        $pdf->Cell(143,5,':','R',1,'');
+        $pdf->Cell(143,5,': '.@$row->nm_kabupaten,'R',1,'');
        
-        $pdf->Cell(190,3,':','LBR',1,'');
+        $pdf->Cell(190,3,': ','LBR',1,'');
         
 
         //data NOP
@@ -842,23 +872,23 @@ class Sspd extends CI_Controller
 
         $pdf->Cell(10,5,'B.','L',0,'C');
         $pdf->Cell(55,5,'1.Nomor Objek Pajak (NOP)PBB','',0,'');
-        $pdf->Cell(125,5,':','R',1,'');
+        $pdf->Cell(125,5,': '.@$row->nop,'R',1,'');
         
         $pdf->Cell(10,5,'','L',0,'');
         $pdf->Cell(55,5,'2.Letak Tanah dan Bangunan','',0,'');
-        $pdf->Cell(125,5,':','R',1,'');
+        $pdf->Cell(125,5,': '.@$row->alamat_op,'R',1,'');
 
         $pdf->Cell(10,5,'','L',0,'');
         $pdf->Cell(37,5,'3.Kelurahan / Desa','',0,'');
-        $pdf->Cell(68,5,':','',0,'');
+        $pdf->Cell(68,5,': '.@$row->kelurahan_op,'',0,'');
         $pdf->Cell(30,5,'4.RT/RW','',0,'');
-        $pdf->Cell(45,5,':','R',1,'');
+        $pdf->Cell(45,5,': '.@$row->rtrw_op,'R',1,'');
 
         $pdf->Cell(10,5,'','L',0,'');
         $pdf->Cell(37,5,'5.Kecamatan','',0,'');
-        $pdf->Cell(68,5,':','',0,'');
+        $pdf->Cell(68,5,': '.@$row->kecamatan_op,'',0,'');
         $pdf->Cell(30,5,'6.Kabupaten/Kota','',0,'');
-        $pdf->Cell(45,5,':','R',1,'');
+        $pdf->Cell(45,5,': '.@$row->kabupaten_op,'R',1,'');
 
         $pdf->Cell(190,3,'','LR',1,'');
         $pdf->Cell(10,5,'','L',0,'');
@@ -878,27 +908,27 @@ class Sspd extends CI_Controller
         $pdf->Cell(10,8,'','L',0,'C');
         $pdf->Cell(37,8,'Tanah (Bumi)','LTB',0,'C');
         $pdf->Cell(8,8,'7','LTB',0,'C');
-        $pdf->Cell(37,8,'140','LTB',0,'R');
+        $pdf->Cell(37,8,format_number(@$row->luas_tanah),'LTB',0,'R');
         $pdf->Cell(8,8,'9','LTB',0,'C');
-        $pdf->Cell(37,8,'123','LTB',0,'R');
+        $pdf->Cell(37,8,rupiah(@$row->njop_tanah),'LTB',0,'R');
         $pdf->Cell(8,8,'11','LTB',0,'C');
-        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(42,8,rupiah(intVal(@$row->luas_tanah*@$row->njop_tanah)),'LTRB',0,'R');
         $pdf->Cell(3,8,'','R',1,'');
 
         $pdf->Cell(10,8,'','L',0,'C');
         $pdf->Cell(37,8,'Bangunan','LTB',0,'C');
         $pdf->Cell(8,8,'8','LTB',0,'C');
-        $pdf->Cell(37,8,'140','LTB',0,'R');
+        $pdf->Cell(37,8,format_number(@$row->luas_bangunan),'LTB',0,'R');
         $pdf->Cell(8,8,'10','LTB',0,'C');
-        $pdf->Cell(37,8,'123','LTB',0,'R');
+        $pdf->Cell(37,8,rupiah(@$row->njop_bangunan),'LTB',0,'R');
         $pdf->Cell(8,8,'12','LTB',0,'C');
-        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(42,8,rupiah(intVal(@$row->luas_bangunan*@$row->njop_bangunan)),'LTRB',0,'R');
         $pdf->Cell(3,8,'','R',1,'');
 
         $pdf->Cell(10,8,'','L',0,'C');
         $pdf->Cell(127,8,'NJOP PBB','',0,'R');
         $pdf->Cell(8,8,'13','LTB',0,'C');
-        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(42,8,rupiah(@$row->njop_total),'LTRB',0,'R');
         $pdf->Cell(3,8,'','R',1,'');
 
 
@@ -907,17 +937,17 @@ class Sspd extends CI_Controller
         $pdf->Cell(10,8,'','L',0,'C');
         $pdf->Cell(127,8,'Harga Transaksi','',0,'R');
         $pdf->Cell(8,8,'14','LTB',0,'C');
-        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(42,8,rupiah(@$row->harga_transaksi),'LTRB',0,'R');
         $pdf->Cell(3,8,'','R',1,'');
 
         $pdf->Cell(10,5,'','L',0,'C');
         $pdf->Cell(32,5,'14.Jenis Perolehan','',0,'');
-        $pdf->Cell(145,5,': 01 - Jual - beli','',0,'L');
+        $pdf->Cell(145,5,': '.@$row->jenis_perolehan.' - '.@$row->jenis_perolehan_text,'',0,'L');
         $pdf->Cell(3,5,'','R',1,'');
 
         $pdf->Cell(10,5,'','L',0,'C');
         $pdf->Cell(32,5,'15.NomorSertifikat','',0,'');
-        $pdf->Cell(145,5,': SHM 0001928','',0,'L');
+        $pdf->Cell(145,5,': '.@$row->nomor_sertifikat,'',0,'L');
         $pdf->Cell(3,5,'','R',1,'');
 
         $pdf->Cell(190,3,'','LBR',1,'');
@@ -928,39 +958,43 @@ class Sspd extends CI_Controller
         $pdf->Cell(10,5,'','LB',0,'L');
         $pdf->Cell(127,5,'1.Nilai Perolehan Objek Pajak (NPOP) ','RB',0,'');
         $pdf->Cell(8,5,'1','RB',0,'C');
-        $pdf->Cell(45,5,'','RB',1,'');
+        $pdf->Cell(7,5,'Rp.','B',0,'C');
+        $pdf->Cell(38,5,format_number(@$row->npop),'RB',1,'R');
         
         $pdf->Cell(10,5,'','LB',0,'L');
         $pdf->Cell(127,5,'2.Nilai Perolehan Objek Pajak Tidak Kena Pajak (NPOPTKP) ','RB',0,'');
         $pdf->Cell(8,5,'2','RB',0,'C');
-        $pdf->Cell(45,5,'','RB',1,'');
+        $pdf->Cell(7,5,'Rp.','B',0,'C');
+        $pdf->Cell(38,5,format_number(@$row->npoptkp),'RB',1,'R');
       
         $pdf->Cell(10,5,'','LB',0,'L');
         $pdf->Cell(127,5,'3.Nilai Perolehan Objek Pajak Kena Pajak (NPOPKP) ','RB',0,'');
         $pdf->Cell(8,5,'3','RB',0,'C');
-        $pdf->Cell(45,5,'','RB',1,'');
+        $pdf->Cell(7,5,'Rp.','B',0,'C');
+        $pdf->Cell(38,5,format_number(@$row->npopkp),'RB',1,'R');
 
         $pdf->Cell(10,5,'','LB',0,'L');
         $pdf->Cell(127,5,'4.Bea Perolehan Hak Atas Tanah dan Bangunan (BPHTB) ','RB',0,'');
         $pdf->Cell(8,5,'4','RB',0,'C');
-        $pdf->Cell(45,5,'','RB',1,'');
+        $pdf->Cell(7,5,'Rp.','B',0,'C');
+        $pdf->Cell(38,5,format_number(@$row->bphtb),'RB',1,'R');
 
 
-        $pdf->Cell(190,3,'','LBR',1,'');
+        $pdf->Cell(190,3,'','LR',1,'');
 
         //Jumlah Setoran Berdasarkan
 
         $pdf->Cell(10,5,'D','L',0,'L');
-        $pdf->Cell(180,5,'Jumlah SetoranBerdasarkan ','R',1,'');
+        $pdf->Cell(180,5,'Jumlah Setoran Berdasarkan ','R',1,'');
 
         $pdf->Cell(11,5,'','L',0,'L');
-        $pdf->Cell(5,5,'O',1,0,'L');
-        $pdf->Cell(174,5,'c. Perhitungan Wajib Pajak ','R',1,'');
+        $pdf->Cell(5,5,'',1,0,'L');
+        $pdf->Cell(174,5,'a. Perhitungan Wajib Pajak ','R',1,'');
         $pdf->Cell(190,1,'','LR',1,'');
 
         $pdf->Cell(11,5,'','L',0,'L');
         $pdf->Cell(5,5,'','LRT',0,'L');
-        $pdf->Cell(174,5,'c. STPD BPHTB / SKPDPB KURANG BAYAR /SKPDB ','R',1,'');
+        $pdf->Cell(174,5,'b. STPD BPHTB / SKPDPB KURANG BAYAR /SKPDB ','R',1,'');
 
         $pdf->Cell(11,5,'','L',0,'L');
         $pdf->Cell(5,5,'','LBR',0,'L');
@@ -993,9 +1027,9 @@ class Sspd extends CI_Controller
         $pdf->Cell(75,5,'JUMLAH YANG DISETOR (Dengan Angka)','',0,'L');
         $pdf->Cell(104,5,'(Dengan Huruf)','R',1,'');
         $pdf->Cell(11,5,'','L',0,'L');
-        $pdf->Cell(55,5,'Rp. 1000.000',1,0,'L');
+        $pdf->Cell(55,5,rupiah(@$row->total_bayar),1,0,'L');
         $pdf->Cell(20,5,'','',0,'L');
-        $pdf->Cell(104,5,'Empat puluh Lima Juta Lima ratus tiga puluh lima ribu rupiah','R',1,'L');
+        $pdf->Cell(104,5,terbilang(@$row->total_bayar),'R',1,'L');
 
         $pdf->Cell(190,3,'','LBR',1,'');
 
@@ -1057,19 +1091,120 @@ class Sspd extends CI_Controller
         $pdf->Cell(50,3,'','BR',1,'C');
         $pdf->Output();
     }
-    function print(){
-        
-        $pdf = new FPDF('P','mm','A4');
+    function pendaftaran($nopen){
+
+        $row = $this->Sspd_model->get_all_by_nopen($nopen);
+        $pdf = new FPDF('L','mm',array(210,75));
         // membuat halaman baru
-        $pdf->SetMargins(10, 5);
+        // $pdf->SetMargins(10, 2);
+        $pdf->SetMargins(10,5,5);
+        $pdf->SetAutoPageBreak(false,5);
         $pdf->AddPage();
         // setting jenis font yang akan digunakan
         $pdf->SetFont('Arial','B',11);
         // header
+        $pdf->Cell(190,3,'','RLT',1,'C');
+        $pdf->Cell(190,5,'Bukti Pendaftaran BPHTB','RL',1,'C');
+        $pdf->Cell(190,5,'','RL',1,'C');
 
-        $pdf->AutoPrint(true);
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'1.','L',0,'R');
+        $pdf->Cell(40,6,'Nama','',0,'');
+        $pdf->Cell(140,6,': '.@$row->nama,'R',1,'');
+
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'2.','L',0,'R');
+        $pdf->Cell(40,6,'NIK','',0,'');
+        $pdf->Cell(140,6,': '.@$row->nik,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'3.','L',0,'R');
+        $pdf->Cell(40,6,'Alamat ','',0,'');
+        $pdf->Cell(140,6,': '.@$row->alamat,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'4.','L',0,'R');
+        $pdf->Cell(40,6,'NOP ','',0,'');
+        $pdf->Cell(140,6,': '.@$row->nop,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'5.','L',0,'R');
+        $pdf->Cell(40,6,'Nomor Pendaftaran ','',0,'');
+        $pdf->Cell(140,6,': '.@$row->no_pendaftaran,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'6.','L',0,'R');
+        $pdf->Cell(40,6,'Cek Status Berkas ','',0,'');
+        $pdf->Cell(140,6,': '.@$this->setting->url_bphtb,'R',1,'');
+        
+        $pdf->SetFont('Arial','i',9);
+        $pdf->Cell(10,6,'','L',0,'R');
+        $pdf->Cell(41,6,' ','',0,'');
+        $pdf->Cell(139,6,' * Buka Link di atas lalu kli tombol tracking berkas, lalu masukan nomor pendaftaran ','R',1,'');
+        
+        $pdf->Cell(190,6,'','LBR',1,'R');
+
+
         $pdf->Output();
     }
+
+    function billing($nopen){
+
+        $row = $this->Sspd_model->get_by_id($nopen);
+        $pdf = new FPDF('L','mm',array(210,75));
+        // membuat halaman baru
+        // $pdf->SetMargins(10, 2);
+        $pdf->SetMargins(10,5,5);
+        $pdf->SetAutoPageBreak(false,5);
+        $pdf->AddPage();
+        // setting jenis font yang akan digunakan
+        $pdf->SetFont('Arial','B',11);
+        // header
+        $pdf->Cell(190,3,'','RLT',1,'C');
+        $pdf->Cell(190,5,'Bukti Pendaftaran BPHTB','RL',1,'C');
+        $pdf->Cell(190,5,'','RL',1,'C');
+
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'1.','L',0,'R');
+        $pdf->Cell(40,6,'Nama','',0,'');
+        $pdf->Cell(140,6,': '.@$row->nama,'R',1,'');
+
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'2.','L',0,'R');
+        $pdf->Cell(40,6,'NIK','',0,'');
+        $pdf->Cell(140,6,': '.@$row->nik,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'3.','L',0,'R');
+        $pdf->Cell(40,6,'Alamat ','',0,'');
+        $pdf->Cell(140,6,': '.@$row->alamat,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'4.','L',0,'R');
+        $pdf->Cell(40,6,'NOP ','',0,'');
+        $pdf->Cell(140,6,': '.@$row->nop,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'5.','L',0,'R');
+        $pdf->Cell(40,6,'Nomor Pendaftaran ','',0,'');
+        $pdf->Cell(140,6,': '.@$row->no_pendaftaran,'R',1,'');
+        
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(10,6,'6.','L',0,'R');
+        $pdf->Cell(40,6,'ID Billing ','',0,'');
+        $pdf->Cell(140,6,': '.@$row->id_billing,'R',1,'');
+        
+        $pdf->SetFont('Arial','i',9);
+        $pdf->Cell(10,6,'','L',0,'R');
+        $pdf->Cell(41,6,' ','',0,'');
+        $pdf->Cell(139,6,' * Masukan ID Billing Untuk Melakukan Pembayaran BPHTB ','R',1,'');
+        
+        $pdf->Cell(190,6,'','LBR',1,'R');
+
+
+        $pdf->Output('S');
+    }
+    
 }
 
 /* End of file Sspd.php */

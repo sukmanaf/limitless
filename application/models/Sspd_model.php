@@ -50,9 +50,18 @@ class Sspd_model extends CI_Model
             }
         }
        
-        $jabatan = $this->ses['jabatan'];
+        $tipe = $this->ses['jenis'];
+        
         if (empty($cek)) {
+            if ($tipe =='PM') {
+            $jabatan = $this->ses['jabatan'];
             $this->db->where('sspd.status', $jabatan);
+            }
+            if ($tipe =='PP') {
+            $id_ppat = $this->ses['id_ppat'];
+            $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" ');
+            $this->db->where('sspd.id_ppat = '.$id_ppat);
+            }
         }
             $this->db->select('sspd.*,nik.nama,ppat.nama as nama_ppat,ppat.alamat as alamat_ppat,status.text,status.status,status.class,jenis_perolehan.nama as jenis_perolehan_text');
             $this->db->join('status', 'status.status = sspd.status', 'left');
@@ -288,6 +297,25 @@ class Sspd_model extends CI_Model
             $this->db->join('status sk', 'sk.id = alur.ke', 'left');
             $this->db->select('alur.*,sk.status as status_ke,sd.status as status_dari');
         return $this->db->get('alur')->row();
+    }
+
+     // get all
+    function get_sspd_notif($param='')
+    {
+        
+        $tipe = $this->ses['jenis'];
+        
+        if (empty($cek)) {
+            if ($tipe =='PM') {
+            $jabatan = $this->ses['jabatan'];
+            $this->db->where('sspd.status', $jabatan);
+            }
+            if ($tipe =='PP') {
+            $this->db->where('sspd.status like "PP%"');
+            }
+        }
+            $this->db->select('count(id) as jml');
+        return $this->db->get($this->table)->row();
     }
 
 }

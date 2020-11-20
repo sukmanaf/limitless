@@ -298,7 +298,7 @@ CREATE TABLE `ppat` (
 
 /*Data for the table `ppat` */
 
-insert  into `ppat`(`id`,`nama`,`alamat`,`id_user`) values (1,'Abdul Aziz','Lebak',NULL);
+insert  into `ppat`(`id`,`nama`,`alamat`,`id_user`) values (1,'Abdul Aziz','Lebak',2);
 
 /*Table structure for table `propinsi` */
 
@@ -329,10 +329,13 @@ CREATE TABLE `setting` (
   `besar_file` varchar(20) DEFAULT NULL,
   `progresif` int(11) DEFAULT NULL COMMENT '0 tidak 1 ya',
   `lunas_pbb` int(11) DEFAULT NULL COMMENT '0 tidak 1 ya',
+  `url_bphtb` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `setting` */
+
+insert  into `setting`(`id`,`nama_dinas`,`lokasi_logo`,`kota_kecil`,`kota_besar`,`kd_propinsi`,`kd_kabupaten`,`besar_file`,`progresif`,`lunas_pbb`,`url_bphtb`) values (1,'Dinas Pendapatan Kota Solok','logo.png','kota','KOTA','13','72','2000',0,1,'e-bphtb.namakota.go.id');
 
 /*Table structure for table `sspd` */
 
@@ -377,7 +380,7 @@ CREATE TABLE `sspd` (
 
 /*Data for the table `sspd` */
 
-insert  into `sspd`(`id`,`no_pendaftaran`,`id_ppat`,`id_nik`,`status`,`nop`,`alamat_op`,`propinsi_op`,`kabupaten_op`,`kecamatan_op`,`kelurahan_op`,`luas_tanah`,`luas_bangunan`,`njop_tanah`,`njop_bangunan`,`njop_total`,`harga_transaksi`,`jenis_perolehan`,`nomor_sertifikat`,`npop`,`npoptkp`,`npopkp`,`bphtb`,`total_bayar`,`status_bayar`,`tgl_bayar`,`validasi_bank`,`tgl_validasi_berkas`,`rtrw_op`,`no_sspd`,`created`,`update`,`id_billing`) values (6,'PD20201115123345','1','1','PP001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','10000000','01','smh0921','10000000','60000000','40000000','2000000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-15 18:33:45','2020-11-15 18:33:45',NULL),(13,'PD201117181357','1','1','PM001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','1000000','02','12asasa','1000000','60000000','940000000','47000000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-18 00:13:57','2020-11-18 00:13:57',NULL),(14,'PD201119045119','1','4','PM002','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','90000000','01','smh0921','90000000','60000000','30000000','1500000',NULL,0,NULL,NULL,NULL,'001/006',NULL,'2020-11-19 10:51:19','2020-11-19 21:11:41',NULL);
+insert  into `sspd`(`id`,`no_pendaftaran`,`id_ppat`,`id_nik`,`status`,`nop`,`alamat_op`,`propinsi_op`,`kabupaten_op`,`kecamatan_op`,`kelurahan_op`,`luas_tanah`,`luas_bangunan`,`njop_tanah`,`njop_bangunan`,`njop_total`,`harga_transaksi`,`jenis_perolehan`,`nomor_sertifikat`,`npop`,`npoptkp`,`npopkp`,`bphtb`,`total_bayar`,`status_bayar`,`tgl_bayar`,`validasi_bank`,`tgl_validasi_berkas`,`rtrw_op`,`no_sspd`,`created`,`update`,`id_billing`) values (6,'PD20201115123345','1','1','PP001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','10000000','01','smh0921','10000000','60000000','40000000','2000000','2000000',0,NULL,NULL,NULL,'001/006',NULL,'2020-11-15 18:33:45','2020-11-15 18:33:45','PD20201115123345'),(13,'PD201117181357','1','1','MP001','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','1000000','02','12asasa','1000000','60000000','940000000','47000000','47000000',0,NULL,NULL,NULL,'001/006',NULL,'2020-11-18 00:13:57','2020-11-18 00:13:57','PD201117181357'),(14,'PD201119045119','1','4','PM002','137202000500803350','PERUMAHAN GRIYA PERMATA HGB. 20 / E.2',NULL,'KOTA SOLOK','TANJUNG HARAPAN','KAMPUNG JAWA','151','0','64000','0','9664000','90000000','01','smh0921','90000000','60000000','30000000','1500000','1500000',0,NULL,NULL,NULL,'001/006',NULL,'2020-11-19 10:51:19','2020-11-19 21:11:41','PD201119045119');
 
 /*Table structure for table `status` */
 

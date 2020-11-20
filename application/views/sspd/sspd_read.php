@@ -417,8 +417,8 @@
                           </tr>
                           <tr>
                             <td width="5%" ></td>
-                            <td width="30%"> <b><?= rupiah(@$sspd->bphtb) ?></b></td>
-                            <td> <b><?= terbilang(@$sspd->bphtb) ?></b></td>
+                            <td width="30%"> <b><?= rupiah(@$sspd->total_bayar) ?></b></td>
+                            <td> <b><?= terbilang(@$sspd->total_bayar) ?></b></td>
                           </tr>
                         </table>
                       <hr>

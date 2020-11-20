@@ -52,6 +52,9 @@
 
 <table id="dtables" class="table datatable-responsive table-bordered table-striped"></table>
 </div>
+<div id="print">
+    
+</div>
 </form>
 
 </div>
@@ -112,11 +115,11 @@
             info: true,         // Will show "1 to n of n entries" Text at bottom
             lengthChange: false, // Will Disabled Record number per page
             columns: [
-            { title: "No" ,"width" : "5%" },
+            { title: "No" ,"width" : "3%" },
             { title: "No Pendaftaran" },
             { title: "Nama WP" },
             { title: "Status" },
-            { title: "Aksi" ,"width" : "27%" }
+            { title: "Aksi" ,"width" : "15%" }
             ],
             order:[[0,'asc']]
             } );
@@ -146,11 +149,11 @@
             info: true,         // Will show "1 to n of n entries" Text at bottom
             lengthChange: false, // Will Disabled Record number per page
             columns: [
-            { title: "No" ,"width" : "5%" },
+            { title: "No" ,"width" : "3%" },
             { title: "No Pendaftaran" },
             { title: "Nama WP" },
             { title: "Status" },
-            { title: "Aksi" ,"width" : "27%" }
+            { title: "Aksi" ,"width" : "15%" }
             ],
             order:[[0,'asc']]
             });
@@ -182,14 +185,35 @@
             info: true,         // Will show "1 to n of n entries" Text at bottom
             lengthChange: false, // Will Disabled Record number per page
             columns: [
-            { title: "No" ,"width" : "5%" },
+            { title: "No" ,"width" : "3%" },
             { title: "No Pendaftaran" },
             { title: "Nama WP" },
             { title: "Status" },
-            { title: "Aksi" ,"width" : "27%" }
+            { title: "Aksi" ,"width" : "15%" }
             ],
             order:[[0,'asc']]
             });
+        });
+    }
+
+
+    function billing(v){
+        event.preventDefault(); //prevent default action 
+        post_url = "<?php echo site_url('sspd/billing/')?>"+v;
+
+        $.ajax({
+            url : post_url,
+            type: 'POST',
+            data : {},
+            processData:false,
+                     contentType:false,
+                     cache:false,
+                     async:false,
+        }).done(function(response){
+            console.log(response)
+            $('#print').html(response);
+            // $.print('#print');
+            // $('#print').html('');
         });
     }
 </script>

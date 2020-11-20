@@ -419,8 +419,11 @@
 						<div class="category-content no-padding">
 							<ul class="navigation navigation-main navigation-accordion">
 								<?php foreach ($parent as $kp => $vp): ?>
+									<?php $notif =''; if ($vp->menu == 'SSPD') {
+										$notif = '<span id="sspd_notif" class="badge bg-teal-400 pull-right">'.$sspd_notif.'</span>';
+									} ?>
 
-									<li><a href="<?=base_url(). $vp->controller ?>"><i class="icon-home4"></i> <span><?= $vp->menu ?></span></a>
+									<li><a href="<?=base_url(). $vp->controller ?>"><i class="icon-home4"></i> <span><?= $notif.$vp->menu ?></span></a>
 										<?php foreach ($child as $kc => $vc): ?> 
 											<?php if ($vc->parent == $vp->id_menu): ?>
 												<ul>
@@ -481,3 +484,27 @@
 <script src="<?php echo base_url() ?>assets/scripts/jquery.growl.js"></script>
 
 </html>
+
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+        
+    });
+
+    function get_notif_sspd() {
+    	$.ajax({
+            url : '<?php  ?>',
+            type: 'POST',
+            data : {},
+            processData:false,
+            contentType:false,
+            cache:false,
+            async:false,
+        }).done(function(response){
+            // console.log(response)
+            $('#select_kelurahan').html(response);
+            var text=$("#select_kelurahan option:selected").text();
+            $("#nm_kelurahan").val(text);
+        });
+    }
+</script>

@@ -24,19 +24,27 @@ class Login extends CI_Controller {
 				// echo 'benar';
 				$data = array(
 								'username' => $sql->username,
-								'id' => $sql->id,
+								'id_user' => $sql->id,
 								'jenis' => $sql->jenis,
 							  );
 
 				if ($sql->jenis == 'PM') {
 					$row = $this->db->query('select pemda.* from pemda join user on user.id = pemda.id_user where user.id ='.$sql->id)->row();
 					// $data->
+					$data['id_pemda'] = $row->id;
 					$data['jabatan'] = $row->jabatan;
 					$data['nip'] = $row->nip;
 					$data['nama'] = $row->nama;
 					
 				}
-				
+				if ($sql->jenis == 'PP') {
+					$row = $this->db->query('select ppat.* from ppat join user on user.id = ppat.id_user where user.id ='.$sql->id)->row();
+					// $data->
+					$data['id_ppat'] = $row->id;
+					$data['alamat'] = $row->alamat;
+					$data['nama'] = $row->nama;
+
+				}				
 
 				$user_data = $this->session->all_userdata();
 			    foreach ($user_data as $key => $value) {
@@ -46,6 +54,10 @@ class Login extends CI_Controller {
 			    }
 				$_SESSION['user'] = $data;
 				// $this->session->userdataa($sql[0]);
+				$setting = $this->db->query('select * from setting')->row();
+
+				$_SESSION['setting'] = $setting;
+
 
 				
 				echo 1;
