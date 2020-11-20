@@ -52,9 +52,7 @@
 <div class="panel panel-radius">
   <div class="row">
    <div class="col-md-2"></div>
-    <?php echo "<pre>";
-    print_r ($this->session->userdata('user'));
-    echo "</pre>"; ?>
+    
    <?php if ($session['jabatan'] == $sspd->status): ?>
    <div class="col-md-10" style="padding-top: 20px;">
         

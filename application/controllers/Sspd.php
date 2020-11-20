@@ -10,7 +10,8 @@ class Sspd extends CI_Controller
         parent::__construct();
         $this->load->model('Sspd_model');
         $this->load->library('form_validation');        
-	$this->load->library('datatables');
+	    $this->load->library('datatables');
+        $this->load->library('pdf');
     }
 
     public function index()
@@ -758,6 +759,316 @@ class Sspd extends CI_Controller
         if ($app) {
             echo json_encode(array('sts' => 1,'jns' => $acc));
         }
+    }
+
+
+    function prints(){
+        
+        $pdf = new FPDF('P','mm','A4');
+        // membuat halaman baru
+        $pdf->SetMargins(10, 5);
+        $pdf->AddPage();
+        // setting jenis font yang akan digunakan
+        $pdf->SetFont('Arial','B',11);
+        // header
+
+        $image = 'assets/files/image/logo.png';
+        $pdf->Image($image,16,11,22,27,'PNG');
+
+        $pdf->Cell(35,3,'','LT',0,'C');
+        $pdf->Cell(120,3,'','LTR',0,'C');
+        $pdf->Cell(35,3,'','TR',1,'C');
+
+        $pdf->Cell(35,5,'','L',0,'C');
+        $pdf->Cell(120,5,'SURAT SETORAN PAJAK DAERAH','LR',0,'C');
+        $pdf->Cell(35,5,'','R',1,'C');
+        $pdf->Cell(35,5,'','L',0,'C');
+        $pdf->Cell(120,5,'BEA PEROLEHAN HAK ATAS TANAH DAN BANGUNAN','LR',0,'C');
+        $pdf->Cell(35,5,'LEMBAR','R',1,'C');
+        $pdf->Cell(35,5,'','L',0,'C');
+        $pdf->Cell(120,5,'(SSPD-BPHTB)','LRB',0,'C');
+        $pdf->Cell(35,5,'','R',1,'C');
+
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(35,2,'','L',0,'C');
+        $pdf->Cell(120,2,'','LR',0,'C');
+        $pdf->Cell(35,2,'','R',1,'C');
+        $pdf->Cell(35,5,'','L',0,'C');
+        $pdf->Cell(120,5,'BERFUNGSI SEBAGAI SURAT PEMBERITAHUAN OBJEK PAJAK','LR',0,'C');
+        $pdf->Cell(35,5,'','R',1,'C');
+        $pdf->Cell(35,5,'','LB',0,'C');
+        $pdf->Cell(120,5,'PAJAK BUMI DAN BANGUNAN (SPOP PBB)','LRB',0,'C');
+        $pdf->Cell(35,5,'','RB',1,'C');
+
+        //bawah header
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(190,7,'BADAN KEUANGAN DAERAH (BKD) KOTA ','LTRB',1,'');
+
+
+        // Data NIK
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(190,3,'','LR',1,'C');
+
+        $pdf->Cell(10,5,'A.','L',0,'C');
+        $pdf->Cell(37,5,'1.Nama WajibPajak','',0,'');
+        $pdf->Cell(143,5,':','R',1,'');
+        
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(37,5,'2.NIK','',0,'');
+        $pdf->Cell(143,5,':','R',1,'');
+
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(37,5,'3.Alamat Wajib Pajak','',0,'');
+        $pdf->Cell(143,5,':','R',1,'');
+
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(37,5,'Kelurahan / Desa','',0,'');
+        $pdf->Cell(43,5,':','',0,'');
+        $pdf->Cell(15,5,'RT/RW','',0,'');
+        $pdf->Cell(20,5,': 001/001','',0,'');
+        $pdf->Cell(20,5,'Kecamatan','',0,'');
+        $pdf->Cell(45,5,':','R',1,'');
+
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(37,5,'Kabupaten / Kota','',0,'');
+        $pdf->Cell(143,5,':','R',1,'');
+       
+        $pdf->Cell(190,3,':','LBR',1,'');
+        
+
+        //data NOP
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(190,3,'','LR',1,'C');
+
+        $pdf->Cell(10,5,'B.','L',0,'C');
+        $pdf->Cell(55,5,'1.Nomor Objek Pajak (NOP)PBB','',0,'');
+        $pdf->Cell(125,5,':','R',1,'');
+        
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(55,5,'2.Letak Tanah dan Bangunan','',0,'');
+        $pdf->Cell(125,5,':','R',1,'');
+
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(37,5,'3.Kelurahan / Desa','',0,'');
+        $pdf->Cell(68,5,':','',0,'');
+        $pdf->Cell(30,5,'4.RT/RW','',0,'');
+        $pdf->Cell(45,5,':','R',1,'');
+
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(37,5,'5.Kecamatan','',0,'');
+        $pdf->Cell(68,5,':','',0,'');
+        $pdf->Cell(30,5,'6.Kabupaten/Kota','',0,'');
+        $pdf->Cell(45,5,':','R',1,'');
+
+        $pdf->Cell(190,3,'','LR',1,'');
+        $pdf->Cell(10,5,'','L',0,'');
+        $pdf->Cell(180,5,'Perhitungan NJOP PBB','R',1,'');
+        
+
+        //tabel NJOP
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(10,9,'','L',0,'C');
+        $pdf->Cell(37,9,'Uraian','LTB',0,'C');
+        $pdf->Cell(45,9,'Luas','LTB',0,'C');
+        $pdf->Cell(45,9,'NJOP PBB/m2','LTB',0,'C');
+        $pdf->Cell(50,9,'Luas x NJOP PBB/m2','LTRB',0,'C');
+        $pdf->Cell(3,9,'','R',1,'');
+
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(10,8,'','L',0,'C');
+        $pdf->Cell(37,8,'Tanah (Bumi)','LTB',0,'C');
+        $pdf->Cell(8,8,'7','LTB',0,'C');
+        $pdf->Cell(37,8,'140','LTB',0,'R');
+        $pdf->Cell(8,8,'9','LTB',0,'C');
+        $pdf->Cell(37,8,'123','LTB',0,'R');
+        $pdf->Cell(8,8,'11','LTB',0,'C');
+        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(3,8,'','R',1,'');
+
+        $pdf->Cell(10,8,'','L',0,'C');
+        $pdf->Cell(37,8,'Bangunan','LTB',0,'C');
+        $pdf->Cell(8,8,'8','LTB',0,'C');
+        $pdf->Cell(37,8,'140','LTB',0,'R');
+        $pdf->Cell(8,8,'10','LTB',0,'C');
+        $pdf->Cell(37,8,'123','LTB',0,'R');
+        $pdf->Cell(8,8,'12','LTB',0,'C');
+        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(3,8,'','R',1,'');
+
+        $pdf->Cell(10,8,'','L',0,'C');
+        $pdf->Cell(127,8,'NJOP PBB','',0,'R');
+        $pdf->Cell(8,8,'13','LTB',0,'C');
+        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(3,8,'','R',1,'');
+
+
+        $pdf->Cell(190,1,'','LR',1,'');
+
+        $pdf->Cell(10,8,'','L',0,'C');
+        $pdf->Cell(127,8,'Harga Transaksi','',0,'R');
+        $pdf->Cell(8,8,'14','LTB',0,'C');
+        $pdf->Cell(42,8,'Rp.20.000.000','LTRB',0,'R');
+        $pdf->Cell(3,8,'','R',1,'');
+
+        $pdf->Cell(10,5,'','L',0,'C');
+        $pdf->Cell(32,5,'14.Jenis Perolehan','',0,'');
+        $pdf->Cell(145,5,': 01 - Jual - beli','',0,'L');
+        $pdf->Cell(3,5,'','R',1,'');
+
+        $pdf->Cell(10,5,'','L',0,'C');
+        $pdf->Cell(32,5,'15.NomorSertifikat','',0,'');
+        $pdf->Cell(145,5,': SHM 0001928','',0,'L');
+        $pdf->Cell(3,5,'','R',1,'');
+
+        $pdf->Cell(190,3,'','LBR',1,'');
+        //perhitungan BPHTB
+
+        $pdf->Cell(190,7,'C. Perhitungan BPHTB (hanya diisi berdasarkan penghitungan Wajib Pajak)','LBR',1,'');
+        
+        $pdf->Cell(10,5,'','LB',0,'L');
+        $pdf->Cell(127,5,'1.Nilai Perolehan Objek Pajak (NPOP) ','RB',0,'');
+        $pdf->Cell(8,5,'1','RB',0,'C');
+        $pdf->Cell(45,5,'','RB',1,'');
+        
+        $pdf->Cell(10,5,'','LB',0,'L');
+        $pdf->Cell(127,5,'2.Nilai Perolehan Objek Pajak Tidak Kena Pajak (NPOPTKP) ','RB',0,'');
+        $pdf->Cell(8,5,'2','RB',0,'C');
+        $pdf->Cell(45,5,'','RB',1,'');
+      
+        $pdf->Cell(10,5,'','LB',0,'L');
+        $pdf->Cell(127,5,'3.Nilai Perolehan Objek Pajak Kena Pajak (NPOPKP) ','RB',0,'');
+        $pdf->Cell(8,5,'3','RB',0,'C');
+        $pdf->Cell(45,5,'','RB',1,'');
+
+        $pdf->Cell(10,5,'','LB',0,'L');
+        $pdf->Cell(127,5,'4.Bea Perolehan Hak Atas Tanah dan Bangunan (BPHTB) ','RB',0,'');
+        $pdf->Cell(8,5,'4','RB',0,'C');
+        $pdf->Cell(45,5,'','RB',1,'');
+
+
+        $pdf->Cell(190,3,'','LBR',1,'');
+
+        //Jumlah Setoran Berdasarkan
+
+        $pdf->Cell(10,5,'D','L',0,'L');
+        $pdf->Cell(180,5,'Jumlah SetoranBerdasarkan ','R',1,'');
+
+        $pdf->Cell(11,5,'','L',0,'L');
+        $pdf->Cell(5,5,'O',1,0,'L');
+        $pdf->Cell(174,5,'c. Perhitungan Wajib Pajak ','R',1,'');
+        $pdf->Cell(190,1,'','LR',1,'');
+
+        $pdf->Cell(11,5,'','L',0,'L');
+        $pdf->Cell(5,5,'','LRT',0,'L');
+        $pdf->Cell(174,5,'c. STPD BPHTB / SKPDPB KURANG BAYAR /SKPDB ','R',1,'');
+
+        $pdf->Cell(11,5,'','L',0,'L');
+        $pdf->Cell(5,5,'','LBR',0,'L');
+        $pdf->Cell(70,5,'  KURANG BAYAR TAMBAHAN *) ','',0,'');
+        $pdf->Cell(50,5,'  Nomor :','',0,'L');
+        $pdf->Cell(50,5,'  Tanggal: ','B',0,'');
+        $pdf->Cell(4,5,'','R',1,'');
+
+        $pdf->Cell(190,1,'','LR',1,'');
+
+        $pdf->Cell(11,5,'','L',0,'L');
+        $pdf->Cell(5,5,'',1,0,'L');
+        $pdf->Cell(65,5,'c.Pengurang dihitung Sendiri menjadi :','',0,'');
+        $pdf->Cell(5,5,'',1,0,'L');
+        $pdf->Cell(5,5,'',1,0,'L');
+        $pdf->Cell(50,5,'% Berdasarkan Peraturan KDH Nomor:','',0,'');
+        $pdf->Cell(49,5,'   ','R',1,'');
+        $pdf->Cell(190,1,'','LR',1,'');
+        
+        $pdf->Cell(11,5,'','L',0,'L');
+        $pdf->Cell(5,5,'',1,0,'L');
+        $pdf->Cell(174,5,'d. ........................................................','LR',1,'');
+
+        $pdf->Cell(190,1,'','LRB',1,'');
+
+        //Jumlah Setor
+        $pdf->Cell(190,3,'','LR',1,'');
+
+        $pdf->Cell(11,5,'','L',0,'L');
+        $pdf->Cell(75,5,'JUMLAH YANG DISETOR (Dengan Angka)','',0,'L');
+        $pdf->Cell(104,5,'(Dengan Huruf)','R',1,'');
+        $pdf->Cell(11,5,'','L',0,'L');
+        $pdf->Cell(55,5,'Rp. 1000.000',1,0,'L');
+        $pdf->Cell(20,5,'','',0,'L');
+        $pdf->Cell(104,5,'Empat puluh Lima Juta Lima ratus tiga puluh lima ribu rupiah','R',1,'L');
+
+        $pdf->Cell(190,3,'','LBR',1,'');
+
+
+        //tanda tangan
+        $pdf->Cell(45,2,'','LR',0,'C');
+        $pdf->Cell(55,2,'','R',0,'C');
+        $pdf->Cell(40,2,'','R',0,'C');
+        $pdf->Cell(50,2,'','R',1,'C');
+
+        $pdf->Cell(45,5,'12 November 2020','LR',0,'C');
+        $pdf->Cell(55,5,'MENGETAHUI :','R',0,'C');
+        $pdf->Cell(40,5,'QR CODE','R',0,'C');
+        $pdf->Cell(50,5,'Telah Diverivikasi','R',1,'C');
+
+        $pdf->Cell(45,15,'','LR',0,'C');
+        $pdf->Cell(55,15,'','R',0,'C');
+        $pdf->Cell(40,15,'','R',0,'C');
+        $pdf->Cell(50,15,'','R',1,'C');
+
+        $len_wp =strlen('Muhammad Robby Santoso');
+        if ($len_wp > 30) {
+        $pdf->SetFont('Arial','U',9);
+
+        }else{
+        $pdf->SetFont('Arial','U',10);
+
+        }
+        $pdf->Cell(45,5,'Muhammad Robby Santoso','LR',0,'C');
+
+        $len_pp =strlen('Abdul Aziz Murtadlo, S.kom ,M.Kom');
+        if ($len_pp > 30) {
+        $pdf->SetFont('Arial','U',9);
+        }else{
+        $pdf->SetFont('Arial','U',10);
+        }
+
+        $pdf->Cell(55,5,'Abdul Aziz Murtadlo, S.kom ,M.Kom','R','','C');
+
+        $pdf->Cell(40,5,'','R',0,'C');
+        $len_pm =strlen('Faris Purnomo, S.Kom');
+        if ($len_pm > 30) {
+        $pdf->SetFont('Arial','U',9);
+        }else{
+        $pdf->SetFont('Arial','U',10);
+        }
+        $pdf->Cell(50,5,'Faris Purnomo, S.Kom','R',1,'C');
+
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(45,5,'','LR',0,'C');
+        $pdf->Cell(55,5,'','R',0,'C');
+        $pdf->Cell(40,5,'','R',0,'C');
+        $pdf->Cell(50,5,'Nip.79878986875596576','R',1,'C');
+
+
+        $pdf->Cell(45,3,'','LBR',0,'C');
+        $pdf->Cell(55,3,'','BR',0,'C');
+        $pdf->Cell(40,3,'','BR',0,'C');
+        $pdf->Cell(50,3,'','BR',1,'C');
+        $pdf->Output();
+    }
+    function print(){
+        
+        $pdf = new FPDF('P','mm','A4');
+        // membuat halaman baru
+        $pdf->SetMargins(10, 5);
+        $pdf->AddPage();
+        // setting jenis font yang akan digunakan
+        $pdf->SetFont('Arial','B',11);
+        // header
+
+        $pdf->AutoPrint(true);
+        $pdf->Output();
     }
 }
 

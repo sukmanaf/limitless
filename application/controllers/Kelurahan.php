@@ -3,36 +3,24 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Barang extends CI_Controller
+class Kelurahan extends CI_Controller
 {
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Barang_model');
+        $this->load->model('Kelurahan_model');
         $this->load->library('form_validation');        
 	$this->load->library('datatables');
     }
 
     public function index()
     {
-         $dataa = array(
-            'button' => 'Simpan',
-            'action' => site_url('barang/create_action'),
-            'id' => set_value('id'),
-            'nama' => set_value('nama'),
-            'harga' => set_value('harga'),
-            'updated_at' => set_value('updated_at'),
-            'keterangan' => set_value('keterangan'),
-            'created_at' => set_value('created_at'),
-            'datetim' => set_value('datetim'),
-        );
-        $data['modal'] = $this->load->view('barang/barang_form', $dataa, TRUE);
-        $this->skin->dashboard('barang/barang_list',$data);
+        $this->skin->dashboard('kelurahan/kelurahan_list',null);
     } 
     
     public function json() {
         header('Content-Type: application/json');
-        echo $this->Barang_model->json();
+        echo $this->Kelurahan_model->json();
     }
 
 
@@ -40,38 +28,24 @@ class Barang extends CI_Controller
     {   
 
         $cari =[
-        		'nama'=>@$_POST['nama_search_name'],
-				'harga'=>@$_POST['harga_search_name'],
-				'updated_at'=>@$_POST['updated_at_search_name'],
-				'keterangan'=> @$_POST['keterangan_search_name']
+        		'kecamatan_id'=>@$_POST['kecamatan_id_search_name'],
+				'nama'=>@$_POST['nama_search_name'],
 
                 ];
-        $dataq = $this->Barang_model->get_all($cari);
-        $dataa = array(
-            'button' => 'Simpan',
-            'action' => site_url('barang/create_action'),
-            'id' => set_value('id'),
-            'nama' => set_value('nama'),
-            'harga' => set_value('harga'),
-            'updated_at' => set_value('updated_at'),
-            'keterangan' => set_value('keterangan'),
-            'created_at' => set_value('created_at'),
-            'datetim' => set_value('datetim'),
-        );
-        $data['modal'] = $this->load->view('barang/barang_form', $dataa, TRUE);
+            $dataq = $this->Kelurahan_model->get_all($cari);
         $judul=[];
         $data['isi']=[];
         foreach ($dataq as $key => $v) {
             foreach ($v as $k => $val) {
                   array_push($judul, $k);
             }            
-            $a= [$key+1,$v->nama,$v->harga,$v->harga,$v->harga,$v->harga,
-                 '<a href="'. site_url("barang/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
-                 <a href="'. site_url("barang/update/").$v->id.'" class="btn-xs btn-info"> Ubah</a>
+            $a= [$key+1,$v->kecamatan_id,$v->nama,
+                 '<a href="'. site_url("kelurahan/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
+                 <a href="'. site_url("kelurahan/update/").$v->id.'" class="btn-xs btn-info"> Ubah</a>
 
                   <a href="#" class="btn-xs btn-danger" onclick="hapus('.$v->id.',event)"> Hapus</a>
                  '];
-            // <button  class="btn-sm btn-danger" data-toggle="modal" data-target="#modal" ><i class="fas fa-trash"></i> hapus</button>
+            // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
         }
         $data['judul']=$judul;
@@ -82,7 +56,7 @@ class Barang extends CI_Controller
        public function show()
     {
 
-        $row = $this->Barang_model->get_all();
+        $row = $this->Kelurahan_model->get_all();
         if ($row) {
             $row=$row[0];
             $data = array(
@@ -160,21 +134,17 @@ class Barang extends CI_Controller
 
     public function read($id) 
     {
-        $row = $this->Barang_model->get_by_id($id);
+        $row = $this->Kelurahan_model->get_by_id($id);
         if ($row) {
             $data = array(
 		'id' => $row->id,
+		'kecamatan_id' => $row->kecamatan_id,
 		'nama' => $row->nama,
-		'harga' => $row->harga,
-		'updated_at' => $row->updated_at,
-		'keterangan' => $row->keterangan,
-		'created_at' => $row->created_at,
-		'datetim' => $row->datetim,
 	    );
-            $this->skin->dashboard('barang/barang_read', $data);
+            $this->skin->dashboard('kelurahan/kelurahan_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('barang'));
+            redirect(site_url('kelurahan'));
         }
     }
 
@@ -182,54 +152,42 @@ class Barang extends CI_Controller
     {
         $data = array(
             'button' => 'Simpan',
-            'action' => site_url('barang/create_action'),
+            'action' => site_url('kelurahan/create_action'),
 	    'id' => set_value('id'),
+	    'kecamatan_id' => set_value('kecamatan_id'),
 	    'nama' => set_value('nama'),
-	    'harga' => set_value('harga'),
-	    'updated_at' => set_value('updated_at'),
-	    'keterangan' => set_value('keterangan'),
-	    'created_at' => set_value('created_at'),
-	    'datetim' => set_value('datetim'),
 	);
-        $this->skin->dashboard('barang/barang_form', $data);
+        $this->skin->dashboard('kelurahan/kelurahan_form', $data);
     }
     
     public function create_action() 
     {
         
             $data = array(
+		'kecamatan_id' => $this->input->post('kecamatan_id'),
 		'nama' => $this->input->post('nama'),
-		'harga' => $this->input->post('harga'),
-		'updated_at' => $this->input->post('updated_at'),
-		'keterangan' => $this->input->post('keterangan'),
-		'created_at' => $this->input->post('created_at'),
-		'datetim' => $this->input->post('datetim'),
 	    );
 
-            $acc = $this->Barang_model->insert($data);
+            $acc = $this->Kelurahan_model->insert($data);
             echo $acc;
     }
     
     public function update($id) 
     {
-        $row = $this->Barang_model->get_by_id($id);
+        $row = $this->Kelurahan_model->get_by_id($id);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
-                'action' => site_url('barang/update_action'),
+                'action' => site_url('kelurahan/update_action'),
 		'id' => set_value('id', $row->id),
+		'kecamatan_id' => set_value('kecamatan_id', $row->kecamatan_id),
 		'nama' => set_value('nama', $row->nama),
-		'harga' => set_value('harga', $row->harga),
-		'updated_at' => set_value('updated_at', $row->updated_at),
-		'keterangan' => set_value('keterangan', $row->keterangan),
-		'created_at' => set_value('created_at', $row->created_at),
-		'datetim' => set_value('datetim', $row->datetim),
 	    );
-            $this->skin->dashboard('barang/barang_form', $data);
+            $this->skin->dashboard('kelurahan/kelurahan_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('barang'));
+            redirect(site_url('kelurahan'));
         }
     }
     
@@ -237,25 +195,21 @@ class Barang extends CI_Controller
     {
         
             $data = array(
+		'kecamatan_id' => $this->input->post('kecamatan_id'),
 		'nama' => $this->input->post('nama'),
-		'harga' => $this->input->post('harga'),
-		'updated_at' => $this->input->post('updated_at'),
-		'keterangan' => $this->input->post('keterangan'),
-		'created_at' => $this->input->post('created_at'),
-		'datetim' => $this->input->post('datetim'),
 	    );
 
-            $acc = $this->Barang_model->update($this->input->post('id', TRUE), $data);
+            $acc = $this->Kelurahan_model->update($this->input->post('id', TRUE), $data);
             echo $acc;
         
     }
     
     public function delete($id) 
     {
-        $row = $this->Barang_model->get_by_id($id);
+        $row = $this->Kelurahan_model->get_by_id($id);
 
         if ($row) {
-           $acc = $this->Barang_model->delete($id);
+           $acc = $this->Kelurahan_model->delete($id);
             echo $acc;
 
         } else {
@@ -266,12 +220,8 @@ class Barang extends CI_Controller
 
     public function _rules() 
     {
+	$this->form_validation->set_rules('kecamatan_id', 'kecamatan id', 'trim|required');
 	$this->form_validation->set_rules('nama', 'nama', 'trim|required');
-	$this->form_validation->set_rules('harga', 'harga', 'trim|required|numeric');
-	$this->form_validation->set_rules('updated_at', 'updated at', 'trim|required');
-	$this->form_validation->set_rules('keterangan', 'keterangan', 'trim|required');
-	$this->form_validation->set_rules('created_at', 'created at', 'trim|required');
-	$this->form_validation->set_rules('datetim', 'datetim', 'trim|required');
 
 	$this->form_validation->set_rules('id', 'id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -279,8 +229,8 @@ class Barang extends CI_Controller
 
 }
 
-/* End of file Barang.php */
-/* Location: ./application/controllers/Barang.php */
+/* End of file Kelurahan.php */
+/* Location: ./application/controllers/Kelurahan.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2020-11-10 09:37:40 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2020-11-20 10:04:40 */
 /* http://harviacode.com */
