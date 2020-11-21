@@ -47,30 +47,36 @@ class Sspd extends CI_Controller
                   array_push($judul, $k);
             }     
 
-            '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn-xl btn-primary" style="border-radius:5px;;padding: 2% 6%;"> Lihat</a>
-                 <a href="'. site_url("sspd/update/").$v->no_pendaftaran.'" class="btn-xl btn-info" style="border-radius:5px;;padding: 2% 6%;"> Ubah</a>
+            '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn btn-primary" style="border-radius:5px;;padding: 2% 6%;"> Lihat</a>
+                 <a href="'. site_url("sspd/update/").$v->no_pendaftaran.'" class="btn btn-info" style="border-radius:5px;;padding: 2% 6%;"> Ubah</a>
 
-                  <a href="#" class="btn-xl btn-danger"  style="border-radius:5px;padding: 2% 6%;" onclick="hapus('.$v->id.',event)"> Hapus </a>
+                  <a href="#" class="btn btn-danger"  style="border-radius:5px;padding: 2% 6%;" onclick="hapus('.$v->id.',event)"> Hapus </a>
                  ';
-                 $tombol ='';
+                $tombol = '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn btn-primary" style="margin:2px;;border-radius:5px;;padding: 2% 6%;"> Lihat</a>';       
+                
+                $sts = substr($v->status,0,2); 
             if ($this->ses['jenis'] == 'PM') {
                 $tombol .= '';       
             }
             if ($this->ses['jenis'] == 'PP') {
-                $edit = substr($v->status,0,2); 
-                if($edit == 'PP'){
+                if($sts == 'PP'){
 
                     $tombol .= '
-                 <a href="'. site_url("sspd/update/").$v->no_pendaftaran.'" class="btn-xl btn-info" style="border-radius:5px;;padding: 2% 6%;"> Ubah</a>';  
+                 <a href="'. site_url("sspd/update/").$v->no_pendaftaran.'" class="btn btn-info" style="margin:2px;;border-radius:5px;;padding: 2% 6%;"> Ubah</a>';  
                 }
-                if($edit == 'MP'){
+                if($sts == 'MP'){
 
                     $tombol .= '
-                 <a href="#" class="btn-xl btn-info" onclick="billing('.$v->id.')" style="position:inline-block;border-radius:5px;;padding: 2% 6%;"> Cetak Billing</a>';  
+                 <a href="#" class="btn btn-info" onclick="billing(\''.$v->no_pendaftaran.'\');" style="margin:2px;;position:inline-block;border-radius:5px;;padding: 2% 6%;"> Cetak Billing</a>';  
+                    
+                }
+                if($sts == 'LN'){
+
+                    $tombol .= '
+                 <a href="" class="btn btn-info" onclick="print(\''.$v->no_pendaftaran.'\');" style="margin:2px;;position:inline-block;border-radius:5px;;padding: 2% 6%;"> Cetak sspd</a>';  
                 }
 
             }       
-                $tombol .= '<a href="'. site_url("sspd/read/").$v->no_pendaftaran.'" class="btn-xl btn-primary" style="border-radius:5px;;padding: 2% 6%;"> Lihat</a>';       
             $a= [$key+1,$v->no_pendaftaran,$v->nama,'<span class="badge badge-'.$v->class.'">'.$v->text.'</span>',$tombol
                  ];
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
@@ -802,7 +808,7 @@ class Sspd extends CI_Controller
 
         $logo = 'assets/files/image/logo.png';
         $centang = 'assets/files/image/centang.png';
-        $pdf->Image($logo,16,11,22,27,'PNG');
+        $pdf->Image($logo,16,7,22,27,'PNG');
         $pdf->Image($centang,22,195,3,3,'PNG');
 
         $pdf->Cell(35,3,'','LT',0,'C');
@@ -999,7 +1005,7 @@ class Sspd extends CI_Controller
         $pdf->Cell(11,5,'','L',0,'L');
         $pdf->Cell(5,5,'','LBR',0,'L');
         $pdf->Cell(70,5,'  KURANG BAYAR TAMBAHAN *) ','',0,'');
-        $pdf->Cell(50,5,'  Nomor :','',0,'L');
+        $pdf->Cell(50,5,'  Nomor :','B',0,'L');
         $pdf->Cell(50,5,'  Tanggal: ','B',0,'');
         $pdf->Cell(4,5,'','R',1,'');
 
@@ -1150,12 +1156,11 @@ class Sspd extends CI_Controller
 
     function billing($nopen){
 
-        $row = $this->Sspd_model->get_by_id($nopen);
-        $pdf = new FPDF('L','mm',array(210,75));
+        $row = $this->Sspd_model->get_all_by_nopen($nopen);
+
+        $pdf = new FPDF('L','mm',array(100,210));
         // membuat halaman baru
         // $pdf->SetMargins(10, 2);
-        $pdf->SetMargins(10,5,5);
-        $pdf->SetAutoPageBreak(false,5);
         $pdf->AddPage();
         // setting jenis font yang akan digunakan
         $pdf->SetFont('Arial','B',11);
@@ -1202,7 +1207,7 @@ class Sspd extends CI_Controller
         $pdf->Cell(190,6,'','LBR',1,'R');
 
 
-        $pdf->Output('S');
+        $pdf->Output('I');
     }
     
 }

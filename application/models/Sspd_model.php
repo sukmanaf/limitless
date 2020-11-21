@@ -59,7 +59,7 @@ class Sspd_model extends CI_Model
             }
             if ($tipe =='PP') {
             $id_ppat = $this->ses['id_ppat'];
-            $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" ');
+            $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" or sspd.status like "LN001%" ');
             $this->db->where('sspd.id_ppat = '.$id_ppat);
             }
         }

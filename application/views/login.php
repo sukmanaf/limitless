@@ -139,7 +139,7 @@ $("#postForm").submit(function(event){
               setTimeout(function () {
                 window.location.replace('<?php echo site_url('niks') ?>')
                 
-            }, 2000);
+            }, 1000);
                
             }else{
                 $.growl.warning({ message: "Username atau Password Salah!" });

@@ -53,7 +53,7 @@
   <div class="row">
    <div class="col-md-2"></div>
     
-   <?php if ($session['jabatan'] == $sspd->status): ?>
+   <?php if (@$session['jabatan'] == $sspd->status): ?>
    <div class="col-md-10" style="padding-top: 20px;">
         
       <a href="#" onclick="action('<?= @$sspd->status ?>/approve')" class="btn-sm btn-primary"> Verifikasi</a>

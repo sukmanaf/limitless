@@ -13,7 +13,10 @@
 
 
 <div class="" style="margin-left: 20px">
+    <?php if ($session['jenis']== 'PP' ): ?>
 <a href="<?php echo site_url().$this->uri->segment(1) ?>/create" class="btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
+        
+    <?php endif ?>
 </div>
 <div class="panel-body">
         <form action="#" id="postForm" enctype="multipart/form-data" method="post">
@@ -47,10 +50,10 @@
             </div>
     </div>
 </div>
-
+<iframe src="" id="pdf" style="display: none"></iframe>
 <div class="panel-body">
 
-<table id="dtables" class="table datatable-responsive table-bordered table-striped"></table>
+<table id="dtables" class="table datatable-responsive table-bordered table-striped" ></table>
 </div>
 <div id="print">
     
@@ -197,23 +200,39 @@
     }
 
 
-    function billing(v){
+    function print(id){
+        link = "<?php echo site_url('sspd/print/')?>"+id;
+        $('#pdf').attr('src', link);
         event.preventDefault(); //prevent default action 
-        post_url = "<?php echo site_url('sspd/billing/')?>"+v;
-
-        $.ajax({
-            url : post_url,
-            type: 'POST',
-            data : {},
-            processData:false,
-                     contentType:false,
-                     cache:false,
-                     async:false,
-        }).done(function(response){
-            console.log(response)
-            $('#print').html(response);
-            // $.print('#print');
-            // $('#print').html('');
-        });
+        setTimeout(function () {
+        printTrigger('pdf')
+                            },500);
+        
+    }   
+    function billing(id){
+        link = "<?php echo site_url('sspd/billing/')?>"+id;
+        $('#pdf').attr('src', link);
+        event.preventDefault(); //prevent default action 
+        setTimeout(function () {
+        printTrigger('pdf')
+                            }, 500);
+        
     }
+    function pendaftaran(id){
+        link = "<?php echo site_url('sspd/pendaftaran/')?>"+id;
+        $('#pdf').attr('src', link);
+        event.preventDefault(); //prevent default action 
+        setTimeout(function () {
+        printTrigger('pdf')
+                            }, 500);
+        
+    }
+
+    
+function printTrigger(elementId) {
+
+    var getMyFrame = document.getElementById(elementId);
+    getMyFrame.focus();
+    getMyFrame.contentWindow.print();
+}
 </script>
