@@ -153,11 +153,19 @@ class Sspd_model extends CI_Model
        $acc = $this->db->insert($this->table, $data);
        return $acc;
 
-    }  function insert_nik($data)
+    }  
+    function insert_nik($data)
     {
        $acc = $this->db->insert('nik', $data);
        $insertId = $this->db->insert_id();
        return $acc.'.'.$insert_id;
+
+    }
+    function insert_komen($data)
+    {
+       $acc = $this->db->insert('komen', $data);
+       $insertId = $this->db->insert_id();
+       return $acc;
 
     }
 
@@ -289,14 +297,23 @@ class Sspd_model extends CI_Model
         return $this->db->get('lampiran')->result();
     }
 
-    function get_approve($status,$acc)
+    function get_approve($status,$acc,$nopen)
     {
-            $this->db->where('alur.status', $acc);
-            $this->db->where('sd.status', $status);
-            $this->db->join('status sd', 'sd.id = alur.dari', 'left');
-            $this->db->join('status sk', 'sk.id = alur.ke', 'left');
-            $this->db->select('alur.*,sk.status as status_ke,sd.status as status_dari');
-        return $this->db->get('alur')->row();
+
+        if ($status == 'PM003') {
+            $cek = $this->db->query('select total_bayar from sspd where no_pendaftaran= "'.$nopen.'"')->row();
+            if ($cek->total_bayar == 0) {
+                $this->db->order_by('alur.id', 'desc');
+            }
+        }
+        $this->db->where('alur.status', $acc);
+        $this->db->where('sd.status', $status);
+        $this->db->join('status sd', 'sd.id = alur.dari', 'left');
+        $this->db->join('status sk', 'sk.id = alur.ke', 'left');
+        $this->db->select('alur.*,sk.status as status_ke,sd.status as status_dari');
+        
+         return $this->db->get('alur')->row();
+         
     }
 
      // get all
@@ -316,6 +333,13 @@ class Sspd_model extends CI_Model
         }
             $this->db->select('count(id) as jml');
         return $this->db->get($this->table)->row();
+    }
+
+      // get data by id
+    function get_komen($nopen)
+    {
+        $this->db->where('nopen', $nopen);
+        return $this->db->get('komen')->result();
     }
 
 }

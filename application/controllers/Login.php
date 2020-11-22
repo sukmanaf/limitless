@@ -31,6 +31,7 @@ class Login extends CI_Controller {
 				if ($sql->jenis == 'PM') {
 					$row = $this->db->query('select pemda.* from pemda join user on user.id = pemda.id_user where user.id ='.$sql->id)->row();
 					// $data->
+					$data['id'] = $row->id;
 					$data['id_pemda'] = $row->id;
 					$data['jabatan'] = $row->jabatan;
 					$data['nip'] = $row->nip;
@@ -41,6 +42,7 @@ class Login extends CI_Controller {
 					$row = $this->db->query('select ppat.* from ppat join user on user.id = ppat.id_user where user.id ='.$sql->id)->row();
 					// $data->
 					$data['id_ppat'] = $row->id;
+					$data['id'] = $row->id;
 					$data['alamat'] = $row->alamat;
 					$data['nama'] = $row->nama;
 

@@ -207,6 +207,7 @@ class Sspd extends CI_Controller
         $perolehan = $this->Sspd_model->get_jenis_perolehan($row->jenis_perolehan);
         $lampiran = $this->Sspd_model->get_lampiran($nopen);
         $files = $this->Sspd_model->get_files($nopen);
+        $komen = $this->Sspd_model->get_komen($nopen);
 
         $lam = array();
         if (!empty($perolehan->lampiran)) {
@@ -226,6 +227,7 @@ class Sspd extends CI_Controller
             'jns_perolehan' => $jns_perolehan,
             'lampiran' => $lampiran,
             'files' => $files,
+            'komen' => $komen,
         );
             
             $this->skin->dashboard('sspd/sspd_read', $data);
@@ -783,9 +785,12 @@ class Sspd extends CI_Controller
 
     public function approve($status,$acc,$nopen)
     {
-        $row = $this->Sspd_model->get_approve($status,$acc);
+
+        $row = $this->Sspd_model->get_approve($status,$acc,$nopen);
+
         $data = array('status' => $row->status_ke,
                         'update' =>date('Y-m-d H:i:s'),
+                        'tgl_validasi_berkas' =>date('Y-m-d H:i:s'),
                         );
         $this->db->where('no_pendaftaran', $nopen);
         $app = $this->db->update('sspd', $data);
@@ -1158,7 +1163,7 @@ class Sspd extends CI_Controller
 
         $row = $this->Sspd_model->get_all_by_nopen($nopen);
 
-        $pdf = new FPDF('L','mm',array(100,210));
+        $pdf = new FPDF('P','mm','A4');
         // membuat halaman baru
         // $pdf->SetMargins(10, 2);
         $pdf->AddPage();
@@ -1209,6 +1214,40 @@ class Sspd extends CI_Controller
 
         $pdf->Output('I');
     }
+    
+    public function komen()
+    {
+        $data = array(
+                        'nopen' =>$_POST['nopen'],
+                        'send' =>$_POST['send'],
+                        'tipe' =>$_POST['tipe'],
+                        'text' =>$_POST['komen'],
+                    );
+        $ins = $this->Sspd_model->insert_komen($data);
+        $str = '<li class="media">
+                      <div class="media-left">
+                        <a href="#"><img src="'.base_url().'assets/images/placeholder.jpg" class="img-circle img-sm" alt=""></a>
+                      </div>
+
+                      <div class="media-body">
+                        <div class="media-heading">
+                          <a class="text-semibold">William Jennings</a>
+                        </div>
+
+                        '.$_POST['komen'].'
+
+                        
+                      </div>
+                    </li>';
+        if ($ins == 1) {
+            echo json_encode(array('sts' => 1, 'data' => $str));            
+        }else{
+            echo json_encode(array('sts' => 0));            
+
+        }
+
+    }
+
     
 }
 

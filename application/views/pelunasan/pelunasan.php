@@ -21,125 +21,200 @@
 
 </style>
 
-
-  
+<div class="col-md-2"></div>
+<div class="col-md-8">
 <div class="panel panel-radius">
   <div class="row">
    <div class="col-md-2"></div>
     
-   <h1 align="center">Pelunasan BPHTB</h1>
+    <h1 align="center">Pelunasan BPHTB</h1>
     <div class="panel-body" >
-      <input type="hidden" name="" id="id_nopen" value="<?= @$sspd->no_pendaftaran ?>">
         
 
       <form action="#" id="postForm" class="form-horizontal" enctype="multipart/form-data" method="post">
-        <div class="row">
-            <div class="col-md-11 text-right">
-
-
-                <div class="col-md-3 " style=" padding:5px;float: right">
-                <input type="text" class="form-control" name="billing_search_name" id="billing_search_id" placeholder="Id Billing"  />
+       <div class="row">
+            <div class="col-md-3" align="center"></div>
+            <div class="col-md-5" align="center">
+                <div class="col-md-12 " style=" padding:5px;float: right;">
+                    <input type="text" class="form-control input" name="billing" id="billing_search_id" placeholder="ID Billing"  />
                 </div>
 
-            
-                
+
             </div>
             <div class="col-md-1">
-                <div class="row" style=" margin:5px">
-                    <div class="col-md-12" style=" padding:5px">
-                        <button type="submit" class=" btn btn-primary"><i class="fas fa-search"></i> </button>
-                    </div>
-
+                <div class="" style=" padding:5px;float: right;">
+                    <button type="submit" class=" btn btn-primary" style="float: right;"><i class="fas fa-search"></i> </button>
                 </div>
-            </div>
-    	</div>
+        </div>
 
-    	<div class="row">
-    		<div class="col-md-6 well" >1. Nama</div>
-    		<div class="col-md-6 well"><span id="nama">.</span></div>
-    		<div class="col-md-6 well">2. NIK</div>
-    		<div class="col-md-6 well"><span id="nik">.</span></div>
-    		<div class="col-md-6 well">3. Alamat Wajib Pajak</div>
-    		<div class="col-md-6 well"><span id="alamat_wp">.</span></div>
-    		<div class="col-md-6 well">4. NOP</div>
-    		<div class="col-md-6 well"><span id="nop">.</span></div>
-    		<div class="col-md-6 well">5. ALamat Objek Pajak</div>
-    		<div class="col-md-6 well"><span id="alamat_op">.</span></div>
-    		<div class="col-md-6 well">6. Total Bayar</div>
-    		<div class="col-md-6 well"><span id="total_bayar">.</span></div>
-    	</div>
-	</form>
-    </div>
-    </div>
-    </div>
+          <table class="table table-bordered" id="table1" style="">
+
+                    <tr>
+                      <td>Pilih Tanggal Pembayaran</td>
+                      <td>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-calendar5"></i></span>
+                            <input type="text" id="tanggal" name="tanggal" value="" class="form-control pickadate" placeholder="Tanggal Pembayaran">
+                        </div></td>
+                    </tr>
+                    <tr>
+                      <td width="40%">Nama</td>
+                      <td><span id="span_nama" class="span"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Nomor Pendaftaran</td>
+                      <td><span id="span_nopen" class="span"></span>
+                        <input type="hidden" id="nopen" name="nopen">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Alamat Wajib Pajak</td>
+                      <td><span id="span_alamat_wp" class="span"></span></td>
+                    </tr>
+                    <tr>
+                      <td>NOP</td>
+                      <td><span id="span_nop" class="span"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Alamat Objek Pajak</td>
+                      <td><span id="span_alamat_op" class="span"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Jumlah Bayar</td>
+                      <td><span id="span_bayar" class="span"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Status Pembayaran</td>
+                      <td><span id="span_status_bayar" class="span"></span></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" align="center">
+                        <button type="button" onclick="save()" class="btn btn-primary" disabled id="btn_verifikasi" >Verifikasi Pembayaran</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+          <div class="row" style="margin-top: 20px">      
+            
+          </div>
+      </form>
+   </div>
+  </div>
+</div>
+</div>
+<div class="col-md-2"></div>
+
     <script >
 
 
    $("#postForm").submit(function(event){
             event.preventDefault(); //prevent default action 
             $.LoadingOverlay("text", "Yep, still loading...");
+            // $.LoadingOverlay("show");
+            if ($('#billing_search_id').val() == '') {
+                $.growl.warning({ message: "Isi ID Biliing Terlebih Dahulu" });
+                return false
+            }
 
-            $.LoadingOverlay("show");
+            var formData = new FormData(this);
+              $.ajax({
+               url:'<?php echo site_url('pelunasan/get_data');?>', //URL submit
+               type:"post", //method Submit
+               data:new FormData(this), //penggunaan FormData
+               processData:false,
+               contentType:false,
+               cache:false,
+               async:false,
+                success: function(data){
+                  data = JSON.parse(data);
+                  // console.log(data.sts)
+                  if (data.sts == 1 && data.data['status'] != 'MP001') {
+                    $.growl.warning({ message: "Data Belum Tervalikasi Kabid!" });
+                    $('#btn_verifikasi').attr('disabled',true);
+                    $('#nopen').val('');
 
-            var form = $('form')[0];
-            var formData = new FormData(form);
-            formData.append('image', $('input[type=file]')[0].files[0]); 
+                    $('#tanggal').val('')
+                    $('.span').html('')
+                  }else if (data.sts == 1 && data.data['status'] == 'MP001') {
+                    $.growl.notice({ message: "Data DItemukan!" });
 
-                   $.ajax({
-                             url:'<?php echo site_url('pelunasan/get_all');?>', //URL submit
-                             type:"post", //method Submit
-                             data:new FormData(this), //penggunaan FormData
-                             processData:false,
-                             contentType:false,
-                             cache:false,
-                             async:false,
-                              success: function(data){
-                                
-                           }
-                         });
+                    $('#span_nama').html(data.data['nama']);
+                    $('#nopen').val(data.data['no_pendaftaran']);
+                    $('#span_nopen').html(data.data['no_pendaftaran']);
+                    $('#span_alamat_wp').html(data.data['alamat'])
+                    $('#span_nop').html(data.data['nop'])
+                    $('#span_alamat_op').html(data.data['alamat_op'])
+                    $('#span_bayar').html(data.data['total_bayar'])
+                    var sts = data.data['status'];
+                    var res = sts.substring(0, 2);
+                    if (res == 'LN') {
+                    $('#btn_verifikasi').attr('disabled',true);
+                    $('#span_status_bayar').html('Sudah Melakukan Pembayaran')
+                    } else{
+                    $('#btn_verifikasi').attr('disabled',false);
+                    $('#span_status_bayar').html('Belum Melakukan Pembayaran')
+                    }   
+                    $('#tanggal').val('');
+
+                  }else{
+                    $('#btn_verifikasi').attr('disabled',true);
+                    $('#nopen').val('');
+
+                    $('#tanggal').val('')
+                    $('.span').html('')
+                    $.growl.warning({ message: "ID Billing Tidak DItemukan!" });
+
+                  }
+                }
+              });   
+            
+           
             
 
         
     });
 
 
-    function action(acc){
-        event.preventDefault(); //prevent default action 
-        var r = confirm("Apakah Anda Yakin?");
-        if (r == true) {
-        } else {
-            return false;
-        }
-        var nopen = $('#id_nopen').val();
-        post_url = "<?php echo site_url('sspd/approve/')?>"+acc+'/'+nopen;
-
-        $.ajax({
-            url : post_url,
-            type: 'POST',
-            data : {},
-            processData:false,
-                     contentType:false,
-                     cache:false,
-                     async:false,
-        }).done(function(response){
-            response = JSON.parse(response);
-
-            if (response.sts == 1){
-
-                $.growl.notice({ message: response.jns+" Sukses!" });
-                  // $.growl.error({ message: "The kitten is attacking!" });
-                 
-                setTimeout(function () {
-                }, 1000);
-            }else{
-                $.growl.danger({ message: response.jns+" gagal!" });
-                $(".btn").css('display','inline');
-
-            }
-        });
+   function save() {
+    if ($('#tanggal').val()=='') {
+      $.growl.warning({ message: "Isi Tanggal Pembayaran Terlebih Dahulu" });
+                return false
     }
 
+    var form = $('form')[0];
+    var formData = new FormData(form);
+     $.ajax({
+               url:'<?php echo site_url('pelunasan/validasi');?>', //URL submit
+               type:"post", //method Submit
+               data:formData, //penggunaan FormData
+               processData:false,
+               contentType:false,
+               cache:false,
+               async:false,
+                success: function(data){
+                  data = JSON.parse(data);
+                  // console.log(data.sts)
+                  if (data.sts == 1) {
+                    $.growl.notice({ message: "Verivikasi Pembayaran Berhasil!" });
+                    $('#span_status_bayar').html('Sudah Melakukan Pembayaran')
+
+                    $('#btn_verifikasi').attr('disabled',true);
+                  }else{
+                    $('#btn_verifikasi').attr('disabled',false);
+
+                    // $('#datetim').val('')
+                    // $('.span').html('')
+                    $.growl.warning({ message: "Verifikasi Pembauaran gagal!" });
+
+                  }
+             }
+           });
+   }
+
+
+
     
+
 
 
 </script>

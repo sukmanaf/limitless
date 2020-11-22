@@ -13,16 +13,7 @@ class Skin
 
 	}
 
-	public function view($name,$val)
-	{
-		// echo $name;
 
-		$data['profil']= $this->ci->db->query('select * from profil')->row_array();
-		$data['sosmed']= $this->ci->db->query('select * from sosmed')->row_array();
-		$data['body']=$this->ci->load->view($name, $val, true);
-		// echo $data['body'];exit();
-		$this->ci->load->view('skin', $data);
-	}
 	public function dashboard($name,$val)
 	{
 		// echo $name;
@@ -32,7 +23,7 @@ class Skin
    		$val['session']=$this->ci->session->userdata('user');
 
         $ses=$this->ci->session->userdata('user');
-        $data['sspd_notif'] = $this->ci->Global_model->get_sspd_notif($ses['jenis'],@$ses['jabatan'])->jml;
+        $data['sspd_notif'] = $this->ci->Global_model->get_sspd_notif(@$ses['jenis'],@$ses['jabatan'])->jml;
 
 
 		

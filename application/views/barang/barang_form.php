@@ -54,9 +54,9 @@
                     <label class="control-label col-lg-2">datetim</label>
                     <div class="col-lg-10">
                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="icon-calendar5"></i></span>
-                                            <input type="text" id="datetim" name="datetim" value="<?php echo $datetim; ?>" class="form-control pickadate" placeholder="Try me&hellip;">
-                                        </div>
+                            <span class="input-group-addon"><i class="icon-calendar5"></i></span>
+                            <input type="text" id="datetim" name="datetim" value="<?php echo $datetim; ?>" class="form-control pickadate" placeholder="Try me&hellip;">
+                        </div>
                     </div>
                 </div><div align="center">
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $button ?></button>

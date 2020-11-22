@@ -80,6 +80,10 @@
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/plugins/forms/validation/validate.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/plugins/notifications/sweet_alert.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/pages/wizard_form.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ?>assets/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/pages/blog_single.js"></script>
+	
+
 
 
 <style type="text/css">
@@ -460,7 +464,7 @@
 
 					<!-- Footer -->
 					<div class="footer text-muted">
-						&copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+						<!-- &copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a> -->
 					</div>
 					<!-- /footer -->
 
