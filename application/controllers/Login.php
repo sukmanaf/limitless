@@ -26,6 +26,7 @@ class Login extends CI_Controller {
 								'username' => $sql->username,
 								'id_user' => $sql->id,
 								'jenis' => $sql->jenis,
+								'nama' => $sql->nama,
 							  );
 
 				if ($sql->jenis == 'PM') {
@@ -35,7 +36,6 @@ class Login extends CI_Controller {
 					$data['id_pemda'] = $row->id;
 					$data['jabatan'] = $row->jabatan;
 					$data['nip'] = $row->nip;
-					$data['nama'] = $row->nama;
 					
 				}
 				if ($sql->jenis == 'PP') {
@@ -44,7 +44,6 @@ class Login extends CI_Controller {
 					$data['id_ppat'] = $row->id;
 					$data['id'] = $row->id;
 					$data['alamat'] = $row->alamat;
-					$data['nama'] = $row->nama;
 
 				}				
 

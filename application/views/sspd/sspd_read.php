@@ -402,13 +402,13 @@ display: flex;
             <?php foreach ($lampiran as $key => $value): ?>
           <div class="row" style="margin-bottom: 10px">
             <div class="col-sm-12 col-md-1  "></div>
-            <div class="col-sm-12 col-md-7  ">
+            <div class="col-sm-12 col-md-6  ">
               <span><?=($key+1).'.'.$value->nama ?></span>
             </div>
-            <div class="col-sm-12 col-md-4  ">
+            <div class="col-sm-12 col-md-5  ">
               <?php foreach ($files as $kf => $vf) {
                   if ($vf->id_lampiran == $value->id) { ?>
-                    <a href="#" onclick="show_image('<?= base_url().$vf->lokasi ?>')"  class="btn-xl btn-danger" data-toggle="modal" data-target="#modal4"  style="border-radius:5px;padding: 2% 6%;margin-top: 15px" > Lihat </a>
+                    <a href="#" onclick="show_image('<?= base_url().'assets/files/sspd/'.@$sspd->no_pendaftaran.'/'.$vf->lokasi ?>')"  class="btn-xs btn-danger" data-toggle="modal" data-target="#modal4"  style="border-radius:5px;padding: 2% 6%;margin-top: 15px;margin-right: 3px" > Lihat </a>
                   <?php }
               } ?>
             </div>
@@ -422,49 +422,51 @@ display: flex;
 	   </form>
 
     <div class="panel-heading">
-                  <h6 class="panel-title text-semiold">Discussion</h6>
-                  <div class="heading-elements">
-                    <ul class="list-inline list-inline-separate heading-text text-muted">
-                      <li>42 comments</li>
-                      <li>75 pending review</li>
-                    </ul>
-                          </div>
+        <h6 class="panel-title text-semiold">Diskusi</h6>
+        <div class="heading-elements">
+          <ul class="list-inline list-inline-separate heading-text text-muted">
+            <!-- <li>42 comments</li> -->
+            <!-- <li>75 pending review</li> -->
+          </ul>
                 </div>
+      </div>
 
-                <div class="panel-body">
-                  <ul class="media-list stack-media-on-mobile" id="add_komen">
-                    <?php foreach ($komen as $key => $value): ?>
-                    <li class="media">
-                      <div class="media-left">
-                        <a href="#"><img src="<?=base_url() ?>assets/images/placeholder.jpg" class="img-circle img-sm" alt=""></a>
-                      </div>
+      <div class="panel-body">
+        <ul class="media-list stack-media-on-mobile" id="add_komen">
 
-                      <div class="media-body">
-                        <div class="media-heading">
-                          <a class="text-semibold">William Jennings</a>
-                        </div>
+          <?php foreach ($komen as $key => $value): ?>
+          <li class="media">
+            <div class="media-left">
+              <a href="#"><img src="<?=base_url() ?>assets/images/placeholder.jpg" class="img-circle img-sm" alt=""></a>
+            </div>
 
-                        <?=$value->text ?>
+            <div class="media-body">
+              <div class="media-heading">
+                <a class="text-semibold"><?=@$value->nama ?></a>
+              </div>
 
-                        
-                      </div>
-                    </li>
+              <?=$value->text ?>
 
-                    <?php endforeach ?>
-                      
-                  </ul>
-                </div>
-                <hr class="no-margin">
-      <form action="#" id="Formkomen" class="form-horizontal" enctype="multipart/form-data" method="post">
+              
+            </div>
+          </li>
+
+          <?php endforeach ?>
+            
+        </ul>
+      </div>
+      <hr class="no-margin">
+            <form action="#" id="Formkomen" class="form-horizontal" enctype="multipart/form-data" method="post">
             <input type="hidden" name="nopen" id="nopen_komen" value="<?= @$sspd->no_pendaftaran ?>">
-            <input type="hidden" name="send" id="send" value="<?= @$session['id'] ?>">
+            <input type="hidden" name="send" id="send" value="<?= @$session['id_user'] ?>">
             <input type="hidden" name="tipe" id="tipe" value="<?= @$session['jenis'] ?>">
 
 
                 <div class="panel-body">
                   <h6 class="no-margin-top content-group">Add comment</h6>
                   <div class="content-group">
-                    <div id="add-comment" ></div>
+                    <!-- <div id="add-comment" ></div> -->
+                    <textarea class="form-control" id="komen" name="komen"></textarea>
                   </div>
                   
                   <div class="text-right">
@@ -476,64 +478,52 @@ display: flex;
   </div>
 </div>
 
+<div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
 
-     <!-- Comments -->
-              <div class="panel panel-flat">
-                
-              </div>
-              <!-- /comments -->
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+          <div class="modal-body mb-0 p-0">
+
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+              <img id="img_show" src="">            </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+          </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
     <script >
-
-$(document).ready(function() {
-
-
-
-   $("#postForm").submit(function(event){
+function show_image(v) {
             event.preventDefault(); //prevent default action 
-            $.LoadingOverlay("text", "Yep, still loading...");
+            console.log(v)
+            $("#img_show").attr("src",v);
 
-            $.LoadingOverlay("show");
+        }
+$(document).ready(function() {
+$('#komen').summernote({
+   toolbar: false,
+        });
 
-            var form = $('form')[0];
-            var formData = new FormData(form);
-            formData.append('image', $('input[type=file]')[0].files[0]); 
 
-                   $.ajax({
-                             url:'<?php echo site_url('sspd/do_upload');?>', //URL submit
-                             type:"post", //method Submit
-                             data:new FormData(this), //penggunaan FormData
-                             processData:false,
-                             contentType:false,
-                             cache:false,
-                             async:false,
-                              success: function(data){
-                                data = JSON.parse(data);
-                                if (data.jns == 'img') {
-                                    $.LoadingOverlay("hide");
-                                    $.growl.notice({ message: "Upload Sukses!" });
-                                    setTimeout(function () {
-                                        location.reload();
-                                    }, 2000);
-                                }else if(data.jns == 'data'){
-                                    $.LoadingOverlay("hide");
-                                    $.growl.notice({ message: "Berkas Tersimpan!" });
-                                    setTimeout(function () {
-                                        window.location.replace('<?php echo site_url('sspd') ?>')
-                                    }, 2000);
-                                }
-                           }
-                         });
-            
-
-        
-    });
    $("#Formkomen").submit(function(event){
         event.preventDefault(); //prevent default action 
-
-        var text = CKEDITOR.instances['add-comment'].getData()
-        if(text != ''){
+        var message = $('textarea#komen').val();
+        // var text = CKEDITOR.instances['add-comment'].getData()
+        if( message != ''){
             var formData = new FormData(this)
-            formData.append('komen', text);
+            // formData.append('komen', text);
            $.ajax({
                      url:'<?php echo site_url('sspd/komen');?>', //URL submit
                      type:"post", //method Submit
@@ -546,7 +536,8 @@ $(document).ready(function() {
                         data = JSON.parse(data);
                         if (data.sts == 1) {
                           $('#add_komen').append(data.data);
-                          CKEDITOR.instances['add-comment'].setData('');
+                          $('#komen').summernote('reset');
+                          // CKEDITOR.instances['add-comment'].setData('');
                         //     $.LoadingOverlay("hide");
                         //     $.growl.notice({ message: "Upload Sukses!" });
                         //     setTimeout(function () {

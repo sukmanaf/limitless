@@ -80,8 +80,7 @@
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/plugins/forms/validation/validate.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/plugins/notifications/sweet_alert.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/pages/wizard_form.js"></script>
-	<script type="text/javascript" src="<?php echo base_url() ?>assets/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/pages/blog_single.js"></script>
+	<!-- <script type="text/javascript" src="<?php echo base_url() ?>assets/js/pages/blog_single.js"></script> -->
 	
 
 

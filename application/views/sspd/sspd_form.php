@@ -516,6 +516,68 @@
                                 <button class="btn btn-info" id="basic-next" type="submit" onclick="cek(1)">Next</button>
                             </div> -->
     </form>
+    <hr>
+<?php if ($tipe == 'update'): ?>
+    
+
+    <div class="panel-heading">
+        <h6 class="panel-title text-semiold">Diskusi</h6>
+        <div class="heading-elements">
+          <ul class="list-inline list-inline-separate heading-text text-muted">
+            <!-- <li>42 comments</li> -->
+            <!-- <li>75 pending review</li> -->
+          </ul>
+                </div>
+      </div>
+
+      <div class="panel-body">
+        <ul class="media-list stack-media-on-mobile" id="add_komen">
+
+          <?php foreach ($komen as $key => $value): ?>
+          <li class="media">
+            <div class="media-left">
+              <a href="#"><img src="<?=base_url() ?>assets/images/placeholder.jpg" class="img-circle img-sm" alt=""></a>
+            </div>
+
+            <div class="media-body">
+              <div class="media-heading">
+                <a class="text-semibold"><?=@$value->nama ?></a>
+              </div>
+
+              <?=$value->text ?>
+
+              
+            </div>
+          </li>
+
+          <?php endforeach ?>
+            
+        </ul>
+      </div>
+      <hr class="no-margin">
+            <form action="#" id="Formkomen" class="form-horizontal" enctype="multipart/form-data" method="post">
+            <input type="hidden" name="nopen" id="nopen_komen" value="<?= @$sspd->no_pendaftaran ?>">
+            <input type="hidden" name="send" id="send" value="<?= @$session['id_user'] ?>">
+            <input type="hidden" name="tipe" id="tipe" value="<?= @$session['jenis'] ?>">
+
+
+                <div class="panel-body">
+                  <h6 class="no-margin-top content-group">Add comment</h6>
+                  <div class="content-group">
+                    <!-- <div id="add-comment" ></div> -->
+                    <textarea class="form-control" id="komen" name="komen"></textarea>
+                  </div>
+                  
+                  <div class="text-right">
+                    <button type="submit" class="btn bg-blue"><i class="icon-plus22"></i> Add comment</button>
+                  </div>
+                </div>
+        </form>
+    </div>
+<?php endif ?>
+
+  </div>
+</div>
 </div>
 
 <script >
@@ -592,6 +654,46 @@
             });
 
         }  
+    });
+     $("#Formkomen").submit(function(event){
+        event.preventDefault(); //prevent default action 
+        var message = $('textarea#komen').val();
+        // var text = CKEDITOR.instances['add-comment'].getData()
+        if( message != ''){
+            var formData = new FormData(this)
+            // formData.append('komen', text);
+           $.ajax({
+                     url:'<?php echo site_url('sspd/komen');?>', //URL submit
+                     type:"post", //method Submit
+                     data:formData, //penggunaan FormData
+                     processData:false,
+                     contentType:false,
+                     cache:false,
+                     async:false,
+                      success: function(data){
+                        data = JSON.parse(data);
+                        if (data.sts == 1) {
+                          $('#add_komen').append(data.data);
+                          $('#komen').summernote('reset');
+                          // CKEDITOR.instances['add-comment'].setData('');
+                        //     $.LoadingOverlay("hide");
+                        //     $.growl.notice({ message: "Upload Sukses!" });
+                        //     setTimeout(function () {
+                        //         location.reload();
+                        //     }, 2000);
+
+                        }else {
+                        //     $.LoadingOverlay("hide");
+                        //     $.growl.notice({ message: "Berkas Tersimpan!" });
+                        //     setTimeout(function () {
+                        //         window.location.replace('<?php echo site_url('sspd') ?>')
+                        //     }, 2000);
+                        }
+                   }
+          });
+                
+        }
+        
     });
 
 });

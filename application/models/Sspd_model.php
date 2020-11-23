@@ -339,6 +339,7 @@ class Sspd_model extends CI_Model
     function get_komen($nopen)
     {
         $this->db->where('nopen', $nopen);
+        $this->db->join('user', 'user.id = komen.send', 'left');
         return $this->db->get('komen')->result();
     }
 

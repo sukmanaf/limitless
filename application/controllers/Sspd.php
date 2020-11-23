@@ -154,7 +154,7 @@ class Sspd extends CI_Controller
                 {
                         $data = array('upload_data' => $this->upload->data());
                         $data = array(
-                                        'lokasi' => $folder.'/'.$nama,
+                                        'lokasi' => $nama,
                                         'nopen' =>$nopen,
                                         'id_lampiran' => $_FILES[0]['key']
                                     );
@@ -302,6 +302,7 @@ class Sspd extends CI_Controller
         $propinsi = $this->Sspd_model->get_propinsi();
         $jns_perolehan = $this->Sspd_model->get_jns_perolehan();
         $row = $this->Sspd_model->get_all_by_nopen($nopen);
+        $komen = $this->Sspd_model->get_komen($nopen);
 
         $data = array(
             'tipe' => 'update',
@@ -311,6 +312,7 @@ class Sspd extends CI_Controller
         
         'propinsi' => $propinsi,
         'jns_perolehan' => $jns_perolehan,
+        'komen' => $komen,
 
     );
         $this->skin->dashboard('sspd/sspd_form', $data);
@@ -1217,6 +1219,10 @@ class Sspd extends CI_Controller
     
     public function komen()
     {
+        // echo "<pre>";
+        // print_r ($_POST);
+        // echo "</pre>";exit();
+
         $data = array(
                         'nopen' =>$_POST['nopen'],
                         'send' =>$_POST['send'],
@@ -1231,7 +1237,7 @@ class Sspd extends CI_Controller
 
                       <div class="media-body">
                         <div class="media-heading">
-                          <a class="text-semibold">William Jennings</a>
+                          <a class="text-semibold">'.$this->ses["nama"].'</a>
                         </div>
 
                         '.$_POST['komen'].'
@@ -1247,7 +1253,24 @@ class Sspd extends CI_Controller
         }
 
     }
-
+        public function delete_files()
+        {
+            
+  
+            $del = $this->db->delete('files', $_POST);
+            $dir = 'assets/files/sspd/'.$_POST["nopen"].'/'.$_POST["lokasi"];
+            if ($del) {
+                $un = unlink($dir);
+                if ($un) {
+                    echo json_encode(array('sts' => $un));
+                }else{
+                    echo json_encode(array('sts' => 0));
+                }
+            }else{
+                    echo json_encode(array('sts' => 0));
+            }
+                
+        }
     
 }
 
