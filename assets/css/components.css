@@ -236,7 +236,7 @@ a.badge,
   padding: 20px;
 }
 .sidebar-user-material .category-content {
-  background: url(../images/placeholder.jpg) center center no-repeat;
+  background: url(../images/login_cover.jpg) center center no-repeat;
   background-repeat: no-repeat;
   background-position: center center;
   -webkit-background-size: cover;

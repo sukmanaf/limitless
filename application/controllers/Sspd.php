@@ -77,7 +77,8 @@ class Sspd extends CI_Controller
                 }
 
             }       
-            $a= [$key+1,$v->no_pendaftaran,$v->nama,'<span class="badge badge-'.$v->class.'">'.$v->text.'</span>',$tombol
+            $edited = $v->edit == 1 ?' <span class="badge badge-warning">Edited</span>' : '';
+            $a= [$key+1,$v->no_pendaftaran,$v->nama,'<span class="badge badge-'.$v->class.'">'.$v->text.'</span>'.$edited,$tombol
                  ];
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
@@ -324,8 +325,8 @@ class Sspd extends CI_Controller
         $data = json_decode(file_get_contents('php://input'), true);
         $data_nik = array(
           'nik' => $data['nik'],
-          'nama' => $data['nama'],
-          'alamat' => $data['alamat'],
+          'nama' => strtoupper($data['nama']),
+          'alamat' => strtoupper($data['alamat']),
           'kd_propinsi' => $data['kd_propinsi'],
           'kd_kabupaten' => $data['kd_kabupaten'],
           'kd_kecamatan' => $data['kd_kecamatan'],
@@ -340,16 +341,16 @@ class Sspd extends CI_Controller
         $cek_nik = $this->Sspd_model->cek_nik($data['nik'])->jml;
         if ($cek_nik ==0) {
             $ins_nik = $this->Sspd_model->insert_nik($data_nik);
-            $exp = explode('.', $ins);
-            $ins_nik = $exp[0];
-            $id_nik = $exp[1];
+            $exp = explode('.', $ins_nik);
+            $ins_nik = $exp[1];
+            $id_nik = $exp[0];
         }else{
             $up_nik = $this->Sspd_model->update_nik($data['id_nik'], $data_nik);
             $id_nik = $data['id_nik'];
         
         }
-
-
+        // echo $ins_nik.'ok';
+        // exit();
         if (@$ins_nik == 1 || @$up_nik == 1) {
             
             $nopen = 'PD'.date('ymdHis');
@@ -454,8 +455,8 @@ class Sspd extends CI_Controller
         $nopen = $data['nopen'];
         $data_nik = array(
           'nik' => $data['nik'],
-          'nama' => $data['nama'],
-          'alamat' => $data['alamat'],
+          'nama' => strtoupper($data['nama']),
+          'alamat' => strtoupper($data['alamat']),
           'kd_propinsi' => $data['kd_propinsi'],
           'kd_kabupaten' => $data['kd_kabupaten'],
           'kd_kecamatan' => $data['kd_kecamatan'],
@@ -505,6 +506,7 @@ class Sspd extends CI_Controller
               'npopkp' => str_replace('.', '',$data['npopkp']),
               'bphtb' => str_replace('.', '',$data['bphtb']),
               'total_bayar' => str_replace('.', '',$data['bphtb']),
+              'edit' => 1,
             );
             $up_sspd = $this->Sspd_model->update($data['id_sspd'], $data_sspd);
                 if ($up_sspd==1) {
@@ -789,15 +791,27 @@ class Sspd extends CI_Controller
     {
 
         $row = $this->Sspd_model->get_approve($status,$acc,$nopen);
-
+        
+        
         $data = array('status' => $row->status_ke,
                         'update' =>date('Y-m-d H:i:s'),
                         'tgl_validasi_berkas' =>date('Y-m-d H:i:s'),
+                        'edit' => 0,
                         );
+        if ($row->status_ke == 'MP001') {
+            $data['id_billing'] = date('YmdHis').'1372';
+        }
         $this->db->where('no_pendaftaran', $nopen);
         $app = $this->db->update('sspd', $data);
         if ($app) {
+            $log = array('nopen' => $nopen,
+                        'dari' =>$row->status_dari,
+                        'ke' =>$row->status_ke,
+                        'ip' =>$this->ses['ip'],
+                        );
+            $this->logs->proses($log);
             echo json_encode(array('sts' => 1,'jns' => $acc));
+
         }
     }
 

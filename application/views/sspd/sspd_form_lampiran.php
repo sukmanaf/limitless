@@ -49,12 +49,12 @@
                     
                     <div class="form-group">
                         <div class="col-md-4">
-                             <label class="control-label"><?= $value->nama ?><?php if ($value->required == 1 ) { echo ' *';} ?></label>
+                             <label class="control-label" style="margin-top: 5%"><?= $value->nama ?><?php if ($value->required == 1 ) { echo ' *';} ?></label>
                         </div>
                         <div class="col-md-4">
                             <?php foreach ($files as $kf => $vf) {
                                     if ($vf->id_lampiran == $value->id) { ?>
-                              <div class="row">
+                              <div class="row" >
                                 <div class="col-md-12">
                                         <button class="btn-xl  btn-primary" onclick="show_image('<?= base_url().'assets/files/sspd/'.$nopen.'/'.$vf->lokasi ?>')" data-toggle="modal" data-target="#modal4" style="margin-top: 10px;border-radius: 10%">Lihat</button>
                                         <button class="btn-xl  btn-danger" onclick="delete_image('<?= @$vf->lokasi ?>')"  style="margin-top: 10px;border-radius: 10%">Hapus</button>
@@ -69,7 +69,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 
-                                <input name="<?=$value->id ?>" onchange="img_upload()" type="file" class="file-input 2" data-show-caption="false" data-show-upload="false" data-browse-class="btn btn-primary btn-xs" data-remove-class="btn btn-default btn-xs">
+                                <input name="<?=$value->id ?>" style="margin-top: 5%" onchange="img_upload()" type="file" class="file-input 2" data-show-caption="false" data-show-upload="false" data-browse-class="btn btn-primary btn-xs" data-remove-class="btn btn-default btn-xs">
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                             $.growl.notice({ message: "Delete Sukses!" });
                             setTimeout(function () {
                                 location.reload();
-                            }, 2000);
+                            }, 1000);
                         }else{
                             $.LoadingOverlay("hide");
                             $.growl.notice({ message: "Delete Gagal!" });
@@ -169,7 +169,7 @@ $(document).ready(function() {
                             $.growl.notice({ message: "Upload Sukses!" });
                             setTimeout(function () {
                                 location.reload();
-                            }, 2000);
+                            }, 1000);
                         }else if(data.jns == 'data'){
                             $.LoadingOverlay("hide");
                             $.growl.notice({ message: "Berkas Tersimpan!" });

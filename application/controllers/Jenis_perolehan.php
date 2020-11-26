@@ -41,12 +41,13 @@ class Jenis_perolehan extends CI_Controller
             foreach ($v as $k => $val) {
                   array_push($judul, $k);
             }            
-            $a= [$key+1,$v->nama,$v->npoptkp,
-                 '<a href="'. site_url("jenis_perolehan/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
+            $a= [$key+1,$v->kode,$v->nama,$v->npoptkp,
+                 '
                  <a href="'. site_url("jenis_perolehan/update/").$v->id.'" class="btn-xs btn-info"> Ubah</a>
 
                   <a href="#" class="btn-xs btn-danger" onclick="hapus('.$v->id.',event)"> Hapus</a>
                  '];
+                 // <a href="'. site_url("jenis_perolehan/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
         }
@@ -186,6 +187,7 @@ class Jenis_perolehan extends CI_Controller
         $lampiran = $this->Jenis_perolehan_model->get_lampiran();
 
         $data = array(
+            'jenis' => 'add',
             'button' => 'Simpan',
             'action' => site_url('jenis_perolehan/create_action'),
 	    'id' => set_value('id'),
@@ -239,9 +241,17 @@ class Jenis_perolehan extends CI_Controller
     public function update($id) 
     {
         $row = $this->Jenis_perolehan_model->get_by_id($id);
-
+        $lampiran = $this->Jenis_perolehan_model->get_lampiran();
+        
+        if (!empty($row->lampiran)) {
+            $lampirans= explode(',',$row->lampiran);
+        }else{
+            $lampirans = array();
+        }
+        
         if ($row) {
             $data = array(
+            'jenis' => 'update',
                 'button' => 'Update',
                 'action' => site_url('jenis_perolehan/update_action'),
 		'id' => set_value('id', $row->id),
@@ -249,6 +259,9 @@ class Jenis_perolehan extends CI_Controller
 		'npoptkp' => set_value('npoptkp', $row->npoptkp),
 		'nama' => set_value('nama', $row->nama),
 		'active' => set_value('active', $row->active),
+        'lampiran' => $lampirans,
+        'list_lampiran' => $lampiran,
+
 	    );
             $this->skin->dashboard('jenis_perolehan/jenis_perolehan_form', $data);
         } else {
@@ -266,6 +279,7 @@ class Jenis_perolehan extends CI_Controller
 		'nama' => $this->input->post('nama'),
 		'active' => $this->input->post('active'),
 	    );
+       
 
             $acc = $this->Jenis_perolehan_model->update($this->input->post('id', TRUE), $data);
             echo $acc;

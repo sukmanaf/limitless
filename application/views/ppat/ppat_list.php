@@ -24,14 +24,16 @@
 
 
         <div class="col-md-3 " style=" padding:5px;;float: right">
-        <input type="text" class="form-control input" name="kode_search_name" id="kode_search_id" placeholder="Kode"  />
-        </div>
-
-
-        <div class="col-md-3 " style=" padding:5px;;float: right">
         <input type="text" class="form-control input" name="nama_search_name" id="nama_search_id" placeholder="Nama"  />
         </div>
 
+        <div class="col-md-3 " style=" padding:5px;;float: right">
+        <input type="text" class="form-control input" name="alamat_search_name" id="alamat_search_id" placeholder="Alamat"  />
+        </div>
+
+        <div class="col-md-3 " style=" padding:5px;;float: right">
+        <input type="text" class="form-control input" name="id_user_search_name" id="id_user_search_id" placeholder="Id User"  />
+        </div>
 
 
         </div>
@@ -56,10 +58,11 @@ function hapus(v,event){
     event.preventDefault(); //prevent default action 
     var r = confirm("Yakin Hapus Data Ini?");
     if (r == true) {
+        return true;
         } else {
             return false;
         }
-        post_url = "<?php echo site_url('jenis_perolehan/delete/')?>"+v;
+        post_url = "<?php echo site_url('ppat/delete/')?>"+v;
 
         $.ajax({
             url : post_url,
@@ -96,7 +99,7 @@ function hapus(v,event){
                           }
                         });
                         $.ajax({
-                            url : '<?php echo site_url('jenis_perolehan/get_data') ?>',
+                            url : '<?php echo site_url('ppat/get_data') ?>',
                             type: 'POST',
                             data : {},
                             dataType : 'json',
@@ -117,7 +120,6 @@ function hapus(v,event){
                                     columns: [
                                     { title: "No" ,"width" : "5%" },
                                     { title: datae.judul[1] },
-                                    { title: datae.judul[3] },
                                     { title: datae.judul[2] },
                                     { title: "Aksi" ,"width" : "27 %" }
                                     ],
@@ -132,7 +134,7 @@ function hapus(v,event){
                                         console.log(form_data);
 
                                         $.ajax({
-                                         url : '<?php echo site_url('jenis_perolehan/get_data') ?>',
+                                         url : '<?php echo site_url('ppat/get_data') ?>',
                                          type: 'POST',
                                          data : form_data,
                                          dataType : 'json',
@@ -141,19 +143,18 @@ function hapus(v,event){
                                             $('#dtables').DataTable().clear().destroy();
                                             $('#dtables').DataTable( {
                                                 fixedColumns: true,
-                                    data: datae.isi,
-                                    searching: false,   // Search Box will Be Disabled
-                                    ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
-                                    info: true,         // Will show "1 to n of n entries" Text at bottom
-                                    lengthChange: false, // Will Disabled Record number per page
-                                    columns: [
-                                    { title: "No" ,"width" : "5%" },
-                                    { title: datae.judul[1] },
-                                    { title: datae.judul[3] },
-                                    { title: datae.judul[2] },
-                                    { title: "Aksi" ,"width" : "27 %" }
-                                    ],
-                                    order:[[0,'asc']]
+                                                data: datae.isi,
+                                                searching: false,   // Search Box will Be Disabled
+                                                ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+                                                info: true,         // Will show "1 to n of n entries" Text at bottom
+                                                lengthChange: false, // Will Disabled Record number per page
+                                                columns: [
+                                                { title: "No" ,"width" : "5%" },
+                                                { title: datae.judul[1] },
+                                                { title: datae.judul[2] },
+                                                { title: "Aksi" ,"width" : "27 %" }
+                                                ],
+                                                order:[[0,'asc']]
                                                 });
                                                 });
                                                 });
@@ -165,7 +166,7 @@ function hapus(v,event){
 
                                                 function update_datatable(){
                                                     $.ajax({
-                                                     url : '<?php echo site_url('jenis_perolehan/get_data') ?>',
+                                                     url : '<?php echo site_url('ppat/get_data') ?>',
                                                      type: 'POST',
                                                      data : {},
                                                      dataType : 'json',
@@ -173,20 +174,15 @@ function hapus(v,event){
                                                         datae=response;
                                                         $('#dtables').DataTable().clear().destroy();
                                                         $('#dtables').DataTable( {
-                                                        fixedColumns: true,
-                                                        data: datae.isi,
-                                                        searching: false,   // Search Box will Be Disabled
-                                                        ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
-                                                        info: true,         // Will show "1 to n of n entries" Text at bottom
-                                                        lengthChange: false, // Will Disabled Record number per page
-                                                        columns: [
-                                                        { title: "No" ,"width" : "5%" },
-                                                        { title: datae.judul[1] },
-                                                        { title: datae.judul[3] },
-                                                        { title: datae.judul[2] },
-                                                        { title: "Aksi" ,"width" : "27 %" }
-                                                        ],
-                                                        order:[[0,'asc']]
+
+                                                            data: datae.isi,
+                                                            columns: [
+                                                            { title: "No","width" : "5%"  },
+                                                            { title: datae.judul[1] },
+                                                            { title: datae.judul[2] },
+                                                            { title: "Aksi","width" : "25%"  }
+                                                            ],
+                                                            order:[[0,'asc']]
                                                             });
                                                             });
                                                         }

@@ -137,7 +137,7 @@ $("#postForm").submit(function(event){
             $.growl.notice({ message: "Login Berhasil!" });
               
               setTimeout(function () {
-                window.location.replace('<?php echo site_url('niks') ?>')
+                window.location.replace('<?php echo site_url('sspd') ?>')
                 
             }, 1000);
                

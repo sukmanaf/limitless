@@ -22,11 +22,13 @@ class Login extends CI_Controller {
 		if ( $jml == 1) {
 			if ($password == $sql->password) {
 				// echo 'benar';
+        		$ip = $this->input->ip_address();
 				$data = array(
 								'username' => $sql->username,
 								'id_user' => $sql->id,
 								'jenis' => $sql->jenis,
 								'nama' => $sql->nama,
+								'ip' => $ip,
 							  );
 
 				if ($sql->jenis == 'PM') {

@@ -3,24 +3,24 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Lampiran extends CI_Controller
+class Ppat extends CI_Controller
 {
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Lampiran_model');
+        $this->load->model('Ppat_model');
         $this->load->library('form_validation');        
 	$this->load->library('datatables');
     }
 
     public function index()
     {
-        $this->skin->dashboard('lampiran/lampiran_list',null);
+        $this->skin->dashboard('ppat/ppat_list',null);
     } 
     
     public function json() {
         header('Content-Type: application/json');
-        echo $this->Lampiran_model->json();
+        echo $this->Ppat_model->json();
     }
 
 
@@ -29,19 +29,19 @@ class Lampiran extends CI_Controller
 
         $cari =[
         		'nama'=>@$_POST['nama_search_name'],
+				'alamat'=>@$_POST['alamat_search_name'],
 
                 ];
-            $dataq = $this->Lampiran_model->get_all($cari);
+            $dataq = $this->Ppat_model->get_all($cari);
         $judul=[];
         $data['isi']=[];
         foreach ($dataq as $key => $v) {
             foreach ($v as $k => $val) {
                   array_push($judul, $k);
             }            
-            $active = $v->active == 1 ?'Ya' : 'Tidak';
-            $a= [$key+1,$v->nama,$active,
-                 '<a href="'. site_url("lampiran/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
-                 <a href="'. site_url("lampiran/update/").$v->id.'" class="btn-xs btn-info"> Ubah</a>
+            $a= [$key+1,$v->nama,$v->alamat,
+                 '<a href="'. site_url("ppat/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
+                 <a href="'. site_url("ppat/update/").$v->id.'" class="btn-xs btn-info"> Ubah</a>
 
                   <a href="#" class="btn-xs btn-danger" onclick="hapus('.$v->id.',event)"> Hapus</a>
                  '];
@@ -56,7 +56,7 @@ class Lampiran extends CI_Controller
        public function show()
     {
 
-        $row = $this->Lampiran_model->get_all();
+        $row = $this->Ppat_model->get_all();
         if ($row) {
             $row=$row[0];
             $data = array(
@@ -134,16 +134,18 @@ class Lampiran extends CI_Controller
 
     public function read($id) 
     {
-        $row = $this->Lampiran_model->get_by_id($id);
+        $row = $this->Ppat_model->get_by_id($id);
         if ($row) {
             $data = array(
 		'id' => $row->id,
 		'nama' => $row->nama,
+		'alamat' => $row->alamat,
+		'id_user' => $row->id_user,
 	    );
-            $this->skin->dashboard('lampiran/lampiran_read', $data);
+            $this->skin->dashboard('ppat/ppat_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('lampiran'));
+            redirect(site_url('ppat'));
         }
     }
 
@@ -152,64 +154,116 @@ class Lampiran extends CI_Controller
         $data = array(
             'jenis' => 'add',
             'button' => 'Simpan',
-            'action' => site_url('lampiran/create_action'),
+            'action' => site_url('ppat/create_action'),
 	    'id' => set_value('id'),
 	    'nama' => set_value('nama'),
+	    'alamat' => set_value('alamat'),
+	    'id_user' => set_value('id_user'),
+        'username' => set_value('username'),
+        'password' => set_value('password'),
 	);
-        $this->skin->dashboard('lampiran/lampiran_form', $data);
+        $this->skin->dashboard('ppat/ppat_form', $data);
     }
     
     public function create_action() 
     {
         
-            $data = array(
+            $user = array(
 		'nama' => $this->input->post('nama'),
+		'username' => $this->input->post('username'),
+		'password' => $this->input->post('password'),
+        'jenis' => 'PP',
+        'blokir' => 0,
 	    );
+            $ins_user = $this->Ppat_model->insert_user($user);
+            $ins = explode('.',$ins_user);
 
-            $acc = $this->Lampiran_model->insert($data);
-            echo $acc;
+        
+        if ($ins[0] == 1) {
+            
+            $ppat = array(
+            'nama' => $this->input->post('nama'),
+            'alamat' => $this->input->post('alamat'),
+            'id_user' => $ins[1],
+            );
+
+            $acc = $this->Ppat_model->insert($ppat);
+            if ($acc) {
+                $result = json_encode(array('sts' => 1 ));
+            }
+        }else{
+
+                $result = json_encode(array('sts' => 0 ));
+        }
+
+            echo $result;
     }
     
     public function update($id) 
     {
-        $row = $this->Lampiran_model->get_by_id($id);
+        $row = $this->Ppat_model->get_by_id($id);
 
         if ($row) {
             $data = array(
             'jenis' => 'update',
             'button' => 'Update',
-            'action' => site_url('lampiran/update_action'),
+            'action' => site_url('ppat/update_action'),
     		'id' => set_value('id', $row->id),
     		'nama' => set_value('nama', $row->nama),
-            'active' => set_value('active', $row->active),
-    	    );
-            $this->skin->dashboard('lampiran/lampiran_form', $data);
+    		'alamat' => set_value('alamat', $row->alamat),
+    		'id_user' => set_value('id_user', $row->id_user),
+            'id_ppat' => set_value('id_ppat', $row->id_ppat),
+            'username' => set_value('username', $row->username),
+            'password' => set_value('password', $row->password),
+            'blokir' => set_value('blokir', $row->blokir),
+	    );
+            $this->skin->dashboard('ppat/ppat_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('lampiran'));
+            redirect(site_url('ppat'));
         }
     }
     
     public function update_action() 
     {
-    
-        $active = $this->input->post('active') == 'on'? 1:0;
-            $data = array(
-		'nama' => $this->input->post('nama'),
-        'active' => $active,
-	    );
-   
-            $acc = $this->Lampiran_model->update($this->input->post('id', TRUE), $data);
-            echo $acc;
+        
+         $user = array(
+        'nama' => $this->input->post('nama'),
+        'username' => $this->input->post('username'),
+        'password' => $this->input->post('password'),
+        'jenis' => 'PP',
+        'blokir' => 0,
+        );
+            $up = $this->Ppat_model->update_user($this->input->post('id_user', TRUE), $user);
+        if ($up) {
+             $ppat = array(
+            'nama' => $this->input->post('nama'),
+            'alamat' => $this->input->post('alamat'),
+            );
+
+            $acc = $this->Ppat_model->update($this->input->post('id_ppat', TRUE), $ppat);
+            if ($acc) {
+            
+                $result = json_encode(array('sts' => 1 ));
+            }else{
+                $result = json_encode(array('sts' => 0 ));
+
+            }
+
+        }else{
+
+                $result = json_encode(array('sts' => 2 ));
+        }
+            echo $result;
         
     }
     
     public function delete($id) 
     {
-        $row = $this->Lampiran_model->get_by_id($id);
+        $row = $this->Ppat_model->get_by_id($id);
 
         if ($row) {
-           $acc = $this->Lampiran_model->delete($id);
+           $acc = $this->Ppat_model->delete($id);
             echo $acc;
 
         } else {
@@ -221,6 +275,8 @@ class Lampiran extends CI_Controller
     public function _rules() 
     {
 	$this->form_validation->set_rules('nama', 'nama', 'trim|required');
+	$this->form_validation->set_rules('alamat', 'alamat', 'trim|required');
+	$this->form_validation->set_rules('id_user', 'id user', 'trim|required');
 
 	$this->form_validation->set_rules('id', 'id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -228,8 +284,8 @@ class Lampiran extends CI_Controller
 
 }
 
-/* End of file Lampiran.php */
-/* Location: ./application/controllers/Lampiran.php */
+/* End of file Ppat.php */
+/* Location: ./application/controllers/Ppat.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2020-11-15 12:51:58 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2020-11-26 22:45:37 */
 /* http://harviacode.com */

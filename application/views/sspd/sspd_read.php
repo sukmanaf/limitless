@@ -221,7 +221,7 @@ display: flex;
           </div>
 
           <div class="row" style="margin: 10px 10px 10px 40px">
-            <table width="100%" class="table table-bordered" border="1">
+            <table width="100%" class="table table-bordered table-responsive" border="1">
             <tr>
               <th style="text-align: center" >Uraian</th>
               <th style="text-align: center"  colspan="2">Luas</th>

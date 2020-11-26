@@ -177,7 +177,7 @@
                 <div class="col-lg-10">
                    <div class="form-wizard-actions" style="margin-top: 50px">
                     <button class="btn btn-default" id="basic-back" onclick="back()" type="reset">Back</button>
-                    <button class="btn btn-info" id="basic-next"  onclick="next()">Next</button>
+                    <button class="btn btn-info" id="nik-next"  onclick="next()">Next</button>
                 </div>
             </div>
         </div>
@@ -244,38 +244,57 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12">
+            <h5 style="margin-top: 20px">Perhitungan PBB</h5>
+        </div>
 
         <div class="col-md-12" >
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Luas Tanah</label>
-                <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="luas_tanah" name="luas_tanah" value="<?php echo @$sspd->luas_tanah; ?>">
+                <div class="col-lg-2">
+                    <input type="text" required  class="form-control mask" onkeyup="hitung()" id="luas_tanah" name="luas_tanah" value="<?php echo format_number(@$sspd->luas_tanah); ?>">
                 </div>
                 <label class="control-label lbl-basic col-lg-2">NJOP Tanah</label>
-                <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="njop_tanah" name="njop_tanah" value="<?php echo @$sspd->njop_tanah; ?>">
+                <div class="col-lg-2">
+                    <input type="text" required  class="form-control mask" onkeyup="hitung()" id="njop_tanah" name="njop_tanah" value="<?php echo format_number(@$sspd->njop_tanah); ?>">
+                </div>
+                <label class="control-label lbl-basic col-lg-2">Total NJOP Tanah</label>
+                <div class="col-lg-2">
+                    <input type="text" required readonly class="form-control mask" onkeyup="hitung()" id="total_njop_tanah" name="total_njop_tanah" value="<?php echo format_number(@$sspd->njop_tanah*@$sspd->luas_tanah); ?>">
                 </div>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Luas Bangunan</label>
-                <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="luas_bangunan" name="luas_bangunan" value="<?php echo @$sspd->luas_bangunan; ?>">
+                <div class="col-lg-2">
+                    <input type="text" required  class="form-control mask" onkeyup="hitung()" id="luas_bangunan" name="luas_bangunan" value="<?php echo format_number(@$sspd->luas_bangunan); ?>">
                 </div>
                 <label class="control-label lbl-basic col-lg-2">NJOP Bangunan</label>
-                <div class="col-lg-4">
-                    <input type="text" required  class="form-control mask" id="njop_bangunan" name="njop_bangunan" value="<?php echo @$sspd->njop_bangunan; ?>">
+                <div class="col-lg-2">
+                    <input type="text" required  class="form-control mask" onkeyup="hitung()" id="njop_bangunan" name="njop_bangunan" value="<?php echo format_number(@$sspd->njop_bangunan); ?>">
+                </div>
+                <label class="control-label lbl-basic col-lg-2">Total NJOP Bangunan</label>
+                <div class="col-lg-2">
+                    <input type="text" required readonly class="form-control mask" onkeyup="hitung()" id="total_njop_bangunan" name="total_njop_bangunan" value="<?php echo format_number(@$sspd->njop_bangunan*@$sspd->luas_bangunan); ?>">
                 </div>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
-                <label class="control-label lbl-basic col-lg-2">Status Lunas 5 Tahun</label>
+                <div class="col-lg-8">
+                </div>
+                <label class="control-label lbl-basic col-lg-2">NJOP PBB</label>
+                <div class="col-lg-2">
+                    <input type="text" required readonly class="form-control mask" onkeyup="hitung()" id="total_njop" name="total_njop" value="<?php echo format_number(@$sspd->njop_total); ?>">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label lbl-basic col-lg-2">PBB Lunas 5 Tahun</label>
                 <div class="col-lg-4" id="status_lunas">
                 </div>
-                <label class="control-label lbl-basic col-lg-2"></label>
-                <div class="col-lg-4">
                     <!-- <input type="hidden" required  class="form-control" id="angka_lunas" name="" value=""> -->
                 </div>
             </div>
@@ -287,7 +306,7 @@
                 <div class="col-lg-10">
                    <div class="form-wizard-actions" style="margin-top: 50px">
                     <button class="btn btn-default" id="basic-back" onclick="back()" type="reset">Back</button>
-                    <button class="btn btn-info" id="basic-next"  onclick="next()">Next</button>
+                    <button class="btn btn-info" id="nop-next"  onclick="next()">Next</button>
                 </div>
             </div>
         </div>
@@ -331,7 +350,7 @@
         </div>
         <div class="col-md-12">
             <div class="form-group">
-                <label class="control-label lbl-basic col-lg-2">Nomor Sertifikat</label>
+                <label class="control-label lbl-basic col-lg-2">No Bukti Kepemilikan</label>
                 <div class="col-lg-4">
                     <input type="text"  required  class="form-control" id="nomor_sertifikat" name="nomor_sertifikat" value="<?php echo @$sspd->nomor_sertifikat; ?>">
                 </div>
@@ -391,7 +410,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">npopkp</label>
                 <div class="col-lg-4">
-                    <input type="text"  required  class="form-control" id="npopkp" name="npopkp" value="<?php echo format_number(@$sspd->npopkp); ?>">
+                    <input type="text"  required readonly class="form-control" id="npopkp" name="npopkp" value="<?php echo format_number(@$sspd->npopkp); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -402,7 +421,7 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">bphtb</label>
                 <div class="col-lg-4">
-                    <input type="text"  required  class="form-control" id="bphtb" name="bphtb" value="<?php echo format_number(@$sspd->bphtb); ?>">
+                    <input type="text"  required readonly class="form-control" id="bphtb" name="bphtb" value="<?php echo format_number(@$sspd->bphtb); ?>">
                 </div>
                 <div class="col-lg-6">
                     <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
@@ -520,15 +539,15 @@
 <?php if ($tipe == 'update'): ?>
     
 
-    <div class="panel-heading">
-        <h6 class="panel-title text-semiold">Diskusi</h6>
+    <!-- <div class="panel-heading"> -->
+        <h6 style="margin-left: 20px" class="panel-title text-semiold">Diskusi</h6>
         <div class="heading-elements">
           <ul class="list-inline list-inline-separate heading-text text-muted">
             <!-- <li>42 comments</li> -->
             <!-- <li>75 pending review</li> -->
           </ul>
                 </div>
-      </div>
+      <!-- </div> -->
 
       <div class="panel-body">
         <ul class="media-list stack-media-on-mobile" id="add_komen">
@@ -765,9 +784,10 @@
                 if (data.lunas == 0) {
                     $.growl.warning({ message: "PBB 5 Tahun belum Lunas!" });
 
-                    $('#basic-next').css('display','none');
+                    $('#nop-next').css('display','none');
                 }
             }else{
+                    $('#nop-next').css('display','inline');
 
             }
 
@@ -979,6 +999,22 @@
     }
 
     function hitung() {
+
+        //hitung njop
+        var luas_tanah = $('#luas_tanah').val().replace(/\./g, '');
+        var luas_bangunan = $('#luas_bangunan').val().replace(/\./g, '');
+        var njop_tanah = $('#njop_tanah').val().replace(/\./g, '');
+        var njop_bangunan = $('#njop_bangunan').val().replace(/\./g, '');
+        var total_njop_tanah = parseInt(luas_tanah*njop_tanah);
+        var total_njop_bangunan = parseInt(luas_bangunan*njop_bangunan);
+        var total_njop = parseInt(total_njop_tanah+total_njop_bangunan);
+        $('#total_njop_tanah').val(format_number(total_njop_tanah));
+        $('#total_njop_bangunan').val(format_number(total_njop_bangunan));
+        $('#total_njop').val(format_number(total_njop));
+        $('#njop_total').val(format_number(total_njop));
+        //
+
+        //hitung bphtb
         var njop_total = $('#njop_total').val().replace(/\./g, '');
         var harga_transaksi = $('#harga_transaksi').val().replace(/\./g, '');
         var npoptkp = $('#jenis_perolehan').find('option:selected').attr('data');

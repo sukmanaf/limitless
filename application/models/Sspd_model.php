@@ -157,8 +157,9 @@ class Sspd_model extends CI_Model
     function insert_nik($data)
     {
        $acc = $this->db->insert('nik', $data);
-       $insertId = $this->db->insert_id();
-       return $acc.'.'.$insert_id;
+       $insert_id = $this->db->insert_id();
+
+   return  $insert_id.'.'.$acc;
 
     }
     function insert_komen($data)

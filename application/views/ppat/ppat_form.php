@@ -22,57 +22,64 @@
      
 
         <div class="form-group">
-                    <label class="control-label col-lg-2">kode</label>
+                    <label class="control-label col-lg-2">username</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="kode" name="kode" value="<?php echo $kode; ?>">
+                        <input type="text" class="form-control" id="nama" name="username" value="<?php echo $username; ?>">
                     </div>
                 </div>
         
-        
-     
+         
 
         <div class="form-group">
-                    <label class="control-label col-lg-2">npoptkp</label>
+                    <label class="control-label col-lg-2">password</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="npoptkp" name="npoptkp" value="<?php echo $npoptkp; ?>">
+                        <input type="text" class="form-control" id="nama" name="password" value="<?php echo $password; ?>">
                     </div>
                 </div>
         
-        
-     
+         
 
         <div class="form-group">
-                    <label class="control-label col-lg-2">nama</label>
+                    <label class="control-label col-lg-2">Nama</label>
                     <div class="col-lg-10">
                         <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $nama; ?>">
                     </div>
                 </div>
         
-        <div class="form-group">
-                    <label class="control-label col-lg-2">Lampiran</label>
-                    <div class="col-lg-10">
-                        
-                        <?php foreach ($list_lampiran as $key => $value): ?>
-                            <?php if (in_array($value->id, $lampiran)) {
-                                $check = 'checked';
-                            }else{
-                                $check = '';
-                            }  ?>
-                             <div class="form-check">
-                            <input type="checkbox" <?=$check ?>  class="form-check-input" name="lam[<?=$value->id?>]" id="lam<?= $value->id  ?>">
-                            <label class="form-check-label"  for="exampleCheck1"><?= $value->nama ?></label>
-                          </div>
-                        <?php endforeach ?>
-                    </div>
-                </div>
         
      
 
-    
+        <div class="form-group">
+                    <label class="control-label col-lg-2">Alamat</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="alamat" name="alamat" value="<?php echo $alamat; ?>">
+                    </div>
+                </div>
         
+        
+     
+      
+     <?php if (@$jenis=='update'): ?>
+         
+
+        <div class="form-group">
+                    <label class="control-label col-lg-2">Blokir</label>
+                    <div class="col-lg-10">
+                        <input type="checkbox" <?php if(@$blokir == 1 ){echo 'checked';} ?>  class="form-check-input" name="Blokir" id=""> Blokir
+
+                    </div>
+                </div>
+     <?php endif ?>
+        
+        <input type="hidden" name="id_ppat" value="<?= @$id_ppat ?>">
+        <input type="hidden" name="id_user" value="<?= @$id_user ?>">
+        
+     
+
+
         <div align="center">
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $button ?></button>
-        <a href="<?php echo site_url('jenis_perolehan') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
+        <a href="<?php echo site_url('ppat') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
         </div>
 	    <input type="hidden" name="id" value="<?php echo $id; ?>" /> 
 	</form>
@@ -100,7 +107,7 @@ function uploadImage(image) {
         var data = new FormData();
         data.append("image", image);
         $.ajax({
-            url:'<?php echo site_url('jenis_perolehan/upload_summernote');?>', //URL submit
+            url:'<?php echo site_url('ppat/upload_summernote');?>', //URL submit
                      type:"post", //method Submit
                      data:data, //penggunaan FormData
                      processData:false,
@@ -120,7 +127,7 @@ function uploadImage(image) {
 
 
    $("#postForm").submit(function(event){
-        $(".btn").css('display','none');
+        // $(".btn").css('display','none');
         event.preventDefault(); //prevent default action 
         var post_url = '<?php echo $action ?>'; //get form action url
         var request_method = $(this).attr("method"); //get form GET/POST method
@@ -139,7 +146,8 @@ function uploadImage(image) {
                      cache:false,
                      async:false,
         }).done(function(response){
-            if (response == 1){
+            response = JSON.parse(response);
+            if (response.sts == 1){
 
             // alert('Data Tersimpan');
 
@@ -150,11 +158,11 @@ function uploadImage(image) {
               // $.growl.warning({ message: "The kitten is ugly!" });
              
             setTimeout(function () {
-                    window.location.replace('<?php echo site_url('jenis_perolehan') ?>')
+                    window.location.replace('<?php echo site_url('ppat') ?>')
                        
                     }, 2000);
                 //    $.ajax({
-                //              url:'<?php echo site_url('jenis_perolehan/do_upload');?>', //URL submit
+                //              url:'<?php echo site_url('ppat/do_upload');?>', //URL submit
                 //              type:"post", //method Submit
                 //              data:new FormData(this), //penggunaan FormData
                 //              processData:false,

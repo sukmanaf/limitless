@@ -27,6 +27,13 @@
                         <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $nama; ?>">
                     </div>
                 </div>
+        <div class="form-group">
+                    <label class="control-label col-lg-2">Active</label>
+                    <div class="col-lg-10">
+                        <input type="checkbox" <?php if(@$active == 1 or @$jenis=='add'){echo 'checked';} ?>  class="form-check-input" name="active" id=""> Active
+
+                    </div>
+                </div>
         
         <div align="center">
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $button ?></button>
