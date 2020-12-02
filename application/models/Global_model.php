@@ -26,7 +26,29 @@ function __construct()
             $this->db->select('count(id) as jml');
         	return $this->db->get('sspd')->row();
     }
-
+       // get data by id
+    function get_user($id)
+    {
+        $this->db->where('user.id', $id);
+        $user = $this->db->get('user')->row();
+        if (!empty($user) && $user->jenis == 'PM') {
+            $pm = $this->db->query('select * from pemda where id_user ='.$user->id)->row();
+            foreach ($pm as $key => $value) {
+                
+                $user->$key = $value;
+            }
+        
+        }else if (!empty($user) && $user->jenis == 'PP') {
+            $pm = $this->db->query('select * from ppat where id_user ='.$user->id)->row();
+            foreach ($pm as $key => $value) {
+                
+                $user->$key = $value;
+            }
+        }
+        
+        return $user;
+    }
+    
 	
 
 }

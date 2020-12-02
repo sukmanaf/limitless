@@ -145,13 +145,13 @@ display: flex;
                   <span>5.RT/RW </span>
               </div>
               <div class="col-sm-12 col-md-1  ">
-                  <span>: <?=@$sspd->rtrw ?> </span>
+                  <span style="font-size: 9pt">: <?=@$sspd->rtrw ?> </span>
               </div>
               <div class="col-sm-12 col-md-1  ">
-                  <span>6.Kecamatan  </span>
+                  <span style="font-size: 9pt">6.Kecamatan  </span>
               </div>
               <div class="col-sm-12 col-md-3  " >
-                  <span>: <?=@$sspd->Kecamatan ?></span>
+                  <span>: <?=@$sspd->nm_kecamatan ?></span>
               </div>
             </div>
             <div class="row" style="">
@@ -433,7 +433,7 @@ display: flex;
 
       <div class="panel-body">
         <ul class="media-list stack-media-on-mobile" id="add_komen">
-
+  
           <?php foreach ($komen as $key => $value): ?>
           <li class="media">
             <div class="media-left">
@@ -443,6 +443,8 @@ display: flex;
             <div class="media-body">
               <div class="media-heading">
                 <a class="text-semibold"><?=@$value->nama ?></a>
+                <p style="font-size:8pt"><i><?=tanggal_indonesia_jam(@$value->date) ?></i></p>
+
               </div>
 
               <?=$value->text ?>

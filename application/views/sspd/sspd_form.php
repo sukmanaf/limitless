@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">NIK</label>
                     <div class="col-lg-4">
-                        <input type="text" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control "  id="nik" name="nik" value="<?php echo @$sspd->nik; ?>123">
+                        <input type="text" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control "  id="nik" name="nik" value="<?php echo @$sspd->nik; ?>">
                         <input type="hidden" required class="form-control "  id="id_nik" name="id_nik" value="<?php echo @$sspd->id; ?>">
                         
                     </div>
@@ -201,10 +201,11 @@
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">NOP</label>
                 <div class="col-lg-4">
-                    <input type="text"  required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="nop" name="nop" value="<?php echo @$sspd->nop; ?>137202000500803350">
+                    <input type="text"  required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="nop" name="nop" value="<?php echo @$sspd->nop; ?>">
                 </div>
                 <div class="col-lg-6">
                     <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button>
+                    137202000500803350
                 </div>
             </div>
         </div>
@@ -445,95 +446,7 @@
 </div>
 </fieldset>
 
-                            <!-- <fieldset class="step" id="step4">
-                                <h6 class="form-wizard-title text-semibold">
-                                    <span class="form-wizard-count">4</span>
-                                    Additional info
-                                    <small class="display-block">We are almost done now</small>
-                                </h6>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="display-block">Applicant resume:</label>
-                                            <input type="file" name="resume" class="file-styled">
-                                            <span class="help-block">Accepted formats: pdf, doc. Max file size 2Mb</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Where did you find us?</label>
-                                            <select name="source" data-placeholder="Choose an option..." class="select-simple">
-                                                <option></option> 
-                                                <option value="monster">Monster.com</option> 
-                                                <option value="linkedin">LinkedIn</option> 
-                                                <option value="google">Google</option> 
-                                                <option value="adwords">Google AdWords</option> 
-                                                <option value="other">Other source</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Availability:</label>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="availability" class="styled">
-                                                    Immediately
-                                                </label>
-                                            </div>
-
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="availability" class="styled">
-                                                    1 - 2 weeks
-                                                </label>
-                                            </div>
-
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="availability" class="styled">
-                                                    3 - 4 weeks
-                                                </label>
-                                            </div>
-
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="availability" class="styled">
-                                                    More than 1 month
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Additional information:</label>
-                                            <textarea name="additional-info" rows="5" cols="5" placeholder="If you want to add any info, do it here." class="form-control"></textarea>
-                                        </div>
-                                    </div>
-
-
-                                    
-                                    <div class="col-md-12" style="margin-top: 50px;float: right">
-                                        <div class="form-group">
-                                            <div class="col-lg-10">
-                                                <button class="btn btn-default" onclick="">back</button>
-                                                <button class="btn btn-primary" onclick="save()">Sumbit</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset> -->
-
-                           <!--  <div class="form-wizard-actions" style="margin-top: 50px">
-                                <button class="btn btn-default" id="basic-back" type="reset">Back</button>
-                                <button class="btn btn-info" id="basic-next" type="submit" onclick="cek(1)">Next</button>
-                            </div> -->
+                          
     </form>
     <hr>
 <?php if ($tipe == 'update'): ?>
@@ -561,6 +474,7 @@
             <div class="media-body">
               <div class="media-heading">
                 <a class="text-semibold"><?=@$value->nama ?></a>
+                <p style="font-size:8pt"><?=tanggal_indonesia(@$value->date) ?></p>
               </div>
 
               <?=$value->text ?>
@@ -620,6 +534,9 @@
     var object = {};
     var save =0;
     $(document).ready(function() {
+        $('#komen').summernote({
+            toolbar: false,
+        });
     if ( $('#id_tipe').val() == 'update') {
         // get_propinsi_selected(dataq.kd_propinsi);
         get_kabupaten_selected('<?= @$sspd->kd_kabupaten ?>');
@@ -661,6 +578,8 @@
                     $(".btn").css('display','inline');
 
                 }else if(response.sts_sspd== 1){
+                    $(".btn").css('display','none');
+
                     $.growl.notice({ message: "Simpan Sukses!" });
                     setTimeout(function () {
                             window.location.replace('<?php echo site_url('sspd/upload_lampiran/') ?>'+response.nopen)
@@ -751,6 +670,8 @@
                 $('#njop_tanah').val(format_number(dataq.OP_NJOP_TANAH_PERMETER))
                 $('#njop_bangunan').val(format_number(dataq.OP_NJOP_BANGUNAN_PERMETER))
                 $('#njop_total').val(format_number(parseInt(dataq.OP_NJOP_BANGUNAN)+parseInt(dataq.OP_NJOP_BUMI)))
+                $('#total_njop_tanah').val(format_number(dataq.OP_NJOP_TANAH_PERMETER*dataq.OP_LUAS_BUMI))
+                $('#total_njop_bangunan').val(format_number(dataq.OP_NJOP_BANGUNAN_PERMETER*dataq.OP_LUAS_BANGUNAN))
                 get_history_nop(nop)
             }else{
                 $.growl.warning({ message: "NOP Tidak ditemukan!" });
@@ -1012,7 +933,6 @@
         $('#total_njop_bangunan').val(format_number(total_njop_bangunan));
         $('#total_njop').val(format_number(total_njop));
         $('#njop_total').val(format_number(total_njop));
-        //
 
         //hitung bphtb
         var njop_total = $('#njop_total').val().replace(/\./g, '');

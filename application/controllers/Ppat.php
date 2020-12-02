@@ -29,7 +29,6 @@ class Ppat extends CI_Controller
 
         $cari =[
         		'nama'=>@$_POST['nama_search_name'],
-				'alamat'=>@$_POST['alamat_search_name'],
 
                 ];
             $dataq = $this->Ppat_model->get_all($cari);
@@ -39,7 +38,7 @@ class Ppat extends CI_Controller
             foreach ($v as $k => $val) {
                   array_push($judul, $k);
             }            
-            $a= [$key+1,$v->nama,$v->alamat,
+            $a= [$key+1,$v->nama,
                  '<a href="'. site_url("ppat/read/").$v->id.'" class="btn-xs btn-primary"> Lihat</a>
                  <a href="'. site_url("ppat/update/").$v->id.'" class="btn-xs btn-info"> Ubah</a>
 
@@ -139,7 +138,6 @@ class Ppat extends CI_Controller
             $data = array(
 		'id' => $row->id,
 		'nama' => $row->nama,
-		'alamat' => $row->alamat,
 		'id_user' => $row->id_user,
 	    );
             $this->skin->dashboard('ppat/ppat_read', $data);
@@ -157,7 +155,6 @@ class Ppat extends CI_Controller
             'action' => site_url('ppat/create_action'),
 	    'id' => set_value('id'),
 	    'nama' => set_value('nama'),
-	    'alamat' => set_value('alamat'),
 	    'id_user' => set_value('id_user'),
         'username' => set_value('username'),
         'password' => set_value('password'),
@@ -183,7 +180,6 @@ class Ppat extends CI_Controller
             
             $ppat = array(
             'nama' => $this->input->post('nama'),
-            'alamat' => $this->input->post('alamat'),
             'id_user' => $ins[1],
             );
 
@@ -210,7 +206,6 @@ class Ppat extends CI_Controller
             'action' => site_url('ppat/update_action'),
     		'id' => set_value('id', $row->id),
     		'nama' => set_value('nama', $row->nama),
-    		'alamat' => set_value('alamat', $row->alamat),
     		'id_user' => set_value('id_user', $row->id_user),
             'id_ppat' => set_value('id_ppat', $row->id_ppat),
             'username' => set_value('username', $row->username),
@@ -238,7 +233,6 @@ class Ppat extends CI_Controller
         if ($up) {
              $ppat = array(
             'nama' => $this->input->post('nama'),
-            'alamat' => $this->input->post('alamat'),
             );
 
             $acc = $this->Ppat_model->update($this->input->post('id_ppat', TRUE), $ppat);
@@ -275,7 +269,6 @@ class Ppat extends CI_Controller
     public function _rules() 
     {
 	$this->form_validation->set_rules('nama', 'nama', 'trim|required');
-	$this->form_validation->set_rules('alamat', 'alamat', 'trim|required');
 	$this->form_validation->set_rules('id_user', 'id user', 'trim|required');
 
 	$this->form_validation->set_rules('id', 'id', 'trim');

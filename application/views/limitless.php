@@ -221,11 +221,11 @@
 						
 						<div class="navigation-wrapper collapse" id="user-nav">
 							<ul class="navigation">
-								<li><a href="#"><i class="icon-user-plus"></i> <span>My profile</span></a></li>
-								<li><a href="#"><i class="icon-coins"></i> <span>My balance</span></a></li>
-								<li><a href="#"><i class="icon-comment-discussion"></i> <span><span class="badge bg-teal-400 pull-right">58</span> Messages</span></a></li>
-								<li class="divider"></li>
-								<li><a href="#"><i class="icon-cog5"></i> <span>Account settings</span></a></li>
+								<li><a href="<?=base_url() ?>dashboard"><i class="icon-user-plus"></i> <span>My profile</span></a></li>
+								<!-- <li><a href="#"><i class="icon-coins"></i> <span>My balance</span></a></li> -->
+								<!-- <li><a href="#"><i class="icon-comment-discussion"></i> <span><span class="badge bg-teal-400 pull-right">58</span> Messages</span></a></li> -->
+								<!-- <li class="divider"></li> -->
+								<li><a href="<?=base_url().'akun/get/'.$this->session->userdata('user')['id_user']; ?>"><i class="icon-cog5"></i> <span>Account settings</span></a></li>
 								<li><a href="<?=base_url() ?>login/log_out"><i class="icon-switch2"></i> <span>Logout</span></a></li>
 							</ul>
 						</div>
@@ -242,7 +242,7 @@
 										$notif = '<span id="sspd_notif" class="badge bg-teal-400 pull-right">'.$sspd_notif.'</span>';
 									} ?>
 
-									<li><a href="<?=base_url(). $vp->controller ?>"><i class="icon-home4"></i> <span><?= $notif.$vp->menu ?></span></a>
+									<li><a href="<?=base_url(). $vp->controller ?>"><i class="<?= $vp->icon ?>"></i> <span><?= $notif.$vp->menu ?></span></a>
 										<?php foreach ($child as $kc => $vc): ?> 
 											<?php if ($vc->parent == $vp->id_menu): ?>
 												<ul>

@@ -17,7 +17,7 @@ class Ppat_model extends CI_Model
 
     // datatables
     function json() {
-        $this->datatables->select('id,nama,alamat,id_user');
+        $this->datatables->select('id,nama,id_user');
         $this->datatables->from('ppat');
         //add this line for join
         //$this->datatables->join('table2', 'ppat.field = table2.field');
@@ -46,13 +46,12 @@ class Ppat_model extends CI_Model
         $this->db->join('user', 'user.id = ppat.id_user', 'left');
         $this->db->select('ppat.*,user.*,user.id as user_id,ppat.id as id_ppat');
         return $this->db->get($this->table)->row();
-    }
+    }  
     
     // get total rows
     function total_rows($q = NULL) {
         $this->db->like('id', $q);
 	$this->db->or_like('nama', $q);
-	$this->db->or_like('alamat', $q);
 	$this->db->or_like('id_user', $q);
 	$this->db->from($this->table);
         return $this->db->count_all_results();
@@ -63,7 +62,6 @@ class Ppat_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->like('id', $q);
 	$this->db->or_like('nama', $q);
-	$this->db->or_like('alamat', $q);
 	$this->db->or_like('id_user', $q);
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();

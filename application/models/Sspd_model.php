@@ -37,17 +37,18 @@ class Sspd_model extends CI_Model
     function get_all($param='')
     {
         $cek = '';
-        if(!empty($param)){
-            foreach ($param as $key => $value) {
-                if($key == 'nik'){
-                $this->db->where('nik.nik like "%'.$value.'%"');
-                }if($key == 'nama'){
-                $this->db->where('nik.nama like "%'.$value.'%"');
-                }if($key == 'nopen'){
-                $this->db->where('sspd.no_pendaftaran like "%'.$value.'%"');
-                }
-                $cek .= $value;
-            }
+        if(!empty($param['nik']) && !empty($param['nopen']) && !empty($param['nama'])){
+
+        //     foreach ($param as $key => $value) {
+        //         if($key == 'nik'){
+        //         }if($key == 'nama'){
+        //         $this->db->where('nik.nama like "%'.$value.'%"');
+        //         }if($key == 'nopen'){
+        //         $this->db->where('sspd.no_pendaftaran like "%'.$value.'%"');
+        //         }
+        //     }
+                $cek .= 'cari';
+                $this->db->where('nik.nik like "%'.$param['nik'].'%" or nik.nama like "%'.$param['nama'].'%" or sspd.no_pendaftaran like "%'.$param['nopen'].'%"  ');
         }
        
         $tipe = $this->ses['jenis'];
@@ -68,7 +69,7 @@ class Sspd_model extends CI_Model
             $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
             $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
             $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
-       		$this->db->order_by($this->table.'.'.$this->id, $this->order);
+       		$this->db->order_by('sspd.update','asc');
         return $this->db->get($this->table)->result();
     }
 
@@ -317,6 +318,21 @@ class Sspd_model extends CI_Model
          
     }
 
+
+    function get_status_edit($status)
+    {
+
+        
+        $this->db->where('alur.status', 'edit');
+        $this->db->where('sd.status', $status);
+        $this->db->join('status sd', 'sd.id = alur.dari', 'left');
+        $this->db->join('status sk', 'sk.id = alur.ke', 'left');
+        $this->db->select('alur.*,sk.status as status_ke,sd.status as status_dari');
+        
+         return $this->db->get('alur')->row();
+         
+    }
+
      // get all
     function get_sspd_notif($param='')
     {
@@ -341,9 +357,15 @@ class Sspd_model extends CI_Model
     {
         $this->db->where('nopen', $nopen);
         $this->db->join('user', 'user.id = komen.send', 'left');
+        $this->db->order_by('date', 'asc');
         return $this->db->get('komen')->result();
     }
-
+      // get data by id
+    function get_ttd($jenis)
+    {
+        $this->db->where('jenis', $jenis);
+        return $this->db->get('ttd')->row();
+    }
 }
 
 /* End of file Sspd_model.php */

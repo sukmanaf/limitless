@@ -117,6 +117,7 @@
                         data = JSON.parse(data);
                         if (data.sts == '1') {
                             $.LoadingOverlay("hide");
+                            $(".btn").css('display','none');
                             $.growl.notice({ message: "Delete Sukses!" });
                             setTimeout(function () {
                                 location.reload();
@@ -124,6 +125,7 @@
                         }else{
                             $.LoadingOverlay("hide");
                             $.growl.notice({ message: "Delete Gagal!" });
+                            $(".btn").css('display','inline');
                             setTimeout(function () {
                                 // window.location.replace('<?php echo site_url('sspd') ?>')
                             }, 2000);
@@ -167,11 +169,13 @@ $(document).ready(function() {
                         if (data.jns == 'img') {
                             $.LoadingOverlay("hide");
                             $.growl.notice({ message: "Upload Sukses!" });
+                            $(".btn").css('display','none');
                             setTimeout(function () {
                                 location.reload();
                             }, 1000);
                         }else if(data.jns == 'data'){
                             $.LoadingOverlay("hide");
+                            $(".btn").css('display','inline');
                             $.growl.notice({ message: "Berkas Tersimpan!" });
                             setTimeout(function () {
                                 window.location.replace('<?php echo site_url('sspd') ?>')
@@ -179,7 +183,6 @@ $(document).ready(function() {
                         }
                    }
                  });
-            
     });
 });
 

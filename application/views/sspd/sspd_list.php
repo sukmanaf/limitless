@@ -26,16 +26,16 @@
             <div class="col-md-11 text-right">
 
                 <div class="col-md-3 " style=" padding:5px;float: right">
-                <input type="text" class="form-control" name="nama_search_name" id="nama_search_id" placeholder="Nama"  />
+                <input type="text" class="form-control" name="nama_search_name" id="nama_search_id" placeholder="Nama/No Pendaftaran/ NIK"  />
                 </div>
-
+<!-- 
                 <div class="col-md-3 " style=" padding:5px;float: right">
                 <input type="text" class="form-control" name="nik_search_name" id="nik_search_id" placeholder="Nik"  />
                 </div>
 
                 <div class="col-md-3 " style=" padding:5px;float: right">
                 <input type="text" class="form-control" name="nopen_search_name" id="nopen_search_id" placeholder="No Pendaftaran"  />
-                </div>
+                </div> -->
 
             
                 

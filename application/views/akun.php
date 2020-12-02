@@ -2,7 +2,7 @@
     
 <div class="panel panel-flat">
     <div class="panel-heading">
-        <h5 class="panel-title"><?php echo ucfirst($this->uri->segment(1)) ?></h5>
+        <h5 class="panel-title">User Account</h5>
         <div class="heading-elements">
             <ul class="icons-list">
                 <li><a data-action="collapse"></a></li>
@@ -49,7 +49,6 @@
         
      
 
-     
       
      <?php if (@$jenis=='update'): ?>
          
@@ -73,7 +72,7 @@
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $button ?></button>
         <a href="<?php echo site_url('ppat') ?>" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
         </div>
-	    <input type="hidden" name="id" value="<?php echo $id; ?>" /> 
+	    <input type="hidden" name="id" value="<?php echo $id_user; ?>" /> 
 	</form>
     </div>
     </div>
