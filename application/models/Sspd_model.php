@@ -60,8 +60,9 @@ class Sspd_model extends CI_Model
             }
             if ($tipe =='PP') {
             $id_ppat = $this->ses['id_ppat'];
-            $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" or sspd.status like "LN001%" ');
+            $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" or (sspd.status like "LN001%" and DATE_FORMAT(sspd.update,"%Y-%m-%d") = DATE_FORMAT(NOW(),"%Y-%m-%d"))');
             $this->db->where('sspd.id_ppat = '.$id_ppat);
+
             }
         }
             $this->db->select('sspd.*,nik.nama,ppat.nama as nama_ppat,ppat.alamat as alamat_ppat,status.text,status.status,status.class,jenis_perolehan.nama as jenis_perolehan_text');
@@ -70,7 +71,9 @@ class Sspd_model extends CI_Model
             $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
             $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
        		$this->db->order_by('sspd.update','asc');
-        return $this->db->get($this->table)->result();
+            $data = $this->db->get($this->table)->result();
+            // echo $this->db->last_query();
+            return $data;
     }
 
     // get data by id
@@ -314,8 +317,10 @@ class Sspd_model extends CI_Model
         $this->db->join('status sk', 'sk.id = alur.ke', 'left');
         $this->db->select('alur.*,sk.status as status_ke,sd.status as status_dari');
         
-         return $this->db->get('alur')->row();
-         
+        $data = $this->db->get('alur')->row();
+        $data['total_bayar'] = $cek->total_bayar;
+        return $data;
+
     }
 
 

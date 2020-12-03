@@ -53,7 +53,7 @@
                       <td>Pilih Tanggal Pembayaran</td>
                       <td>
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="icon-calendar5"></i></span>
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             <input type="text" id="tanggal" name="tanggal" value="" class="form-control pickadate" placeholder="Tanggal Pembayaran">
                         </div></td>
                     </tr>

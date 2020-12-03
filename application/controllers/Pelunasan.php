@@ -37,6 +37,9 @@ class Pelunasan extends CI_Controller {
 					'tgl_bayar' => $tanggal,
 					'validasi_bank' => 'Verifikasi via aplikasi',
 					'status' => 'LN001',
+					'no_sspd' => 'SD'.date('ymdHis').'1372',
+            		'tgl_validasi_berkas' => date('Y-m-d H:i:s'),
+
 					);
 		$this->db->where('no_pendaftaran', $_POST['nopen']);
         $acc = $this->db->update('sspd', $data);

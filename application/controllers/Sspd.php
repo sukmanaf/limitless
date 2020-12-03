@@ -804,11 +804,15 @@ class Sspd extends CI_Controller
         
         $data = array('status' => $row->status_ke,
                         'update' =>date('Y-m-d H:i:s'),
-                        'tgl_validasi_berkas' =>date('Y-m-d H:i:s'),
                         'edit' => 0,
                         );
         if ($row->status_ke == 'MP001') {
-            $data['id_billing'] = date('YmdHis').'1372';
+            $data['id_billing'] = date('ymdHis').'1372';
+        }
+        if ($row->total_bayar == 0) {
+            $data['no_sspd'] = 'SD'.date('ymdHis').'1372';
+            $data['tgl_validasi_berkas'] =date('Y-m-d H:i:s'),
+
         }
         $this->db->where('no_pendaftaran', $nopen);
         $app = $this->db->update('sspd', $data);
@@ -831,7 +835,7 @@ class Sspd extends CI_Controller
         $ttd = $this->Sspd_model->get_ttd('sspd');
         $pdf = new FPDF('P','mm','A4');
         // membuat halaman baru
-        $pdf->SetMargins(10, 5);
+        $pdf->SetMargins(10, 3);
         $pdf->AddPage();
         // setting jenis font yang akan digunakan
         $lembar = array(
@@ -845,7 +849,7 @@ class Sspd extends CI_Controller
             $centang = 'assets/files/image/centang.png';
             $pdf->SetFont('Arial','B',11);
             $pdf->Image($logo,16,7,22,27,'PNG');
-            $pdf->Image($centang,22,195,3,3,'PNG');
+            $pdf->Image($centang,22,196,3,3,'PNG');
 
             $pdf->Cell(35,3,'','LT',0,'C');
             $pdf->Cell(120,3,'','LTR',0,'C');
@@ -853,26 +857,37 @@ class Sspd extends CI_Controller
 
             $pdf->Cell(35,5,'','L',0,'C');
             $pdf->Cell(120,5,'SURAT SETORAN PAJAK DAERAH','LR',0,'C');
-            $pdf->Cell(35,5,'LEMBAR','R',1,'C');
+            $pdf->SetFont('Arial','',9);
+            $pdf->Cell(35,5,'No Pendaftaran','R',1,'C');
+            $pdf->SetFont('Arial','B',11);
             $pdf->Cell(35,5,'','L',0,'C');
             $pdf->Cell(120,5,'BEA PEROLEHAN HAK ATAS TANAH DAN BANGUNAN','LR',0,'C');
-            $pdf->Cell(35,5,'','R',1,'C');
+            $pdf->SetFont('Arial','B',9);
+            $pdf->Cell(35,5,@$row->no_pendaftaran,'R',1,'C');
+            $pdf->SetFont('Arial','B',11);
             $pdf->Cell(35,5,'','L',0,'C');
             $pdf->Cell(120,5,'(SSPD-BPHTB)','LRB',0,'C');
-            $pdf->SetFont('Arial','B',41);
-            $pdf->Cell(35,5,'1','R',1,'C');
+            $pdf->SetFont('Arial','',9);
+            $pdf->Cell(35,5,'No SSPD/NTPD','R',1,'C');
             $pdf->SetFont('Arial','B',11);
 
+            $pdf->SetFont('Arial','B',11);
+            $pdf->Cell(35,5,'','L',0,'C');
+            $pdf->Cell(120,5,'','LR',0,'C');
+            $pdf->SetFont('Arial','B',9);
+            $pdf->Cell(35,5,@$row->no_sspd,'R',1,'C');
+            $pdf->SetFont('Arial','B',11);
             $pdf->SetFont('Arial','',11);
-            $pdf->Cell(35,2,'','L',0,'C');
-            $pdf->Cell(120,2,'','LR',0,'C');
-            $pdf->Cell(35,2,'','R',1,'C');
             $pdf->Cell(35,5,'','L',0,'C');
             $pdf->Cell(120,5,'BERFUNGSI SEBAGAI SURAT PEMBERITAHUAN OBJEK PAJAK','LR',0,'C');
-            $pdf->Cell(35,5,'','R',1,'C');
+            $pdf->SetFont('Arial','',9);
+            $pdf->Cell(35,5,'Lembar '.$key,'R',1,'C');
+            $pdf->SetFont('Arial','',11);
             $pdf->Cell(35,5,'','LB',0,'C');
             $pdf->Cell(120,5,'PAJAK BUMI DAN BANGUNAN (SPOP PBB)','LRB',0,'C');
+            $pdf->SetFont('Arial','',9);
             $pdf->Cell(35,5,@$value,'RB',1,'C');
+            $pdf->SetFont('Arial','',11);
 
             //bawah header
             $pdf->SetFont('Arial','',11);
@@ -884,27 +899,27 @@ class Sspd extends CI_Controller
             $pdf->Cell(190,3,'','LR',1,'C');
 
             $pdf->Cell(10,5,'A.','L',0,'C');
-            $pdf->Cell(37,5,'1.Nama WajibPajak','',0,'');
+            $pdf->Cell(37,5,'1. Nama WajibPajak','',0,'');
             $pdf->Cell(143,5,': '.@$row->nama,'R',1,'');
             
             $pdf->Cell(10,5,'','L',0,'');
-            $pdf->Cell(37,5,'2.NIK','',0,'');
+            $pdf->Cell(37,5,'2. NIK','',0,'');
             $pdf->Cell(143,5,': '.@$row->nik,'R',1,'');
 
             $pdf->Cell(10,5,'','L',0,'');
-            $pdf->Cell(37,5,'3.Alamat Wajib Pajak','',0,'');
+            $pdf->Cell(37,5,'3. Alamat Wajib Pajak','',0,'');
             $pdf->Cell(143,5,': '.@$row->alamat,'R',1,'');
 
             $pdf->Cell(10,5,'','L',0,'');
-            $pdf->Cell(37,5,'Kelurahan / Desa','',0,'');
+            $pdf->Cell(37,5,'4. Kelurahan / Desa','',0,'');
             $pdf->Cell(48,5,': '.@$row->nm_kelurahan,'',0,'');
-            $pdf->Cell(15,5,'RT/RW','',0,'');
+            $pdf->Cell(15,5,'5. RT/RW','',0,'');
             $pdf->Cell(15,5,': '.@$row->rtrw,'',0,'');
-            $pdf->Cell(20,5,'Kecamatan','',0,'');
+            $pdf->Cell(20,5,'6. Kecamatan','',0,'');
             $pdf->Cell(45,5,': '.@$row->nm_kecamatan,'R',1,'');
 
             $pdf->Cell(10,5,'','L',0,'');
-            $pdf->Cell(37,5,'Kabupaten / Kota','',0,'');
+            $pdf->Cell(37,5,'7. Kabupaten / Kota','',0,'');
             $pdf->Cell(143,5,': '.@$row->nm_kabupaten,'R',1,'');
            
             $pdf->Cell(190,3,': ','LBR',1,'');
@@ -915,23 +930,23 @@ class Sspd extends CI_Controller
             $pdf->Cell(190,3,'','LR',1,'C');
 
             $pdf->Cell(10,5,'B.','L',0,'C');
-            $pdf->Cell(55,5,'1.Nomor Objek Pajak (NOP)PBB','',0,'');
+            $pdf->Cell(55,5,'1. Nomor Objek Pajak (NOP)PBB','',0,'');
             $pdf->Cell(125,5,': '.@$row->nop,'R',1,'');
             
             $pdf->Cell(10,5,'','L',0,'');
-            $pdf->Cell(55,5,'2.Letak Tanah dan Bangunan','',0,'');
+            $pdf->Cell(55,5,'2. Letak Tanah dan Bangunan','',0,'');
             $pdf->Cell(125,5,': '.@$row->alamat_op,'R',1,'');
 
             $pdf->Cell(10,5,'','L',0,'');
-            $pdf->Cell(37,5,'3.Kelurahan / Desa','',0,'');
+            $pdf->Cell(37,5,'3. Kelurahan / Desa','',0,'');
             $pdf->Cell(68,5,': '.@$row->kelurahan_op,'',0,'');
-            $pdf->Cell(30,5,'4.RT/RW','',0,'');
+            $pdf->Cell(30,5,'4. RT/RW','',0,'');
             $pdf->Cell(45,5,': '.@$row->rtrw_op,'R',1,'');
 
             $pdf->Cell(10,5,'','L',0,'');
-            $pdf->Cell(37,5,'5.Kecamatan','',0,'');
+            $pdf->Cell(37,5,'5. Kecamatan','',0,'');
             $pdf->Cell(68,5,': '.@$row->kecamatan_op,'',0,'');
-            $pdf->Cell(30,5,'6.Kabupaten/Kota','',0,'');
+            $pdf->Cell(30,5,'6. Kabupaten/Kota','',0,'');
             $pdf->Cell(45,5,': '.@$row->kabupaten_op,'R',1,'');
 
             $pdf->Cell(190,3,'','LR',1,'');
@@ -985,12 +1000,12 @@ class Sspd extends CI_Controller
             $pdf->Cell(3,8,'','R',1,'');
 
             $pdf->Cell(10,5,'','L',0,'C');
-            $pdf->Cell(32,5,'14.Jenis Perolehan','',0,'');
+            $pdf->Cell(32,5,'14. Jenis Perolehan','',0,'');
             $pdf->Cell(145,5,': '.@$row->jenis_perolehan.' - '.@$row->jenis_perolehan_text,'',0,'L');
             $pdf->Cell(3,5,'','R',1,'');
 
             $pdf->Cell(10,5,'','L',0,'C');
-            $pdf->Cell(32,5,'15.NomorSertifikat','',0,'');
+            $pdf->Cell(32,5,'15. NomorSertifikat','',0,'');
             $pdf->Cell(145,5,': '.@$row->nomor_sertifikat,'',0,'L');
             $pdf->Cell(3,5,'','R',1,'');
 

@@ -93,20 +93,25 @@ display: flex;
           <div class="col-sm-12 col-md-3 dokumen-logo " align="center">
             <img src="<?= base_url() ?>assets/files/image/logo.png"  >
           </div>
-          <div class="col-sm-12 col-md-6 dokumen-judul" align="center">
+          <div class="col-sm-12 col-md-6 dokumen-judul" align="center" style="border-left: 1px solid rgb(221, 221, 221);border-right: 1px solid rgb(221, 221, 221); ">
             <p class="bold">SURAT SETORAN PAJAK DAERAH</p>
              <p class="bold">BEA PEROLEHAN HAK ATAS TANAH DAN BANGUNAN</p>
              <p class="bold">(SSPD-BPHTB)</p>
              <hr style="margin-top: 5px;margin-bottom: 5px">
              <p>BERFUNGSI SEBAGAI SURAT PEMBERITAHUAN OBJEK PAJAK</p>
              <p>PAJAK BUMI DAN BANGUNAN (SPOP PBB)</p>
+             &nbsp;
           </div>
-          <div class="col-sm-12 col-md-3 dukumen-lembar" align="center">
-            <span><b>Lembar</b></span><span style="font-size: 25pt">1</span><br>
-                               <span>Untuk Wajib Pajak</span><br>
+          <div class="col-sm-12 col-md-3 dukumen-lembar" align="center" style="padding-top: 30px;height: 100% ">
+            <span>Nomor Pendaftaran</span><br>
+            <span><b><?=@$sspd->no_pendaftaran ?></b><br>
+              <?php if (!empty(@$sspd->no_sspd)): ?>
+                <span>Nomor SSPD/NTPD</span><br>
+                <span><b><?=@$sspd->no_sspd ?></b><br>
+              <?php endif ?>
           </div>
         </div>
-          <hr>
+          <hr style="margin-top: 5px">
           <div class="panel-nik">
 
             <div class="row" style="">
