@@ -59,16 +59,16 @@ class Sspd_model extends CI_Model
             $this->db->where('sspd.status', $jabatan);
             }
             if ($tipe =='PP') {
-            $id_ppat = $this->ses['id_ppat'];
+            $id_user = $this->ses['id_user'];
             $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" or (sspd.status like "LN001%" and DATE_FORMAT(sspd.update,"%Y-%m-%d") = DATE_FORMAT(NOW(),"%Y-%m-%d"))');
-            $this->db->where('sspd.id_ppat = '.$id_ppat);
+            $this->db->where('sspd.id_user = '.$id_user);
 
             }
         }
-            $this->db->select('sspd.*,nik.nama,ppat.nama as nama_ppat,ppat.alamat as alamat_ppat,status.text,status.status,status.class,jenis_perolehan.nama as jenis_perolehan_text');
+            $this->db->select('sspd.*,nik.nama,user.nama as nama_ppat,status.text,status.status,status.class,jenis_perolehan.nama as jenis_perolehan_text');
             $this->db->join('status', 'status.status = sspd.status', 'left');
             $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
-            $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
+            $this->db->join('user', 'user.id = sspd.id_user', 'left');
             $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
        		$this->db->order_by('sspd.update','asc');
             $data = $this->db->get($this->table)->result();

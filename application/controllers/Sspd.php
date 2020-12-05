@@ -811,7 +811,7 @@ class Sspd extends CI_Controller
         }
         if ($row->total_bayar == 0) {
             $data['no_sspd'] = 'SD'.date('ymdHis').'1372';
-            $data['tgl_validasi_berkas'] =date('Y-m-d H:i:s'),
+            $data['tgl_validasi_berkas'] =date('Y-m-d H:i:s');
 
         }
         $this->db->where('no_pendaftaran', $nopen);
