@@ -14,11 +14,21 @@ class Laporan_model extends CI_Model {
 			// echo "<pre>";
 			// print_r ($tanggal_akhir.$tanggal_awal);
 			// echo "</pre>";exit();
+			
 			$this->db->where('DATE_FORMAT(tgl_validasi_berkas,"%Y-%m-%d") >= "'.$tanggal_awal.'"');
 			$this->db->where('DATE_FORMAT(tgl_validasi_berkas,"%Y-%m-%d") <= "'.$tanggal_akhir.'"');
 			$this->db->join('nik', 'sspd.id_nik = nik.id', 'left');
+        	$this->ses = $this->session->userdata('user');
+        	$tipe = $this->ses['jenis'];
+        	$tipe = $this->ses['id_user'];
+            if ($tipe=='PM') {
+            	
+            $this->db->where('sspd.id_user = '.$id_ppat);
+            }
+			
 			$data = $this->db->get('sspd')->result();
 			// echo $this->db->last_query();
+
 			return $data;
 		}	
 

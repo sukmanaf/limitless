@@ -57,8 +57,8 @@
 
 						<div class="panel panel-body login-form">
 							<div class="text-center">
-								<div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
-								<h5 class="content-group">Login to your account <small class="display-block">Enter your credentials below</small></h5>
+								<div class="icon-object border-slate-300 text-slate-300"></div>
+								<h5 class="content-group">Silahkan Login </h5>
 							</div>
 
 							<div class="form-group has-feedback has-feedback-left">
@@ -76,11 +76,11 @@
 							</div>
 
 							<div class="form-group">
-								<button type="submit" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 position-right"></i></button>
+								<button type="submit" class="btn btn-primary btn-block">Log In <i class="icon-circle-right2 position-right"></i></button>
 							</div>
 
 							<div class="text-center">
-								<a href="login_password_recover.html">Forgot password?</a>
+								<!-- <a href="#">Cek Berkas</a> -->
 							</div>
 						</div>
 					</form>
@@ -88,9 +88,9 @@
 
 
 					<!-- Footer -->
-					<div class="footer text-muted text-center">
+					<!-- <div class="footer text-muted text-center">
 						&copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
-					</div>
+					</div> -->
 					<!-- /footer -->
 
 				</div>
