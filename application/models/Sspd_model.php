@@ -50,10 +50,16 @@ class Sspd_model extends CI_Model
                 $cek .= 'cari';
                 $this->db->where('nik.nik like "%'.$param['nik'].'%" or nik.nama like "%'.$param['nama'].'%" or sspd.no_pendaftaran like "%'.$param['nopen'].'%"  ');
         }
-       
-        $tipe = $this->ses['jenis'];
-        
+       // echo "<pre>";
+       // print_r ($this->ses);
+       // echo "</pre>";
+
         if (empty($cek)) {
+            $tipe = $this->ses['jenis'];
+            if ($tipe =='AD') {
+            $jabatan = '';
+            $this->db->where('sspd.status', $jabatan);
+            }
             if ($tipe =='PM') {
             $jabatan = $this->ses['jabatan'];
             $this->db->where('sspd.status', $jabatan);
@@ -87,8 +93,8 @@ class Sspd_model extends CI_Model
     // get total rows
     function total_rows($q = NULL) {
         $this->db->like('id', $q);
-	$this->db->or_like('id_ppat', $q);
-	$this->db->or_like('nik', $q);
+	$this->db->or_like('id_user', $q);
+	$this->db->or_like('id_nik', $q);
 	$this->db->or_like('nop', $q);
 	$this->db->or_like('alamat_op', $q);
 	$this->db->or_like('propinsi_op', $q);
@@ -121,8 +127,8 @@ class Sspd_model extends CI_Model
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
         $this->db->like('id', $q);
-	$this->db->or_like('id_ppat', $q);
-	$this->db->or_like('nik', $q);
+	$this->db->or_like('id_user', $q);
+	$this->db->or_like('id_nik', $q);
 	$this->db->or_like('nop', $q);
 	$this->db->or_like('alamat_op', $q);
 	$this->db->or_like('propinsi_op', $q);
@@ -162,8 +168,8 @@ class Sspd_model extends CI_Model
     {
        $acc = $this->db->insert('nik', $data);
        $insert_id = $this->db->insert_id();
-
-   return  $insert_id.'.'.$acc;
+        $ret = array('intsert_id' => $insert_id,'sts' => $acc);
+        return  $ret;
 
     }
     function insert_komen($data)
@@ -239,7 +245,7 @@ class Sspd_model extends CI_Model
     function get_history_nop($nop)
     {
         $this->gw_pbb->where('nop', $nop);
-        $this->gw_pbb->limit(5);
+        $this->gw_pbb->limit(3);
         $this->gw_pbb->order_by('SPPT_TAHUN_PAJAK', 'desc');
         $this->gw_pbb->select('SPPT_TAHUN_PAJAK,PAYMENT_FLAG');
         return $this->gw_pbb->get($this->table_gw)->result();
@@ -277,10 +283,10 @@ class Sspd_model extends CI_Model
     function get_all_by_nopen($nopen)
     {
         $this->db->where('no_pendaftaran', $nopen);
-        $this->db->join('ppat', 'ppat.id = sspd.id_ppat', 'left');
+        $this->db->join('user', 'user.id = sspd.id_user', 'left');
         $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
         $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
-        $this->db->select('sspd.*,ppat.*,nik.*,jenis_perolehan.nama as jenis_perolehan_text,sspd.id as id_sspd');
+        $this->db->select('sspd.*,user.nama nama_ppat,nik.*,jenis_perolehan.nama as jenis_perolehan_text,sspd.id as id_sspd');
         return $this->db->get($this->table)->row();
     }   // get data by id
     function get_files($nopen)
@@ -305,8 +311,8 @@ class Sspd_model extends CI_Model
     function get_approve($status,$acc,$nopen)
     {
 
-        if ($status == 'PM003') {
             $cek = $this->db->query('select total_bayar from sspd where no_pendaftaran= "'.$nopen.'"')->row();
+        if ($status == 'PM003') {
             if ($cek->total_bayar == 0) {
                 $this->db->order_by('alur.id', 'desc');
             }
@@ -318,7 +324,8 @@ class Sspd_model extends CI_Model
         $this->db->select('alur.*,sk.status as status_ke,sd.status as status_dari');
         
         $data = $this->db->get('alur')->row();
-        $data['total_bayar'] = $cek->total_bayar;
+        
+        $data->total_bayar = @$cek->total_bayar;
         return $data;
 
     }

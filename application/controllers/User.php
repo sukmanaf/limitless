@@ -186,7 +186,7 @@ class User extends CI_Controller
             echo $acc;
     }
     
-    public function update($id) 
+    public function akun($id) 
     {
         $row = $this->User_model->get_by_id($id);
 
@@ -203,6 +203,30 @@ class User extends CI_Controller
 		'nama' => set_value('nama', $row->nama),
 		'jabatan' => set_value('jabatan', $row->jabatan),
 	    );
+            $this->skin->dashboard('akun', $data);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('akun'));
+        }
+    }
+    
+    public function update($id) 
+    {
+        $row = $this->User_model->get_by_id($id);
+
+        if ($row) {
+            $data = array(
+            'jns' => 'update',
+                'button' => 'Simpan',
+                'action' => site_url('user/update_action'),
+        'id' => set_value('id', $row->id),
+        'username' => set_value('username', $row->username),
+        'password' => set_value('password', $row->password),
+        'jenis' => set_value('jenis', $row->jenis),
+        'blokir' => set_value('blokir', $row->blokir),
+        'nama' => set_value('nama', $row->nama),
+        'jabatan' => set_value('jabatan', $row->jabatan),
+        );
             $this->skin->dashboard('user/user_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -214,13 +238,13 @@ class User extends CI_Controller
     {
         
             $data = array(
-		'username' => $this->input->post('username'),
-		'password' => $this->input->post('password'),
-		'jenis' => $this->input->post('jenis'),
-		'blokir' => $this->input->post('blokir'),
-		'nama' => $this->input->post('nama'),
-		'jabatan' => $this->input->post('jabatan'),
-	    );
+        'username' => $this->input->post('username'),
+        'password' => $this->input->post('password'),
+        'jenis' => $this->input->post('jenis'),
+        'blokir' => $this->input->post('blokir'),
+        'nama' => $this->input->post('nama'),
+        'jabatan' => $this->input->post('jabatan'),
+        );
 
             $acc = $this->User_model->update($this->input->post('id', TRUE), $data);
             echo $acc;

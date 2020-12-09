@@ -171,15 +171,16 @@ $(document).ready(function() {
                             $.growl.notice({ message: "Upload Sukses!" });
                             $(".btn").css('display','none');
                             setTimeout(function () {
+                            $.LoadingOverlay("hide");
                                 location.reload();
                             }, 1000);
                         }else if(data.jns == 'data'){
-                            $.LoadingOverlay("hide");
                             $(".btn").css('display','inline');
                             $.growl.notice({ message: "Berkas Tersimpan!" });
                             setTimeout(function () {
+                            $.LoadingOverlay("hide");
                                 window.location.replace('<?php echo site_url('sspd') ?>')
-                            }, 2000);
+                            }, 1000);
                         }
                    }
                  });

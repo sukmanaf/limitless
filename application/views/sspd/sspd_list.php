@@ -53,7 +53,16 @@
 <iframe src="" id="pdf" style="display: none"></iframe>
 <div class="panel-body">
 
-<table id="dtables" class="table datatable-responsive table-bordered table-striped" ></table>
+<table id="dtables" class="table datatable-responsive table-bordered table-striped" >
+    <thead>
+        <th>No</th>
+        <th>No Pendaftaran</th>
+        <th>Tanggal Dibuat</th>
+        <th>Nama</th>
+        <th>Status</th>
+        <th>Aksi</th>
+    </thead>
+</table>
 </div>
 <div id="print">
     
@@ -111,21 +120,14 @@
             $('#dtables').DataTable( {
             // console.log(dataSet);
 
-            fixedColumns: true,
+           fixedColumns: true,
             data: datae.isi,
             searching: false,   // Search Box will Be Disabled
-            ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+            ordering: false,    // Ordering (Sorting on Each Column)will Be Disabled
             info: true,         // Will show "1 to n of n entries" Text at bottom
             lengthChange: false, // Will Disabled Record number per page
-            columns: [
-            { title: "No" ,"width" : "3%" },
-            { title: "No Pendaftaran" },
-            { title: "Nama WP" },
-            { title: "Status" },
-            { title: "Aksi" ,"width" : "15%" }
-            ],
             order:[[0,'asc']]
-            } );
+            });
         });
 
          $("#postForm").submit(function(event){
@@ -144,20 +146,12 @@
             // console.log(datae);
             $('#dtables').DataTable().clear().destroy();
             $('#dtables').DataTable( {
-            // console.log(dataSet);
             fixedColumns: true,
             data: datae.isi,
             searching: false,   // Search Box will Be Disabled
-            ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+            ordering: false,    // Ordering (Sorting on Each Column)will Be Disabled
             info: true,         // Will show "1 to n of n entries" Text at bottom
             lengthChange: false, // Will Disabled Record number per page
-            columns: [
-            { title: "No" ,"width" : "3%" },
-            { title: "No Pendaftaran" },
-            { title: "Nama WP" },
-            { title: "Status" },
-            { title: "Aksi" ,"width" : "15%" }
-            ],
             order:[[0,'asc']]
             });
         });
@@ -184,16 +178,9 @@
             fixedColumns: true,
             data: datae.isi,
             searching: false,   // Search Box will Be Disabled
-            ordering: true,    // Ordering (Sorting on Each Column)will Be Disabled
+            ordering: false,    // Ordering (Sorting on Each Column)will Be Disabled
             info: true,         // Will show "1 to n of n entries" Text at bottom
             lengthChange: false, // Will Disabled Record number per page
-            columns: [
-            { title: "No" ,"width" : "3%" },
-            { title: "No Pendaftaran" },
-            { title: "Nama WP" },
-            { title: "Status" },
-            { title: "Aksi" ,"width" : "15%" }
-            ],
             order:[[0,'asc']]
             });
         });

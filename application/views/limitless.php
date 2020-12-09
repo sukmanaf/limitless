@@ -227,11 +227,11 @@
 						
 						<div class="navigation-wrapper collapse" id="user-nav">
 							<ul class="navigation">
-								<li><a href="<?=base_url() ?>dashboard"><i class="icon-user-plus"></i> <span>My profile</span></a></li>
+								<!-- <li><a href="<?=base_url() ?>dashboard"><i class="icon-user-plus"></i> <span>My profile</span></a></li> -->
 								<!-- <li><a href="#"><i class="icon-coins"></i> <span>My balance</span></a></li> -->
 								<!-- <li><a href="#"><i class="icon-comment-discussion"></i> <span><span class="badge bg-teal-400 pull-right">58</span> Messages</span></a></li> -->
 								<!-- <li class="divider"></li> -->
-								<li><a href="<?=base_url().'akun/get/'.$this->session->userdata('user')['id_user']; ?>"><i class="icon-cog5"></i> <span>Account settings</span></a></li>
+								<li><a href="<?=base_url().'user/akun/'.$this->session->userdata('user')['id_user']; ?>"><i class="icon-cog5"></i> <span>Account settings</span></a></li>
 								<li><a href="<?=base_url() ?>login/log_out"><i class="icon-switch2"></i> <span>Logout</span></a></li>
 							</ul>
 						</div>

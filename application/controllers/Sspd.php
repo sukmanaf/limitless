@@ -77,8 +77,8 @@ class Sspd extends CI_Controller
                 }
 
             }       
-            $edited = $v->edit == 1 ?' <span class="label label-warning">Edited</span>' : '';
-            $a= [$key+1,$v->no_pendaftaran,$v->nama,'<span class="label label-'.$v->class.'">'.$v->text.'</span>'.$edited,$tombol
+            $edited = $v->edit == 1 ?' <span class="label label-warning" style="margin:2px">Edited</span>' : '';
+            $a= [$key+1,$v->no_pendaftaran,tanggal_indonesia($v->created),$v->nama,'<span class="label label-'.$v->class.'" style="margin:2px">'.$v->text.'</span>'.$edited,$tombol
                  ];
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
             array_push($data['isi'], $a);
@@ -169,7 +169,7 @@ class Sspd extends CI_Controller
                  $row = $this->Sspd_model->get_all_by_nopen($nopen);
                 $status = $this->Sspd_model->get_status_edit($row->status);
 
-                $data= array('status' => $status->status_ke);
+                $data= array('status' => 'PM001');
                 $this->db->where('no_pendaftaran', $nopen);
                 $acc = $this->db->update('sspd', $data);
                 echo json_encode(array('msg' => $acc,'jns' => 'data'));
@@ -346,22 +346,20 @@ class Sspd extends CI_Controller
         $cek_nik = $this->Sspd_model->cek_nik($data['nik'])->jml;
         if ($cek_nik ==0) {
             $ins_nik = $this->Sspd_model->insert_nik($data_nik);
-            $exp = explode('.', $ins_nik);
-            $ins_nik = $exp[1];
-            $id_nik = $exp[0];
+            $nik = $ins_nik['sts'];
+            $id_nik = $ins_nik['intsert_id'];
         }else{
-            $up_nik = $this->Sspd_model->update_nik($data['id_nik'], $data_nik);
+            $nik = $this->Sspd_model->update_nik($data['id_nik'], $data_nik);
             $id_nik = $data['id_nik'];
         
         }
-        // echo $ins_nik.'ok';
-        // exit();
-        if (@$ins_nik == 1 || @$up_nik == 1) {
+  
+        if (@$ins_nik == 1 || @$nik == 1) {
             
             $nopen = 'PD'.date('ymdHis');
-            $data['id_ppat'] = '1';
+            $data['id_user'] = $this->ses['id_user'];
             $data_sspd = array(
-              'id_ppat' => $data['id_ppat'],
+              'id_user' => $data['id_user'],
               'id_nik' => $id_nik,
               'nop' => $data['nop'],
               'alamat_op' => $data['alamat_op'],
@@ -417,7 +415,7 @@ class Sspd extends CI_Controller
                 'button' => 'Update',
                 'action' => site_url('sspd/update_action'),
 		'id' => set_value('id', $row->id),
-		'id_ppat' => set_value('id_ppat', $row->id_ppat),
+		'id_user' => set_value('id_user', $row->id_user),
 		'nik' => set_value('nik', $row->nik),
 		'nop' => set_value('nop', $row->nop),
 		'alamat_op' => set_value('alamat_op', $row->alamat_op),
@@ -492,9 +490,9 @@ class Sspd extends CI_Controller
 
         if (@$ins_nik == 1 || @$up_nik == 1) {
             
-            $data['id_ppat'] = '1';
+            $data['id_user'] = '1';
             $data_sspd = array(
-              'id_ppat' => $data['id_ppat'],
+              'id_user' => $data['id_user'],
               'id_nik' => $id_nik,
               'nop' => $data['nop'],
               'alamat_op' => $data['alamat_op'],
@@ -550,7 +548,7 @@ class Sspd extends CI_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('id_ppat', 'id ppat', 'trim|required');
+	$this->form_validation->set_rules('id_user', 'id ppat', 'trim|required');
 	$this->form_validation->set_rules('nik', 'nik', 'trim|required');
 	$this->form_validation->set_rules('nop', 'nop', 'trim|required');
 	$this->form_validation->set_rules('alamat_op', 'alamat op', 'trim|required');
@@ -744,7 +742,7 @@ class Sspd extends CI_Controller
     public function get_history_nop($nop) 
     {
         $row = $this->Sspd_model->get_history_nop($nop);
-
+        $payment=0;
         $lunas ='Tahun ';
         if (!empty($row)) {
             
@@ -753,18 +751,21 @@ class Sspd extends CI_Controller
                    $lunas.= $value->SPPT_TAHUN_PAJAK.', ';
                 }
             }
+            if ($key==0) {
+                $payment= $value->PAYMENT_FLAG;
+            }
         }
 
         if ($lunas == 'Tahun ') {
             $lunas = 'PBB Lima Tahun Lunas';
             $lunas = '<span class="badge badge-success" style="margin-top:5%">'.$lunas.'</span>';
-            $angka = 1;
+            $angka = $payment;
 
         }else{
             $lunas = rtrim($lunas, ", ");
             $lunas .=' Belum Lunas ';
             $lunas = '<span class="badge badge-danger" style="margin-top:5%">'.$lunas.'</span>';
-            $angka = 0;
+            $angka = $payment;
         }
 
       

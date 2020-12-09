@@ -12,12 +12,12 @@ class Login extends CI_Controller {
 	{
 
 		$username = $this->input->post('user');
-		$password = $this->input->post('pass');
+		$password = md5($this->input->post('pass'));
 
 		$sql = $this->db->query('select count(id) as jml,user.* from user where username ="'.$username.'"')->row();
 		
 		// echo $this->db->last_query();
-
+		
 		$jml = $sql->jml;
 		if ( $jml == 1) {
 			if ($password == $sql->password) {

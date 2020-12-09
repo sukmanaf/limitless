@@ -18,20 +18,20 @@ class Skin
 	{
 		// echo $name;
 		$ses = $this->ci->session->userdata('user');
-
-		$role= $this->ci->db->query('select * from role where jenis ="'.$ses['jenis'].'"')->row();
-		// echo "<pre>";
-		// print_r ($role);
-		// echo "</pre>";
-		// echo "<pre>";
-		// print_r ($jns);
-		// echo "</pre>";
+		
+		if (!empty($ses) && @$ses['jenis'] != 'AD') {
+			
+		$roles= $this->ci->db->query('select * from role where jenis ="'.$ses['jenis'].'"')->row();
+		$role = $roles->role;
+		}else{
+			$role='6';
+		}
+	
 		$data['parent']= $this->ci->db->query('select * from menu where parent = 0 and active = 1')->result();
 		$data['child']= $this->ci->db->query('select * from menu where parent != 0 and active = 1')->result();
-		if ($ses['jenis'] != 'AD') {
-		$data['parent']= $this->ci->db->query('select * from menu where parent = 0 and active = 1 and id_menu in ('.$role->role.')')->result();
-		$data['child']= $this->ci->db->query('select * from menu where parent != 0 and active = 1 and id_menu in ('.$role->role.')')->result();
-			
+		if (@$ses['jenis'] != 'AD' && !empty($ses)) {
+		$data['parent']= $this->ci->db->query('select * from menu where parent = 0 and active = 1 and id_menu in ('.$role.')')->result();
+		$data['child']= $this->ci->db->query('select * from menu where parent != 0 and active = 1 and id_menu in ('.$role.')')->result();
 		}
 		$data['setting']= $this->ci->db->query('select * from setting')->row();
    		$val['session']=$this->ci->session->userdata('user');
