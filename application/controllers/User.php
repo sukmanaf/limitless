@@ -175,7 +175,7 @@ class User extends CI_Controller
         
             $data = array(
 		'username' => $this->input->post('username'),
-		'password' => $this->input->post('password'),
+		'password' => md5($this->input->post('password')),
 		'jenis' => $this->input->post('jenis'),
 		'blokir' => $this->input->post('blokir'),
 		'nama' => $this->input->post('nama'),
@@ -237,15 +237,16 @@ class User extends CI_Controller
     public function update_action() 
     {
         
-            $data = array(
+        $data = array(
         'username' => $this->input->post('username'),
-        'password' => $this->input->post('password'),
         'jenis' => $this->input->post('jenis'),
         'blokir' => $this->input->post('blokir'),
         'nama' => $this->input->post('nama'),
         'jabatan' => $this->input->post('jabatan'),
         );
-
+        if (!empty($this->input->post('password'))) {
+            $data['password'] = md5($this->input->post('password'));
+        }
             $acc = $this->User_model->update($this->input->post('id', TRUE), $data);
             echo $acc;
         

@@ -64,6 +64,10 @@ class Sspd_model extends CI_Model
             $jabatan = $this->ses['jabatan'];
             $this->db->where('sspd.status', $jabatan);
             }
+            if ($tipe =='BK') {
+            $jabatan = 'LN001';
+            $this->db->where('sspd.status', $jabatan);
+            }
             if ($tipe =='PP') {
             $id_user = $this->ses['id_user'];
             $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" or (sspd.status like "LN001%" and DATE_FORMAT(sspd.update,"%Y-%m-%d") = DATE_FORMAT(NOW(),"%Y-%m-%d"))');

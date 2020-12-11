@@ -30,11 +30,9 @@ class Pelunasan extends CI_Controller {
 
     public function validasi($value='')
     {
-    	$time = strtotime($_POST['tanggal']);
-
-		$tanggal = date('Y-m-d',$time);
+    	
 		$data=array(
-					'tgl_bayar' => $tanggal,
+					'tgl_bayar' => date('Y-m-d H:i:s'),
 					'validasi_bank' => 'Verifikasi via aplikasi',
 					'status' => 'LN001',
 					'no_sspd' => 'SD'.date('ymdHis').'1372',

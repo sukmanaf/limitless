@@ -70,6 +70,15 @@ class Sspd extends CI_Controller
                  <a href="#" class="btn btn-info" onclick="billing(\''.$v->no_pendaftaran.'\');" style="margin:2px;;position:inline-block;border-radius:5px;;padding: 2% 6%;"> Cetak Billing</a>';  
                     
                 }
+                // if($sts == 'LN'){
+
+                //     $tombol .= '
+                //  <a href="" class="btn btn-info" onclick="print(\''.$v->no_pendaftaran.'\');" style="margin:2px;;position:inline-block;border-radius:5px;;padding: 2% 6%;"> Cetak sspd</a>';  
+                // }
+
+            }   
+            if ($this->ses['jenis'] == 'BK') {
+               
                 if($sts == 'LN'){
 
                     $tombol .= '
@@ -169,7 +178,7 @@ class Sspd extends CI_Controller
                  $row = $this->Sspd_model->get_all_by_nopen($nopen);
                 $status = $this->Sspd_model->get_status_edit($row->status);
 
-                $data= array('status' => 'PM001');
+                $data= array('status' => $status->status_ke);
                 $this->db->where('no_pendaftaran', $nopen);
                 $acc = $this->db->update('sspd', $data);
                 echo json_encode(array('msg' => $acc,'jns' => 'data'));
@@ -779,6 +788,9 @@ class Sspd extends CI_Controller
             // $this->session->set_flashdata('message', 'Record Not Found');
             // redirect(site_url('sspd'));
         }
+        echo "<pre>";
+        print_r ($ret);
+        echo "</pre>";
             echo json_encode($ret);
     }
 
@@ -845,6 +857,7 @@ class Sspd extends CI_Controller
                         3=>'Bank',
                         );
         // header
+       
         foreach ($lembar as $key => $value) {
             $logo = 'assets/files/image/logo.png';
             $centang = 'assets/files/image/centang.png';
@@ -1102,7 +1115,7 @@ class Sspd extends CI_Controller
 
             $pdf->Cell(45,5,'12 November 2020','LR',0,'C');
             $pdf->Cell(55,5,'MENGETAHUI :','R',0,'C');
-            $pdf->Cell(40,5,'QR CODE','R',0,'C');
+            $pdf->Cell(40,5,'','R',0,'C');
             $pdf->Cell(50,5,'Telah Diverivikasi','R',1,'C');
 
             $pdf->Cell(45,15,'','LR',0,'C');
@@ -1110,7 +1123,7 @@ class Sspd extends CI_Controller
             $pdf->Cell(40,15,'','R',0,'C');
             $pdf->Cell(50,15,'','R',1,'C');
 
-            $len_wp =strlen('Muhammad Robby Santoso');
+            $len_wp =strlen(@$row->nama);
             if ($len_wp > 30) {
             $pdf->SetFont('Arial','U',9);
 
@@ -1118,16 +1131,16 @@ class Sspd extends CI_Controller
             $pdf->SetFont('Arial','U',10);
 
             }
-            $pdf->Cell(45,5,'Muhammad Robby Santoso','LR',0,'C');
+            $pdf->Cell(45,5,@$row->nama,'LR',0,'C');
 
-            $len_pp =strlen('Abdul Aziz Murtadlo, S.kom ,M.Kom');
+            $len_pp =strlen(@$row->nama_ppat);
             if ($len_pp > 30) {
             $pdf->SetFont('Arial','U',9);
             }else{
             $pdf->SetFont('Arial','U',10);
             }
 
-            $pdf->Cell(55,5,'Abdul Aziz Murtadlo, S.kom ,M.Kom','R','','C');
+            $pdf->Cell(55,5,@$row->nama_ppat,'R','','C');
 
             $pdf->Cell(40,5,'','R',0,'C');
             $len_pm =strlen(@$ttd->nama);

@@ -49,14 +49,14 @@
 
           <table class="table table-bordered" id="table1" style="">
 
-                    <tr>
-                      <td>Pilih Tanggal Pembayaran</td>
+                   <!--  <tr>
+                      <td>Pilih Tanggal Pembayarans</td>
                       <td>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="text" id="tanggal" name="tanggal" value="" class="form-control pickadate" placeholder="Tanggal Pembayaran">
+                            <input type="text" id="tanggal" name="tanggal" value="" class="form-control pickadate" placeholder="Tanggal Pembayaran" value="<?php echo date('Y-m-d') ?>">
                         </div></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                       <td width="40%">Nama</td>
                       <td><span id="span_nama" class="span"></span></td>
