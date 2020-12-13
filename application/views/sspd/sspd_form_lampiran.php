@@ -135,7 +135,8 @@
         }
 function img_upload(argument) {
     $('#postForm').submit()
-}function save(argument) {
+}
+function save(argument) {
 
     $('#submited').val(1)
 
@@ -150,12 +151,12 @@ $(document).ready(function() {
             event.preventDefault(); //prevent default action 
             $.LoadingOverlay("text", "Yep, still loading...");
 
-            $.LoadingOverlay("show");
+            // $.LoadingOverlay("show");
 
             var form = $('form')[0];
             var formData = new FormData(form);
             formData.append('image', $('input[type=file]')[0].files[0]); 
-
+            
            $.ajax({
                      url:'<?php echo site_url('sspd/do_upload');?>', //URL submit
                      type:"post", //method Submit
@@ -166,7 +167,19 @@ $(document).ready(function() {
                      async:false,
                       success: function(data){
                         data = JSON.parse(data);
-                        if (data.jns == 'img') {
+                        console.log(data)
+                        if (data.msg == 98) {
+                           $.LoadingOverlay("hide");
+                            $.growl.warning({ message: "Tipe File hanya "+data.tipe+"!" });
+                            $(".btn").css('display','none');
+                            $('input[type=file]').val('');
+                        }
+                        else if (data.msg == 99) {
+                           $.LoadingOverlay("hide");
+                            $.growl.warning({ message: "Ukuran File Maksimal "+data.max+" MB!" });
+                            $(".btn").css('display','none');
+                            $('input[type=file]').val('');
+                        }else if (data.jns == 'img') {
                             $.LoadingOverlay("hide");
                             $.growl.notice({ message: "Upload Sukses!" });
                             $(".btn").css('display','none');

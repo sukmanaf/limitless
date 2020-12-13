@@ -3,9 +3,10 @@
         <h6 class="panel-title">Tambah Berkas SSPD</h6>
         <div class="heading-elements">
             <ul class="icons-list">
-               <!--  <li><a data-action="collapse"></a></li>
+                <!-- <li><a data-action="collapse"></a></li>
                 <li><a data-action="reload"></a></li>
                 <li><a data-action="close"></a></li> -->
+                
             </ul>
         </div>
     </div>
@@ -16,6 +17,8 @@
                 <span class="form-wizard-count">1</span>
                 Data Wajib Pajak
                 <small class="display-block"></small>
+                        <!-- <input name="file" id="file" id style="margin-top: 5%" onchange="img_upload($(this))" type="file" class="file-input 2" data-show-caption="false" data-show-upload="false" data-browse-class="btn btn-primary btn-xs" data-remove-class="btn btn-default btn-xs"> -->
+
             </h6>
             <div class="row">
 
@@ -25,11 +28,13 @@
                 <input type="hidden" required class="form-control "  id="nopen" name="nopen" value="<?php echo @$sspd->no_pendaftaran; ?>">
                 <input type="hidden" required class="form-control "  id="id_sspd" name="id_sspd" value="<?php echo @$sspd->id_sspd; ?>">
                 <!-- hidden input -->
+            <input type="hidden" name="nopen" id="nopen_komen" value="<?= @$nopen ?>">
 
                <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label lbl-basic col-lg-2">NIK</label>
                     <div class="col-lg-4">
+
                         <input type="text" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control "  id="nik" name="nik" value="<?php echo @$sspd->nik; ?>">
                         <input type="hidden" required class="form-control "  id="id_nik" name="id_nik" value="<?php echo @$sspd->id; ?>">
                         
@@ -213,7 +218,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label class="control-label lbl-basic col-lg-2">Letak Tanah</label>
-                <div class="col-lg-4">
+                <div class="col-lg-10">
                     <input type="text" required  class="form-control" id="alamat_op" name="alamat_op" value="<?php echo @$sspd->alamat_op; ?>">
                 </div>
 
@@ -333,8 +338,20 @@
                 <div class="col-lg-4">
                     <input type="text"  required readonly  class="form-control" id="njop_total" name="njop_total" value="<?php echo format_number(@$sspd->njop_total); ?>">
                 </div>
-                <div class="col-lg-6">
-                    <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
+                <label class="control-label lbl-basic col-lg-2">Nama PPAT</label>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <select class="select" required id="ppat"  name="ppat" onchange="">
+                            <option value="">PILIH  PPAT</option>
+                            <?php foreach ($ppat  as $key => $value): ?>
+                                <?php $sel=''; if($sspd->id_user == $value->id){$sel='selected';} ?>
+
+                                <option <?=$sel ?>  value="<?=$value->id ?> " data="<?=$value->id ?>"><?= $value->nama?></option>
+                            <?php endforeach ?>
+
+                        </select>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -344,8 +361,12 @@
                 <div class="col-lg-4">
                     <input type="text"  required onkeyup="hitung()" class="form-control mask" id="harga_transaksi" name="harga_transaksi" value="<?php echo format_number(@$sspd->harga_transaksi); ?>">
                 </div>
-                <div class="col-lg-6">
-                    <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
+                <label class="control-label lbl-basic col-lg-2">Tanggal Pengajuan</label>
+                <div class="col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input type="text" id="tanggal" name="tanggal" required value="" class="form-control pickadate" placeholder="Tanggal Pembayaran" value="<?php echo date('Y-m-d') ?>">
+                    </div>
                 </div>
             </div>
         </div>
@@ -355,9 +376,12 @@
                 <div class="col-lg-4">
                     <input type="text"  required  class="form-control" id="nomor_sertifikat" name="nomor_sertifikat" value="<?php echo @$sspd->nomor_sertifikat; ?>">
                 </div>
-                <div class="col-lg-6">
-                    <!-- <button type="button" class="btn btn-primary" onclick="get_nop($('#nop').val(),event)" >Cari Nop</button> -->
-                </div>
+                <!-- <label class="control-label lbl-basic col-lg-2">Scan Berkas Manual</label>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <input name="berkas_manual" id="file" id style="margin-top: 5%" onchange="img_upload($(this))" type="file" class="file-input 2" data-show-caption="false" data-show-upload="false" data-browse-class="btn btn-primary btn-xs" data-remove-class="btn btn-default btn-xs">
+                    </div>
+                </div> -->
             </div>
         </div>
 
@@ -378,6 +402,7 @@
 
                     </div>
                 </div>
+                
             </div>
         </div>
 
@@ -449,71 +474,13 @@
                           
     </form>
     <hr>
-<?php if ($tipe == 'update'): ?>
-    
-
-    <!-- <div class="panel-heading"> -->
-        <h6 style="margin-left: 20px" class="panel-title text-semiold">Diskusi</h6>
-        <div class="heading-elements">
-          <ul class="list-inline list-inline-separate heading-text text-muted">
-            <!-- <li>42 comments</li> -->
-            <!-- <li>75 pending review</li> -->
-          </ul>
-                </div>
-      <!-- </div> -->
-
-      <div class="panel-body">
-        <ul class="media-list stack-media-on-mobile" id="add_komen">
-
-          <?php foreach ($komen as $key => $value): ?>
-          <li class="media">
-            <div class="media-left">
-              <a href="#"><img src="<?=base_url() ?>assets/images/placeholder.jpg" class="img-circle img-sm" alt=""></a>
-            </div>
-
-            <div class="media-body">
-              <div class="media-heading">
-                <a class="text-semibold"><?=@$value->nama ?></a>
-                <p style="font-size:8pt"><?=tanggal_indonesia(@$value->date) ?></p>
-              </div>
-
-              <?=$value->text ?>
-
-              
-            </div>
-          </li>
-
-          <?php endforeach ?>
-            
-        </ul>
-      </div>
-      <hr class="no-margin">
-            <form action="#" id="Formkomen" class="form-horizontal" enctype="multipart/form-data" method="post">
-            <input type="hidden" name="nopen" id="nopen_komen" value="<?= @$sspd->no_pendaftaran ?>">
-            <input type="hidden" name="send" id="send" value="<?= @$session['id_user'] ?>">
-            <input type="hidden" name="tipe" id="tipe" value="<?= @$session['jenis'] ?>">
-
-
-                <div class="panel-body">
-                  <h6 class="no-margin-top content-group">Add comment</h6>
-                  <div class="content-group">
-                    <!-- <div id="add-comment" ></div> -->
-                    <textarea class="form-control" id="komen" name="komen"></textarea>
-                  </div>
-                  
-                  <div class="text-right">
-                    <button type="submit" class="btn bg-blue"><i class="icon-plus22"></i> Add comment</button>
-                  </div>
-                </div>
-        </form>
-    </div>
-<?php endif ?>
 
   </div>
 </div>
 </div>
 
 <script >
+var url = '<?= $action?>';
     function back() {
         save=0;
     }
@@ -525,10 +492,24 @@
     function simpan() {
 
         save = 1;
-        // $('#postForm').submit();
-        // console.log('save')
-    }
 
+    }
+function img_upload(v) {
+    $('#postForm').submit();
+}
+function img_uploads(v) {
+    $('#postForm').submit();
+     // document.getElementById('editor').appendChild(document.createTextNode(fr.result));
+     var f = $('#file').prop('files');
+	 console.log(f[0]);
+	 var besar = parseInt('<?php echo substr(@$setting->besar_file,0,-2) ?>');
+	 if(f[0].size > besar){
+	 	console.log('besar');
+	 }
+	 if(f[0].type != ''){
+	 	console.log('besar');
+	 }
+}
 
 
     var object = {};
@@ -553,7 +534,7 @@
             
                 // $(".btn").css('display','none');
             event.preventDefault(); //prevent default action 
-            var post_url = '<?= $action?>'; //get form action url
+            var post_url = url; //get form action url
             var request_method = $(this).attr("method"); //get form GET/POST method
             var form_data = new FormData(this); //Encode form elements for submission
             form_data.forEach(function(value, key){
@@ -582,7 +563,7 @@
 
                     $.growl.notice({ message: "Simpan Sukses!" });
                     setTimeout(function () {
-                            window.location.replace('<?php echo site_url('sspd/upload_lampiran/') ?>'+response.nopen)
+                            window.location.replace('<?php echo site_url('sspd') ?>')
                             }, 2000);
                 }else{
                     $.growl.warning({ message: "Simpan gagal!" });
@@ -754,7 +735,8 @@
                     $('#select_kecamatan').html('<option value="">Pilih Kecamatan</option>')
                     $('#select_kabupaten').html('<option value="">Pilih Kabupaten</option>')
                     $('#select_kelurahan').html('<option value="">Pilih Kelurahan</option>')
-                    get_propinsi();
+                    // $('#select_propinsi').html('<option value="">Pilih Propinsi</option>')
+                    get_propinsi()
                 }
 
             // if (response == 1){
@@ -774,7 +756,7 @@
             // }
         });
     }
-    
+
     function get_propinsi() {
         var url = '<?php echo base_url() ?>sspd/get_propinsi';
         $.ajax({

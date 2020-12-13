@@ -21,7 +21,11 @@ function __construct()
             $this->db->where('sspd.status', $jabatan);
             }
             if ($tipe =='PP') {
-            $this->db->where('sspd.status like "PP%" or sspd.status like "MP%" or sspd.status like "LN001%"   ');
+            $this->db->where('sspd.status like "PP%" or sspd.status like "MP%"   ');
+            }
+
+            if ($tipe =='BK') {
+            $this->db->where('sspd.status ="LN001"');
             }
             $this->db->select('count(id) as jml');
         	return $this->db->get('sspd')->row();

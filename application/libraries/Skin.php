@@ -39,8 +39,8 @@ class Skin
         $ses=$this->ci->session->userdata('user');
         $data['sspd_notif'] = $this->ci->Global_model->get_sspd_notif(@$ses['jenis'],@$ses['jabatan'])->jml;
 
+		$val['setting']= $data['setting'];
 
-		
 		$data['body']=$this->ci->load->view($name, $val, true);
 		// echo $data['body'];exit();
 		$this->ci->load->view('limitless', $data);

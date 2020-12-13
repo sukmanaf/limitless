@@ -15,7 +15,9 @@
 <div class="" style="margin-left: 20px">
     <?php if ($session['jenis']== 'PP' ): ?>
 <a href="<?php echo site_url().$this->uri->segment(1) ?>/create" class="btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
-        
+    <?php endif ?>
+    <?php if ($session['jenis']== 'BK' ): ?>
+<a href="<?php echo site_url().$this->uri->segment(1) ?>/create_manual" class="btn-sm btn-primary"><i class="fas fa-plus"></i> Tambah</a>
     <?php endif ?>
 </div>
 <div class="panel-body">

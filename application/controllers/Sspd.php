@@ -87,6 +87,7 @@ class Sspd extends CI_Controller
 
             }       
             $edited = $v->edit == 1 ?' <span class="label label-warning" style="margin:2px">Edited</span>' : '';
+            // $manual = $v->status == 'LN002' ?' <span class="label label-warning" style="margin:2px">Manual</span>' : '';
             $a= [$key+1,$v->no_pendaftaran,tanggal_indonesia($v->created),$v->nama,'<span class="label label-'.$v->class.'" style="margin:2px">'.$v->text.'</span>'.$edited,$tombol
                  ];
             // <button  class="btn-sm btn-danger" onclick="hapus('.$v->id.',event)"><i class="fas fa-trash"></i> hapus</button>
@@ -118,7 +119,37 @@ class Sspd extends CI_Controller
             
         }
     }
+        public function cek_file($value='')
+        {
+            $size=0;
+            $tipe='';
+            foreach ($_FILES as $key => $value) {
+                if ($value['name'] != '') {
+                   
+                    $_FILES[0] = $value;
+                    $_FILES[0]['key'] = $key;
+                    $size = $value['size'];
+                    $tipe = $value['type'];
+                }
+            }
+            $size_allowed = $this->db->query('select besar_file from setting')->row();
+                if ($size_allowed->besar_file < $size) {
+                    $max = $size_allowed->besar_file/100000;
+                    echo json_encode(array('msg' => 99, 'max' =>$max ));
+                    exit();
+                }
+
+                $type=array('image/jpeg','image/png','image/jpg','application/pdf');
+                if (in_array($tipe, $type)) {
+                }else{
+                    echo json_encode(array('msg' => 98, 'tipe' => 'JPG, PNG, PDF' ));
+                }
+                // exit();
+
+        }
+
         public function do_upload(){
+    
 
                 $nopen = $_POST['nopen'];
                
@@ -134,16 +165,33 @@ class Sspd extends CI_Controller
                     umask($oldmask);
                 }
 
-             
 
+             
+                $size=0;
+                $tipe='';
                 foreach ($_FILES as $key => $value) {
                     if ($value['name'] != '') {
                        
                         $_FILES[0] = $value;
                         $_FILES[0]['key'] = $key;
-                    
+                        $size = $value['size'];
+                        $tipe = $value['type'];
                     }
                 }
+                
+                $size_allowed = $this->db->query('select besar_file from setting')->row();
+                if ($size_allowed->besar_file < $size) {
+                    $max = $size_allowed->besar_file/100000;
+                    echo json_encode(array('msg' => 99, 'max' =>$max ));
+                    exit();
+                }
+
+                $type=array('image/jpeg','image/png','image/jpg','application/pdf');
+                if (in_array($tipe, $type)) {
+                }else{
+                    echo json_encode(array('msg' => 98, 'tipe' => 'JPG, PNG, PDF' ));
+                }
+                // exit();
 
 
                 $path = $_FILES[0]['name'];
@@ -183,6 +231,86 @@ class Sspd extends CI_Controller
                 $acc = $this->db->update('sspd', $data);
                 echo json_encode(array('msg' => $acc,'jns' => 'data'));
             }
+        }
+
+        public function do_upload_manual($nopen){
+    
+
+               
+
+              
+                $folder = 'assets/files/sspd/'.$nopen;
+
+                if (!is_dir($folder)) {
+
+                    $oldmask = umask(0);
+                    mkdir($folder, 0777, true);
+                    umask($oldmask);
+                }
+
+
+             
+                $size=0;
+                $tipe='';
+                foreach ($_FILES as $key => $value) {
+                    if ($value['name'] != '') {
+                       
+                        $_FILES[0] = $value;
+                        $_FILES[0]['key'] = $key;
+                        $size = $value['size'];
+                        $tipe = $value['type'];
+                    }
+                }
+                
+                $size_allowed = $this->db->query('select besar_file from setting')->row();
+                echo "<pre>";
+                print_r ($_FILES);
+                echo "</pre>";
+                echo $size;
+                echo $size_allowed->besar_file;
+                if ($size_allowed->besar_file < $size) {
+                    $max = $size_allowed->besar_file/100000;
+                    echo json_encode(array('msg' => 99, 'max' =>$max ));
+                    exit();
+                }
+
+                $type=array('image/jpeg','image/png','image/jpg','application/pdf');
+                if (in_array($tipe, $type)) {
+                }else{
+                    echo json_encode(array('msg' => 98, 'tipe' => 'JPG, PNG, PDF' ));
+                }
+                // exit();
+
+
+                $path = $_FILES[0]['name'];
+                $ext = pathinfo($path, PATHINFO_EXTENSION);
+                $nama = $_FILES[0]['key'].'_'.date('ymdHis').'.'.$ext;
+        
+                $config['upload_path']          = $folder;
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['file_name']            = $nama;
+       
+      
+                $this->load->library('upload', $config);
+                if ( ! $this->upload->do_upload($_FILES[0]['key']))
+                {
+                        $error = array('error' => $this->upload->display_errors());
+                        echo 0;
+                        // $this->skin->dashboard('upload_form', $error);
+                }
+                else
+                {
+                        $data = array('upload_data' => $this->upload->data());
+                        $data = array(
+                                        'lokasi' => $nama,
+                                        'nopen' =>$nopen,
+                                        'id_lampiran' => $_FILES[0]['key']
+                                    );
+                        $ins = $this->db->insert('files', $data);
+                        echo 1;
+
+                }
+           
         }
 
 
@@ -396,6 +524,13 @@ class Sspd extends CI_Controller
                 if ($ins_sspd==1) {
                     
                     $result = array('sts_sspd' =>1,'nopen' => $nopen);
+                    $dat['sspd']=$data_sspd;
+                    $dat['nik']=$data_nik;
+                     $log = array('nopen' => $nopen,
+                        'data' =>json_encode($dat),
+                        'ip' =>$this->ses['ip'],
+                        );
+                    $this->logs->create($log);
                 }else{
                     $result = array('sts_sspd' =>0);
 
@@ -526,6 +661,14 @@ class Sspd extends CI_Controller
             );
             $up_sspd = $this->Sspd_model->update($data['id_sspd'], $data_sspd);
                 if ($up_sspd==1) {
+                      $result = array('sts_sspd' =>1,'nopen' => $nopen);
+                    $dat['sspd']=$data_sspd;
+                    $dat['nik']=$data_nik;
+                     $log = array('nopen' => $nopen,
+                        'data' =>json_encode($dat),
+                        'ip' =>$this->ses['ip'],
+                        );
+                    $this->logs->update($log);
                     $result = array('sts_sspd' =>1,'nopen' => $nopen);
                 }else{
                     $result = array('sts_sspd' =>0);
@@ -589,13 +732,20 @@ class Sspd extends CI_Controller
     }
 
 
-     function get_propinsi($v='')
+     function get_ppat($v='')
     {
-        $kabupaten = $this->Sspd_model->get_propinsi();
-        $str='<option value="0">Pilih Kota/Kabupaten</option>';
+        $ppat = $this->Sspd_model->get_ppat();
         
-        if (!empty($kabupaten)) {
-            foreach ($kabupaten as $key => $value) {
+        echo $ppat;
+
+    }         
+        function get_propinsi($v='')
+    {
+        $propinsi = $this->Sspd_model->get_propinsi();
+        $str='<option value="0">Pilih Propinsi</option>';
+        
+        if (!empty($propinsi)) {
+            foreach ($propinsi as $key => $value) {
                                     
                     $str.='<option value="'.$value->id.'">'.$value->nama.'</option>';
             }
@@ -788,9 +938,7 @@ class Sspd extends CI_Controller
             // $this->session->set_flashdata('message', 'Record Not Found');
             // redirect(site_url('sspd'));
         }
-        echo "<pre>";
-        print_r ($ret);
-        echo "</pre>";
+
             echo json_encode($ret);
     }
 
@@ -820,10 +968,10 @@ class Sspd extends CI_Controller
                         'edit' => 0,
                         );
         if ($row->status_ke == 'MP001') {
-            $data['id_billing'] = date('ymdHis').'1372';
+            $data['id_billing'] = '137299'.date('ymdHis');
         }
         if ($row->total_bayar == 0) {
-            $data['no_sspd'] = 'SD'.date('ymdHis').'1372';
+            $data['no_sspd'] = 'SD'.'1372'.date('ymdHis');
             $data['tgl_validasi_berkas'] =date('Y-m-d H:i:s');
 
         }
@@ -851,12 +999,9 @@ class Sspd extends CI_Controller
         $pdf->SetMargins(10, 3);
         $pdf->AddPage();
         // setting jenis font yang akan digunakan
-        $lembar = array(
-                        1=>'PPAT/Notaris',
-                        2=>'BKD Kota Solok',
-                        3=>'Bank',
-                        );
-        // header
+        $lembar = $this->db->query('select lembar from setting ')->row();
+        $lembar = explode(',', $lembar->lembar);
+        
        
         foreach ($lembar as $key => $value) {
             $logo = 'assets/files/image/logo.png';
@@ -895,7 +1040,7 @@ class Sspd extends CI_Controller
             $pdf->Cell(35,5,'','L',0,'C');
             $pdf->Cell(120,5,'BERFUNGSI SEBAGAI SURAT PEMBERITAHUAN OBJEK PAJAK','LR',0,'C');
             $pdf->SetFont('Arial','',9);
-            $pdf->Cell(35,5,'Lembar '.$key,'R',1,'C');
+            $pdf->Cell(35,5,'Lembar '.Intval($key+1),'R',1,'C');
             $pdf->SetFont('Arial','',11);
             $pdf->Cell(35,5,'','LB',0,'C');
             $pdf->Cell(120,5,'PAJAK BUMI DAN BANGUNAN (SPOP PBB)','LRB',0,'C');
@@ -1112,17 +1257,28 @@ class Sspd extends CI_Controller
             $pdf->Cell(55,2,'','R',0,'C');
             $pdf->Cell(40,2,'','R',0,'C');
             $pdf->Cell(50,2,'','R',1,'C');
+            $pdf->SetFont('Arial','',8);
 
-            $pdf->Cell(45,5,'12 November 2020','LR',0,'C');
-            $pdf->Cell(55,5,'MENGETAHUI :','R',0,'C');
-            $pdf->Cell(40,5,'','R',0,'C');
-            $pdf->Cell(50,5,'Telah Diverivikasi','R',1,'C');
+            $pdf->Cell(45,3,$this->setting->kota_kecil.','.tanggal_indonesia(@$row->created),'LR',0,'C');
+            $pdf->Cell(55,3,'MENGETAHUI :','R',0,'C');
+            $pdf->Cell(40,3,'Diterima Oleh','R',0,'C');
+            $pdf->Cell(50,3,'Telah Diverivikasi','R',1,'C');
 
-            $pdf->Cell(45,15,'','LR',0,'C');
-            $pdf->Cell(55,15,'','R',0,'C');
-            $pdf->Cell(40,15,'','R',0,'C');
-            $pdf->Cell(50,15,'','R',1,'C');
+            $pdf->Cell(45,3,'Wajib Pajak/Penyetor','LR',0,'C');
+            $pdf->Cell(55,3,'PPAT/Notaris','R',0,'C');
+            $pdf->Cell(40,3,'Tempat Pembayaran BPHTB','R',0,'C');
+            $pdf->Cell(50,3,'Badan Keuangan Daerah','R',1,'C');
+            $pdf->Cell(45,2,'','LR',0,'C');
+            $pdf->Cell(55,2,'','R',0,'C');
+            $pdf->SetFont('Arial','',6);
+            $pdf->Cell(40,2,'Tanggal : '.tanggal_indonesia($row->tgl_bayar),'R',0,'C');
+            $pdf->Cell(50,2,'','R',1,'C');
+            $pdf->Cell(45,13,'','LR',0,'C');
+            $pdf->Cell(55,13,'','R',0,'C');
+            $pdf->Cell(40,13,'','R',0,'C');
+            $pdf->Cell(50,13,'','R',1,'C');
 
+            $pdf->SetFont('Arial','',10);
             $len_wp =strlen(@$row->nama);
             if ($len_wp > 30) {
             $pdf->SetFont('Arial','U',9);
@@ -1162,6 +1318,7 @@ class Sspd extends CI_Controller
             $pdf->Cell(55,3,'','BR',0,'C');
             $pdf->Cell(40,3,'','BR',0,'C');
             $pdf->Cell(50,3,'','BR',1,'C');
+            $pdf->AddPage();
         }
         $pdf->Output();
     }
@@ -1335,6 +1492,136 @@ class Sspd extends CI_Controller
                 
         }
     
+    public function create_manual() 
+    {
+        $ppat = $this->Sspd_model->get_ppat();
+        $propinsi = $this->Sspd_model->get_propinsi();
+        $jns_perolehan = $this->Sspd_model->get_jns_perolehan();
+
+        $data = array(
+            'tipe' => 'add',
+            'button' => 'Simpan',
+            'action' => site_url('sspd/create_manual_action'),
+        'propinsi' => $propinsi,
+        'jns_perolehan' => $jns_perolehan,
+        'ppat' => $ppat,
+            'nopen' => 'PD'.date('ymdHis')
+        
+
+    );
+        $this->skin->dashboard('sspd/sspd_form_manual', $data);
+    }
+    public function update_manual($nopen) 
+    {
+        $propinsi = $this->Sspd_model->get_propinsi();
+        $jns_perolehan = $this->Sspd_model->get_jns_perolehan();
+        $row = $this->Sspd_model->get_all_by_nopen($nopen);
+        $komen = $this->Sspd_model->get_komen($nopen);
+
+        $data = array(
+            'tipe' => 'update',
+            'button' => 'Simpan',
+            'action' => site_url('sspd/update_action'),
+        'sspd' => $row,
+        
+        'propinsi' => $propinsi,
+        'jns_perolehan' => $jns_perolehan,
+        'komen' => $komen,
+
+    );
+        $this->skin->dashboard('sspd/sspd_form', $data);
+    }
+    
+    public function create_manual_action() 
+    {
+        
+        $data = json_decode(file_get_contents('php://input'), true);
+        $data_nik = array(
+          'nik' => $data['nik'],
+          'nama' => strtoupper($data['nama']),
+          'alamat' => strtoupper($data['alamat']),
+          'kd_propinsi' => $data['kd_propinsi'],
+          'kd_kabupaten' => $data['kd_kabupaten'],
+          'kd_kecamatan' => $data['kd_kecamatan'],
+          'kd_kelurahan' => $data['kd_kelurahan'],
+          'rtrw' => $data['rtrw'],
+          'nm_propinsi' => $data['nm_propinsi'],
+          'nm_kabupaten' => $data['nm_kabupaten'],
+          'nm_kecamatan' => $data['nm_kecamatan'],
+          'nm_kelurahan' => $data['nm_kelurahan'],
+        );
+
+        $cek_nik = $this->Sspd_model->cek_nik($data['nik'])->jml;
+        if ($cek_nik ==0) {
+            $ins_nik = $this->Sspd_model->insert_nik($data_nik);
+            $nik = $ins_nik['sts'];
+            $id_nik = $ins_nik['intsert_id'];
+        }else{
+            $nik = $this->Sspd_model->update_nik($data['id_nik'], $data_nik);
+            $id_nik = $data['id_nik'];
+        
+        }
+  
+        if (@$ins_nik == 1 || @$nik == 1) {
+            
+            $nopen = 'PD'.date('ymdHis');
+            $tanggal = date("Y-m-d 00:00:00", strtotime($data['tanggal']));
+
+            $data_sspd = array(
+              'id_user' => $data['ppat'],
+              'id_nik' => $id_nik,
+              'nop' => $data['nop'],
+              'tgl_bayar' => $tanggal,
+              'tgl_validasi_berkas' => $tanggal,
+              'created' => $tanggal,
+              'update' => $tanggal,
+              'validasi_bank' => 'Berkas Input Manual',
+              'alamat_op' => $data['alamat_op'],
+              'kabupaten_op' => $data['kabupaten_op'],
+              'kecamatan_op' => $data['kecamatan_op'],
+              'kelurahan_op' => $data['kelurahan_op'],
+              'rtrw_op' => $data['rtrw_op'],
+              'luas_tanah' => str_replace('.','',$data['luas_tanah']),
+              'luas_bangunan' => str_replace('.', '',$data['luas_bangunan']),
+              'njop_tanah' => str_replace('.', '',$data['njop_tanah']),
+              'njop_bangunan' => str_replace('.', '',$data['njop_bangunan']),
+              'njop_total' => str_replace('.', '',$data['njop_total']),
+              'harga_transaksi' => str_replace('.', '',$data['harga_transaksi']),
+              'jenis_perolehan' => $data['jenis_perolehan'],
+              'nomor_sertifikat' => $data['nomor_sertifikat'],
+              'npop' => str_replace('.', '',$data['npop']),
+              'npoptkp' => str_replace('.', '',$data['npoptkp']),
+              'npopkp' => str_replace('.', '',$data['npopkp']),
+              'bphtb' => str_replace('.', '',$data['bphtb']),
+              'total_bayar' => str_replace('.', '',$data['bphtb']),
+              'status' => 'LN002',
+              'no_pendaftaran' => $nopen,
+              'no_sspd' => 'SD'.'1372'.date('ymdHis'),
+
+            );
+            $ins_sspd = $this->Sspd_model->insert($data_sspd);
+                if ($ins_sspd==1) {
+                    $result = array('sts_sspd' =>1,'nopen' => $nopen);
+                    $dat['sspd']=$data_sspd;
+                    $dat['nik']=$data_nik;
+                     $log = array('nopen' => $nopen,
+                        'data' =>json_encode($dat),
+                        'ip' =>$this->ses['ip'],
+                        );
+                    $this->logs->create($log);
+                }else{
+                    $result = array('sts_sspd' =>0);
+
+                }
+        }else{
+
+                $result = array('sts_nik' =>0);
+        }
+
+            echo json_encode($result);
+
+     
+    }
 }
 
 /* End of file Sspd.php */

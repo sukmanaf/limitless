@@ -65,8 +65,11 @@ class Sspd_model extends CI_Model
             $this->db->where('sspd.status', $jabatan);
             }
             if ($tipe =='BK') {
-            $jabatan = 'LN001';
-            $this->db->where('sspd.status', $jabatan);
+            $sistem = 'LN001';
+            $manual = 'LN002';
+            $this->db->or_where('sspd.status', $sistem);
+            $this->db->or_where('sspd.status', $manual);
+
             }
             if ($tipe =='PP') {
             $id_user = $this->ses['id_user'];
@@ -80,7 +83,13 @@ class Sspd_model extends CI_Model
             $this->db->join('jenis_perolehan', 'jenis_perolehan.kode = sspd.jenis_perolehan', 'left');
             $this->db->join('user', 'user.id = sspd.id_user', 'left');
             $this->db->join('nik', 'nik.id = sspd.id_nik', 'left');
+            if ($tipe =='BK') {
+            $this->db->order_by('sspd.update,sspd.id','desc');
+            }else{
+
        		$this->db->order_by('sspd.update','asc');
+            }
+            $this->db->group_by('sspd.no_pendaftaran');
             $data = $this->db->get($this->table)->result();
             // echo $this->db->last_query();
             return $data;
@@ -202,12 +211,18 @@ class Sspd_model extends CI_Model
 
     }
 
-
+        // get data by id
+    function get_ppat()
+    {
+        $this->db->where('jenis', 'PP');
+        return $this->db->get('user')->result();
+    }
     public function get_propinsi($value='')
     {
         return $this->db->get('propinsi')->result();
         
     }
+
 
         // get data by id
     function get_kabupaten($id)
@@ -354,6 +369,7 @@ class Sspd_model extends CI_Model
     {
         
         $tipe = $this->ses['jenis'];
+        $id_user = $this->ses['id_user'];
         
         if (empty($cek)) {
             if ($tipe =='PM') {
@@ -361,6 +377,7 @@ class Sspd_model extends CI_Model
             $this->db->where('sspd.status', $jabatan);
             }
             if ($tipe =='PP') {
+            $this->db->where('sspd.id_user', $id_user);
             $this->db->where('sspd.status like "PP%"');
             }
         }

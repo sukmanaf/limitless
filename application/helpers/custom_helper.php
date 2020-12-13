@@ -30,7 +30,7 @@ function tanggal_indonesia($tanggal) {
 	);
 	$date = explode('-', $date); // ubah string menjadi array dengan paramere '-'
 
-	return $date[2] . ' ' . $bulan[$date[1]] . ' ' . $date[0]; // hasil yang di kembalikan
+	return @$date[2] . ' ' . @$bulan[$date[1]] . ' ' . @$date[0]; // hasil yang di kembalikan
 }
 
 function tanggal_indonesia_jam($tanggal) {
@@ -53,7 +53,7 @@ function tanggal_indonesia_jam($tanggal) {
 	);
 	$date = explode('-', $date); // ubah string menjadi array dengan paramere '-'
 	$tgl = explode(' ', $date[2]);
-	return $tgl[0] . ' ' . $bulan[$date[1]] . ' ' . $date[0].' pukul '.$jam[1]; // hasil yang di kembalikan
+	return @$tgl[0] . ' ' . @$bulan[$date[1]] . ' ' . @$date[0].' pukul '.@$jam[1]; // hasil yang di kembalikan
 }
 
 function tanggal_indonesia_gede($tanggal) {

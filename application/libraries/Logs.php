@@ -16,6 +16,19 @@ class Logs
 	{
 		$this->ci->db->insert('log_proses', $value);
 	}
+
+		public function create($value='')
+	{
+		$this->ci->db->insert('log_sspd', $value);
+	}
+		public function update($value='')
+	{
+		$this->ci->db->insert('log_sspd', $value);
+	}
+		public function payment($value='')
+	{
+		$this->ci->db->insert('log_payment', $value);
+	}
 }
 
 /* End of file Logs.php */
