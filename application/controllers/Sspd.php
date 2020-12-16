@@ -909,29 +909,28 @@ class Sspd extends CI_Controller
                 if ($value->PAYMENT_FLAG == 0) {
                    $lunas.= $value->SPPT_TAHUN_PAJAK.', ';
                 }
-            }
-            if ($key==0) {
-                $payment= $value->PAYMENT_FLAG;
+                if ($key==0) {
+                    $payment= $value->PAYMENT_FLAG;
+                }
             }
         }
 
         if ($lunas == 'Tahun ') {
             $lunas = 'PBB Lima Tahun Lunas';
             $lunas = '<span class="badge badge-success" style="margin-top:5%">'.$lunas.'</span>';
-            $angka = $payment;
 
         }else{
             $lunas = rtrim($lunas, ", ");
             $lunas .=' Belum Lunas ';
             $lunas = '<span class="badge badge-danger" style="margin-top:5%">'.$lunas.'</span>';
-            $angka = $payment;
         }
 
       
+        // echo $payment;
         
         if ($row) {
            
-            $ret = array('sts'=> 1,'datas' => $lunas,'lunas' => $angka);
+            $ret = array('sts'=> 1,'datas' => $lunas,'lunas' => $payment);
             
         } else {
             $ret = array('sts'=> 0);

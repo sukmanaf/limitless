@@ -703,13 +703,22 @@
             // console.log(data);
             if (data.sts == 1) {
                 $('#status_lunas').html(data.datas)
-                if (data.lunas == 0) {
+                
+                    console.log(data.lunas+' lunas');
+                if (data.lunas == 0 || data.lunas == null ) {
                     $.growl.warning({ message: "PBB 5 Tahun belum Lunas!" });
 
-                    $('#nop-next').css('display','none');
+                    console.log('masuk if');
+
+                    $('#nop-next').attr("disabled", true);
+
+                }else{
+                    console.log('masuk else atas');
+                    $('#nop-next').attr("disabled", false);
                 }
             }else{
-                    $('#nop-next').css('display','inline');
+                console.log('masuk else bawah');
+                    $('#nop-next').attr("disabled", false);
 
             }
 
